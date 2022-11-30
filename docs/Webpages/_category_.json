@@ -1,0 +1,8 @@
+{
+  "label": "Web Pages",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "A collection of useful webpages related to space, combat, engineering etc."
+  }
+}
