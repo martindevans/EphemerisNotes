@@ -8,8 +8,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'My Site',
   tagline: 'Ephemeris: Space Combat Simulator',
-  url: 'https://martindevans.github.io/EphemerisNotes/',
-  baseUrl: '/EphemerisNotes',
+  url: 'https://martindevans.github.io',
+  baseUrl: '/EphemerisNotes/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
