@@ -1,5 +1,5 @@
 ---
-title: Nebulous: Fleet Command
+title: "Nebulous: Fleet Command"
 ---
 
 [Steam Store](https://store.steampowered.com/app/887570/NEBULOUS_Fleet_Command/)
