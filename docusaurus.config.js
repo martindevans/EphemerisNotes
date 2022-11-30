@@ -48,7 +48,7 @@ const config = {
           // todo: Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/martindevans/EphemerisNotes',
+            'https://github.com/martindevans/EphemerisNotes/tree/master/',
         },
         blog: false,
         theme: {
