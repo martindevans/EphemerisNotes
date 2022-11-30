@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'My Site',
   tagline: 'Ephemeris: Space Combat Simulator',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://martindevans.github.io/EphemerisNotes/',
   baseUrl: '/EphemerisNotes/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -48,7 +48,7 @@ const config = {
           // todo: Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/martindevans/EphemerisNotes',
         },
         blog: false,
         theme: {
@@ -62,18 +62,18 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'My Site',
+        title: 'Ephemeris',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
         },
         items: [
-          {
-            type: 'doc',
-            docId: 'index',
-            position: 'left',
-            label: 'Tutorial',
-          },
+          // {
+          //   type: 'doc',
+          //   docId: 'index',
+          //   position: 'left',
+          //   label: 'Tutorial',
+          // },
         ],
       },
       footer: {
@@ -93,7 +93,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Martin Evans`,
       },
       prism: {
         theme: lightCodeTheme,
