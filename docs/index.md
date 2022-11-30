@@ -4,4 +4,4 @@ sidebar_position: 0
 title: Ephemeris
 ---
 
-This page will be the home page when users visit https://example.com/.
+Ephemeris is an (in-development) simulator of realistic near-future space warfare.
