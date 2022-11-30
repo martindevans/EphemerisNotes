@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkephemeris_notes=self.webpackChunkephemeris_notes||[]).push([[819],{266:e=>{e.exports=JSON.parse('{"title":"Media","description":"Analysis of other media.","slug":"/category/media","permalink":"/category/media","navigation":{"previous":{"title":"Ephemeris","permalink":"/"},"next":{"title":"Games","permalink":"/category/games"}}}')}}]);
