@@ -9,7 +9,7 @@ const config = {
   title: 'My Site',
   tagline: 'Ephemeris: Space Combat Simulator',
   url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  baseUrl: '/EphemerisNotes/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
