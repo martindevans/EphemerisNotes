@@ -1,5 +1,3 @@
-## Unity Plugins
-
  - [Outline Highlighter](https://github.com/Arvtesh/UnityFx.Outline)
  - [Runtime Introspection/Monitoring](https://github.com/JohnBaracuda/com.baracuda.runtime-monitoring)
  - [Graphy](https://github.com/Tayx94/graphy)
