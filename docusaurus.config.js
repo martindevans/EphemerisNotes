@@ -90,6 +90,10 @@ const config = {
                 label: 'Twitter',
                 href: 'https://twitter.com/martindevans',
               },
+              {
+                label: 'GitHub',
+                href: 'https://github.com/martindevans/EphemerisNotes',
+              }
             ],
           },
         ],
