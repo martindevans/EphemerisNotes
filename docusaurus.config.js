@@ -6,13 +6,13 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Ephemeris: Space Combat Simulator',
+  title: 'Ephemeris Notes',
+  tagline: 'Space Combat Simulator',
   url: 'https://martindevans.github.io',
   baseUrl: '/EphemerisNotes/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/rocket_64.png',
   trailingSlash: true,
 
   // GitHub pages deployment config.
@@ -64,8 +64,8 @@ const config = {
       navbar: {
         title: 'Ephemeris',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: 'Ephemeris Logo',
+          src: 'img/rocket_512.png',
         },
         items: [
           // {
