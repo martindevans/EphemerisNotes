@@ -78,9 +78,17 @@ const config = {
       },
       footer: {
         style: 'dark',
+        //copyright: `Copyright © ${new Date().getFullYear()} Martin Evans`,
+        logo: {
+          alt: 'Github Status',
+          src: 'https://github.com/martindevans/EphemerisNotes/actions/workflows/deploy.yml/badge.svg',
+          href: 'https://github.com/martindevans/EphemerisNotes/actions/workflows/deploy.yml/badge.svg',
+          width: 208,
+          height: 20,
+        },
         links: [
           {
-            title: 'Community',
+            title: 'Social',
             items: [
               {
                 label: 'Discord',
@@ -90,14 +98,18 @@ const config = {
                 label: 'Twitter',
                 href: 'https://twitter.com/martindevans',
               },
+            ],
+          },
+          {
+            title: 'Contribute',
+            items: [
               {
                 label: 'GitHub',
                 href: 'https://github.com/martindevans/EphemerisNotes',
               }
             ],
           },
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} Martin Evans`,
+        ]
       },
       prism: {
         theme: lightCodeTheme,
