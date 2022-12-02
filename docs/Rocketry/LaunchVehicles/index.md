@@ -20,6 +20,12 @@ Wikipedia [list of launch vehicles](https://en.wikipedia.org/wiki/Comparison_of_
 	- [Strela](Strela)
 	- [Volna](Volna)
 	- [Yenisei](Yenisei)
+	- [Shtil](Shtil)
+	- [Soyuz](Soyuz)
+- Europe
+	- [Ariane](Ariane)
+- Spain
+	- [Miura](Miura)
 - China
 	- [LongMarch](LongMarch)
 - Israel
@@ -27,8 +33,6 @@ Wikipedia [list of launch vehicles](https://en.wikipedia.org/wiki/Comparison_of_
 - Japan
 	- [H-IIB](H-IIB)
 	- [H3](H3)
-- Spain
-	- [Miura](Miura)
 - Iran (https://en.wikipedia.org/wiki/Iranian_Space_Agency)
 	- Safir
 	- Simorgh
@@ -46,3 +50,5 @@ Wikipedia [list of launch vehicles](https://en.wikipedia.org/wiki/Comparison_of_
 	- [Unha](Unha)
 - South Korea
 	- [Nuri](Nuri)
+- UK
+	- [Black Arrow](Black%20Arrow)
