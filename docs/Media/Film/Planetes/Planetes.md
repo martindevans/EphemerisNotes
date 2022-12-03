@@ -1,4 +1,5 @@
 ---
+title: Planetes
 tags:
     - media
     - tv

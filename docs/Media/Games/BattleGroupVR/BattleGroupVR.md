@@ -1,4 +1,5 @@
 ---
+title: BattleGroup VR
 tags:
     - media
     - game

@@ -1,4 +1,5 @@
 ---
+title: "Command: Modern Operations"
 tags:
     - media
     - game
