@@ -5,3 +5,5 @@
  - [UniTask: async/await for Unity](https://github.com/Cysharp/UniTask)
  - [Procedural Toolkit](https://github.com/Syomus/ProceduralToolkit)
     - Library of useful code for procgen. e.g. clipper, sdf shaders, noise functions etc
+ - [Real Stars Skybox](https://assetstore.unity.com/packages/2d/textures-materials/sky/starbox-29852)
+    - Uses [Yale Bright Star Catalog](/Webpages/YaleBrightStarCatalog)

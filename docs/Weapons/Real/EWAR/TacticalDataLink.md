@@ -1,5 +1,5 @@
 ---
-title: Tactical Data Link
+title: "Tactical Data Link"
 ---
 
 NATO system for sending and receiving tactical data to coordinate units on the battlefield. For example a ship can fire a missile using targeting data from the radar of a nearby aircraft.
