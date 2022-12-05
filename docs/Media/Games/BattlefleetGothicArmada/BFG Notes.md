@@ -1,0 +1,9 @@
+ - Fleet config screen
+ - Turn based sector map
+ - Earn "renown" by completing missions
+ - Objectives often unclear
+ - Enemy abilities that cannot be countered (e.g. warp ships out)
+ - Not much to do in some battles (set abilites to autocast and watch ships orbit each other)
+ - Battle damage clear (HP bar goes down)
+	 - However not very _interesting_, you're just shooting a red bar
+	 - No visible signs of damage
