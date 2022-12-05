@@ -14,9 +14,9 @@ export default class FloatCalculator extends React.Component {
       distance: distance,
       distanceStr: this.calcDistance(distance),
       scale: scale,
-      precision16: this.calcDistance(this.calcPrecision(n, 10) * scale),
-      precision32: this.calcDistance(this.calcPrecision(n, 23) * scale),
-      precision64: this.calcDistance(this.calcPrecision(n, 52) * scale),
+      precision16: this.calcDistance(this.calcPrecision(n, 10, scale)),
+      precision32: this.calcDistance(this.calcPrecision(n, 23, scale)),
+      precision64: this.calcDistance(this.calcPrecision(n, 52, scale)),
     }
   }
 
@@ -35,12 +35,12 @@ export default class FloatCalculator extends React.Component {
     }
 
     let result = nn[0] * Math.pow(10, +nn[1] - (u - zeroIndex) * 3);
-    return result.toFixed(3) + unitList[u] + "m";
+    return result.toFixed(6) + unitList[u] + "m";
   }
 
-  calcPrecision(number, mantissa) {
+  calcPrecision(number, mantissa, scale) {
     let log2 = Math.log2(number);
-    return Math.pow(2, Math.floor(log2) - mantissa);
+    return Math.pow(2 * scale, Math.floor(log2) - mantissa);
   }
 
   handleChange(event) {

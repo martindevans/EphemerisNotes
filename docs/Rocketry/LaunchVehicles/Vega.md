@@ -1,6 +1,6 @@
 ---
 tags:
-    - Launch Vehicle
+    - "Launch Vehicle"
     - Europe
 ---
 
