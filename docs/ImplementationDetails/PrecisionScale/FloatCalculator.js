@@ -3,7 +3,7 @@ import React from 'react';
 export default class FloatCalculator extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.calcState(42, 1000000);
+    this.state = this.calcState(816.363E9, 1000000);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -33,26 +33,29 @@ export default class FloatCalculator extends React.Component {
     if (u < 0) {
       u = 0;
     }
-    return nn[0] * Math.pow(10, +nn[1] - (u - zeroIndex) * 3) + unitList[u] + "m";
+
+    let result = nn[0] * Math.pow(10, +nn[1] - (u - zeroIndex) * 3);
+    return result.toFixed(3) + unitList[u] + "m";
   }
 
   calcPrecision(number, mantissa) {
     let log2 = Math.log2(number);
-    let range = Math.pow(2, Math.floor(log2));
-    return range / Math.pow(2, mantissa).toLocaleString('fullwide', {useGrouping:false});
+    return Math.pow(2, Math.floor(log2) - mantissa);
   }
 
   handleChange(event) {
     let dist = this.state.distance;
     let scale = this.state.scale;
 
-    if (event.target.name == "distance") {
-      dist = event.target.value;
+    switch (event.target.name) {
+      case "distance":
+        dist = event.target.value;
+        break;
+      case "scale":
+        scale = event.target.value;
+        break;
     }
-    if (event.target.name == "scale") {
-      scale = event.target.value;
-    }
-    
+
     this.setState(
       this.calcState(
         dist,
@@ -64,7 +67,7 @@ export default class FloatCalculator extends React.Component {
   render() {
     return (
       <form>
-        <p>Given a distance (the actual <bold>distance</bold> you want to store) and a scale (sets what the number '1.0' actually represents) calculate the minimum distance that can be represented at that distance.</p>
+        <p>Given a distance (the actual <bold>distance</bold> you want to store) and a scale (sets what the number '1.0' actually represents) calculate the smallest possible distance that can be represented at that distance.</p>
         <p>
           <label for="distance">Distance: </label>
           <input type="number" name="distance" id="distance" step="any" value={this.state.distance} onChange={this.handleChange} />
