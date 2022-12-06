@@ -1,8 +1,8 @@
 ---
 tags:
-    - "Launch Vehicle"
+    - LaunchVehicle
     - USA
-    - "Blue Origin"
+    - BlueOrigin
 ---
 
 https://en.wikipedia.org/wiki/New_Glenn

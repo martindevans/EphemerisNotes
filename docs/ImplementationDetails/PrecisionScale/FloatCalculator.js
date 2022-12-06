@@ -8,9 +8,9 @@ export default class FloatCalculator extends React.Component {
   }
 
   calcState(distance, scale) {
-    let n = distance / scale;
+    let n = BigInt(distance) / BigInt(scale);
     return {
-      value: n,
+      value: Number(n),
       distance: distance,
       distanceStr: this.calcDistance(distance),
       scale: scale,
@@ -23,6 +23,7 @@ export default class FloatCalculator extends React.Component {
   calcDistance(n)
   {
     n = Number(n);
+
     const unitList = ['y', 'z', 'a', 'f', 'p', 'n', 'u', 'm', '', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
     const zeroIndex = 8;
     const nn = n.toExponential(2).split(/e/);
@@ -38,9 +39,18 @@ export default class FloatCalculator extends React.Component {
     return result.toFixed(6) + unitList[u] + "m";
   }
 
-  calcPrecision(number, mantissa, scale) {
-    let log2 = Math.log2(number);
-    return Math.pow(2 * scale, Math.floor(log2) - mantissa);
+  calcPrecision(number, mantissa, scale)
+  {
+    function ilog2(n) {
+      const C1 = BigInt(1)
+      const C2 = BigInt(2)
+      for(var count=0; n>C1; count++) { n = n/C2 }
+      return count
+   }
+
+    let log2 = Number(ilog2(number));
+    console.log(log2 - mantissa)
+    return Math.pow(2 * scale, log2 - mantissa);
   }
 
   handleChange(event) {
