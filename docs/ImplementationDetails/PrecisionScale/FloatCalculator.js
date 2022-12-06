@@ -49,7 +49,6 @@ export default class FloatCalculator extends React.Component {
    }
 
     let log2 = Number(ilog2(number));
-    console.log(log2 - mantissa)
     return Math.pow(2 * scale, log2 - mantissa);
   }
 
