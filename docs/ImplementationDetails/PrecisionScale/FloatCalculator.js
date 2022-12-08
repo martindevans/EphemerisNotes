@@ -3,7 +3,7 @@ import React from 'react';
 export default class FloatCalculator extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.calcState(816.363E9, 1000000);
+    this.state = this.calcState(816356000000, 1);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -14,15 +14,17 @@ export default class FloatCalculator extends React.Component {
       distance: distance,
       distanceStr: this.calcDistance(distance),
       scale: scale,
-      precision16: this.calcDistance(this.calcPrecision(n, 10, scale)),
-      precision32: this.calcDistance(this.calcPrecision(n, 23, scale)),
-      precision64: this.calcDistance(this.calcPrecision(n, 52, scale)),
+      precision32: this.calcDistance(this.calcPrecision32(n) * scale),
+      precision64: this.calcDistance(this.calcPrecision64(n) * scale),
     }
   }
 
   calcDistance(n)
   {
     n = Number(n);
+    if (isNaN(n)) {
+      return "Out Of Range";
+    }
 
     const unitList = ['y', 'z', 'a', 'f', 'p', 'n', 'u', 'm', '', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
     const zeroIndex = 8;
@@ -39,17 +41,30 @@ export default class FloatCalculator extends React.Component {
     return result.toFixed(6) + unitList[u] + "m";
   }
 
-  calcPrecision(number, mantissa, scale)
+  calcPrecision32(number)
   {
-    function ilog2(n) {
-      const C1 = BigInt(1)
-      const C2 = BigInt(2)
-      for(var count=0; n>C1; count++) { n = n/C2 }
-      return count
-   }
+    var value = Number(number);
 
-    let log2 = Number(ilog2(number));
-    return Math.pow(2 * scale, log2 - mantissa);
+    var floatArray = new Float32Array(1);
+    floatArray[0] = value;
+
+    var intArray = new Int32Array(floatArray.buffer);
+    intArray[0]++;
+
+    return (floatArray[0] - value);
+  }
+
+  calcPrecision64(number)
+  {
+    var value = Number(number);
+
+    var floatArray = new Float64Array(1);
+    floatArray[0] = value;
+
+    var intArray = new BigInt64Array(floatArray.buffer);
+    intArray[0]++;
+
+    return (floatArray[0] - value);
   }
 
   handleChange(event) {
@@ -88,7 +103,6 @@ export default class FloatCalculator extends React.Component {
         <ul>
           <li>Distance: {this.state.distanceStr}</li>
           <li>Stored Value: {this.state.value}</li>
-          <li>Half Precision: {this.state.precision16}</li>
           <li>Single Precision: {this.state.precision32}</li>
           <li>Double Precision: {this.state.precision64}</li>
         </ul>

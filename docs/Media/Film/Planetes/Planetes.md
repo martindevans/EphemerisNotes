@@ -14,6 +14,7 @@ Garbage collectors in space. In the future space travel is a normal every-day oc
 
 ### Episodes
  - [S1E1](S1E1)
+ - [S1E2](S1E2)
  - 
 
 ### Notable
