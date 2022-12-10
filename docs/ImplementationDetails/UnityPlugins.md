@@ -8,3 +8,4 @@
  - [Real Stars Skybox](https://assetstore.unity.com/packages/2d/textures-materials/sky/starbox-29852)
     - Uses [Yale Bright Star Catalog](/Webpages/YaleBrightStarCatalog)
 - https://github.com/Unity-Technologies/com.unity.gis.high-precision-framework
+- https://github.com/UnityCommunity/UnityLibrary

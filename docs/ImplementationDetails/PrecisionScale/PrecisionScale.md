@@ -14,7 +14,7 @@ This is a problem even on _much_ smaller scales smaller scales. For example Unit
 
 It is tempting to think that scaling the units in use, for example representing all positions as kilometres instead of metres, will gain back more precision. **This is wrong**.
 
-Scaling the value down by some factor (e.g. 1000) does improved the smallest possible step size, but that step is now measured in larger units and thus has to be scaled up by the same factor. These two operations effectively cancel each other out. You can see this effect in the calculator below; the "scale" setting reduces the scale of the value but increases the scale of the step size.
+Scaling the value down by some factor (e.g. 1000) does improves the smallest possible step size, but that step is now measured in larger units and thus has to be scaled up by the same factor. These two operations effectively cancel each other out. You can see this effect in the calculator below; the "scale" setting reduces the scale of the value but increases the scale of the step size.
 
 ## Calculator
 
