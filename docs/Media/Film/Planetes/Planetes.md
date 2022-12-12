@@ -13,8 +13,8 @@ https://anilist.co/anime/329/Planetes
 Garbage collectors in space. In the future space travel is a normal every-day occurence (like flying on a plane is today), but this has created a serious problem with orbital debris. Story follows the debris collecting section of a corporate space station.
 
 ### Episodes
- - [S1E1](S1E1)
- - [S1E2](S1E2)
+ - [S1E1 - Outside The Atmosphere](S1E1%20-%20Outside%20The%20Atmosphere.md)
+ - [S1E2 - Like A Dream](S1E2%20-%20Like%20A%20Dream.md)
  - 
 
 ### Notable

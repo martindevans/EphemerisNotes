@@ -1,0 +1,30 @@
+ - Opening discusses the serious threat of space debris in 2075.
+ - A pair of astronauts approach a satellite, an experienced astronaut and a rookie.
+ - The rookie gets into a panic and floats off into space, accidentally activating the debris avoidance system inboard the satellite which jets off into the distance.
+ - Opening sequence!
+ - Ai comes to the office just in time to see Hachimaki _almost_ win the lottery.
+ - Fee reveals that Hachimaki hopes to own his own spaceship someday (that's why he plays the lottery).
+ - Hachimaki trains Ai in basic maneuvring using arm mounted thrusters. Making sure to thrust through the center off mass to not induce a spin.
+ - Cheng-shin (a friends of hachimaki) steps in and explains where the human center of mass is. He is a trainee pilot, fully qualified but still only licensed to carry cargo not humans.
+ - Hachimak and Cheng-shin chat in the canteen about the new recruit (Ai).
+ - Montage time!
+	 - Ai and hachimaki capture a damaged solar array floating in space
+	 - People float around in the living quarters (tiny human sized pods of personal space, with a large common area in the middle)
+	 - Toy box moves through space, Ai is seen through the window tumbling (failing to control her spin again)
+	 - A determined looking Ai flys around inside the space station, demonstrating her control to Hachimaki (he doesn't look impressed)
+	 - Life in the office (smoking, paperwork, watching TV)
+	 - Ai manages to fly in a perfectly straight line and stop on the spot. Hachimaki seems happy with training progress.
+ - Hachimaki walks into the canteen to cheers - Cheng-shin has just been licensed for human passengers (as a co-pilot).
+ - Cheng-shin talks about his long term ambition to captain an exploration mission to Jupiter.
+ - As Hachimaki and Ai are training some passing workers tease hachimaki about wanting to buy a spaceship, he starts a fight (and loses).
+ - Flashback to the rookie from the opening sequence losing control. It's Hachimaki during his time as a rookie.
+ - Hachimaki awakes from the flashback, Yuri is floating nearbyand tells him Ai was very worried.
+ - Hachimaki reflects - he knows he can't really buy a spaceship so what's he doing with his life?
+ - Fee delivers a briefing about a difficult piece of debris they are trying to recover. It's an asteroid probe (so it has excellent maneuvring capabilities), it still has fuel and it's on a retrograde orbit. They tried to recover it three years ago but failed... that's the event shown in the opening!
+ - Hachimaki is clearly depressed. Arvind tries to cheer him up with  a lotto ticket, but Hachimaki declares he's done with Lotto.
+ - Ai tries to cheer up Hachimaki in the airlock as they get into their suits, but he snaps at her that he'll never achieve his dream of owning a spaceship.
+ - Cut to Cheng-shin in the cockpit, preparing to depart with a load of passengers.
+ - Cut back to Ai and Hachimaki making a rendezvous with the satellite. Ai makes the same mistake that Hacimaki did three years ago and bumps into the satellite, triggering the avoidance engines. Hachimaki manages to cut the engines but he's onboard the satellite and drifting away from the rest of the team now.
+ - The movement has shifted the satellite on a collision with the shuttle Cheng-shin is piloting!
+ - Hachimaki works to restore the damaged engines and takes control, putting his life at risk to save the shuttle. He's going need to manually pilot the satellite, thrusting through the center off mass for the burn to work properly.
+ - After successfully evading the shuttle Yuri and Ai come over in the wishbone to rescue Hachimaki.

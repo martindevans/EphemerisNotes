@@ -7,10 +7,10 @@
 	- Philippe Myers - debris section chief clerk
 	- Arvind "Robbie" Lavie - debris section assistant clerk
 	- Edelgard Rivera - debris section secretary handling paperwork
-- Toybox is dispatched to collect a piece of debris, a commemorative plate celebrating peave in "Mananga", and to drop it into the atmosphere to burn up
-- Navigation displays shows the ships intercepting the plate and performing a retro burn to drop it
-- Toybox deploys a smaller ship (just a seat, open frame and an engine) to rendezvous with the debris
-- An argument ensues about destroying the plate (a symbol of peace) just to save the satellite it's on a collision course with (a military spy satellite)
-- Hackimaki attaches a small thruster to the plate
-- Debris section deliberately delay the de-orbit burn to send it down in a beautiful light show over "Mananga"
+- Toybox is dispatched to collect a piece of debris, a commemorative plate celebrating peace in "Mananga", and to drop it into the atmosphere to burn up.
+- Navigation displays shows the ships intercepting the plate and performing a retro burn to drop it.
+- Toybox deploys a wishbone (a tiny ship with just a seat, open frame and an engine) to rendezvous with the debris.
+- An argument ensues about destroying the plate (a symbol of peace) just to save the satellite it's on a collision course with (a military spy satellite).
+- Hachimaki attaches a small thruster to the plate.
+- Debris section deliberately delay the de-orbit burn to send it down in a beautiful light show over "Mananga".
 - Or maybe it was just to earn overtime ;)
