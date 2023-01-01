@@ -1,3 +1,3 @@
  - [Gateway Spaceport LLC](https://www.youtube.com/watch?v=mKYFOu0KX64)
  - [Spacedock](https://www.youtube.com/@Spacedock)
- - 
+ - [Scott Manley](https://www.youtube.com/watch?v=WVrWcbyOmxY)

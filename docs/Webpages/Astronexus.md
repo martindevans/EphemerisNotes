@@ -1,0 +1,1 @@
+Star catalogue: http://astronexus.com/hyg

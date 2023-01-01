@@ -9,3 +9,4 @@
     - Uses [Yale Bright Star Catalog](/Webpages/YaleBrightStarCatalog)
 - https://github.com/Unity-Technologies/com.unity.gis.high-precision-framework
 - https://github.com/UnityCommunity/UnityLibrary
+- https://github.com/Antoshidza/NSprites (ECS Sprites)
