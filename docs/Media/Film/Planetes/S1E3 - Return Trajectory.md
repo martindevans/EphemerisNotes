@@ -1,0 +1,10 @@
+- Opening scene shows the garbage collection team office banter interrupted by a space life insurance salesman. Critical for astronaurs working a dangerous job!
+- Since working in space is so dangerous the company policy requires that all employess write a last will and testament.
+- Tanabe struggles to write her last will and testament. Wheras Hachimaki has written something silly.
+- Ai and Hachimaki argue while collecting debris. Hachimaki doesn't want to talk about his family situation.
+- The debris team collect the coffin of a long dead astronaut, "buried in space". Back before space burials were banned due to the debris issue.
+- Control contact the next of kin (his daughter, an elderly lady herself). She says that he was a distant father, always off flying spaceplanes. Eventually the cosmic radiation killed him not long after he retired.
+- She requests that he be reburied in space. Fee says they can do that by shipping his body to the moon and shooting him wel out of Earth orbit using the lunar mass driver.
+- Tanabe reacts angrily, saying that he must be returned to Earth to his family. She suits up and takes the coffin. She insists that the dead astronaut came back to Earth (which was astronomically unlikely) because he regretted his decision to be buried in space.
+- While hachimaki and Tanabe are arguing Yuri spots a picture of the wife and daughter floating inside the coffin. Upon seeing this the daughter changes her mind and requests that the body is shipped back to Earth for a burial.
+- Back in the office Tanabe is buried in all the paperwork required to ship a body to Earth.
