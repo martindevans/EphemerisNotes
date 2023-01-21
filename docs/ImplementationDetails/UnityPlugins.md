@@ -10,3 +10,9 @@
 - https://github.com/Unity-Technologies/com.unity.gis.high-precision-framework
 - https://github.com/UnityCommunity/UnityLibrary
 - https://github.com/Antoshidza/NSprites (ECS Sprites)
+
+## UI
+- https://github.com/infobeisel/AnyUI (map UI to any shape surface)
+- https://assetstore.unity.com/packages/tools/gui/sci-fi-menu-ui-150744 (Sci Fi menu pack)
+- https://assetstore.unity.com/packages/tools/gui/3d-modern-menu-ui-116144 (modern UI menu pack)
+- https://assetstore.unity.com/packages/tools/gui/modern-procedural-ui-kit-163041 (procedural UI kit)
