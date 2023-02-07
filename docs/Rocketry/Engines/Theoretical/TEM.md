@@ -1,8 +1,9 @@
 ---
 tags:
-    - "Rocket Engine"
-    - "Keldysh Research Center"
-    - "Nuclear Electric"
+    - RocketEngine
+    - KeldyshResearchCenter
+    - NuclearElectric
+    - NuclearPropulsion
     - LH2
 ---
 

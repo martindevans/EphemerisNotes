@@ -48,7 +48,6 @@ $$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
 In our case:
 
 $$f(E) = E - e * sin(E) - M$$
-
 $$f'(E) = 1 - e * cos(E)$$
 
 Implementing this in code:

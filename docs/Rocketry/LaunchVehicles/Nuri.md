@@ -1,7 +1,7 @@
 ---
 tags:
     - LaunchVehicle
-    - "South Korea"
+    - "SouthKorea"
 ---
 
 https://en.wikipedia.org/wiki/Nuri_(rocket)
