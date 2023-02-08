@@ -10,6 +10,8 @@
 - https://github.com/Unity-Technologies/com.unity.gis.high-precision-framework
 - https://github.com/UnityCommunity/UnityLibrary
 - https://github.com/Antoshidza/NSprites (ECS Sprites)
+- https://github.com/michidk/Unity-Script-Collection
+	- Huge collection of utilities
 
 ## UI
 - https://github.com/infobeisel/AnyUI (map UI to any shape surface)
