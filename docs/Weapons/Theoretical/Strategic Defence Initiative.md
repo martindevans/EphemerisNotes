@@ -1,1 +1,3 @@
-https://en.wikipedia.org/wiki/Strategic_Defense_Initiative
+ - https://en.wikipedia.org/wiki/Strategic_Defense_Initiative
+ - https://www.youtube.com/watch?v=ntLc4hHWqHs
+ - https://en.wikipedia.org/wiki/Polyus_(spacecraft)
