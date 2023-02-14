@@ -58,7 +58,7 @@ def solve_kepler(M, e):
 	E = initial_guess(M, e) # Make an initial guess
 	delta = 10000
 
-	while (err > 0.001): # exit once refinement process isn't doing much
+	while (delta > 0.001): # exit once refinement process isn't doing much
 		e1 = E - f(E) / (1 - e * cos(E)) # refine the guess
 		delta = abs(e1 - E) # calculate how much the guess has improved
 		E = e1
