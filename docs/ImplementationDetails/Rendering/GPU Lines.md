@@ -16,3 +16,8 @@ GPU
 	 - [General geometry shader tutorial](https://gamedevbill.com/unity-vertex-shader-and-geometry-shader-tutorial/)
  - https://web.archive.org/web/20150930205745/http://sebastien.hillaire.free.fr/index.php?option=com_content&view=article&id=54&Itemid=56
  - https://web.archive.org/web/20111202022753/http://sebastien.hillaire.free.fr/index.php?option=com_content&view=article&id=57&Itemid=74
+
+LineRenderer
+Do we render line with the LineRenderer!?
+ - Shader can smoothly cut out pixels based on elapsed time
+ - Displays blocks of data, trimmed by shader to exact positions
