@@ -17,7 +17,28 @@ GPU
  - https://web.archive.org/web/20150930205745/http://sebastien.hillaire.free.fr/index.php?option=com_content&view=article&id=54&Itemid=56
  - https://web.archive.org/web/20111202022753/http://sebastien.hillaire.free.fr/index.php?option=com_content&view=article&id=57&Itemid=74
 
+Investigate more:
+ - https://mattdesl.svbtle.com/drawing-lines-is-hard
+	 - Send mesh to GPU
+	 - Push to width in vertex shader (constant screen width)
+
 LineRenderer
 Do we render line with the LineRenderer!?
  - Shader can smoothly cut out pixels based on elapsed time
  - Displays blocks of data, trimmed by shader to exact positions
+
+## Final?
+1. Generate line mesh
+	- Scripted Importer to generate mesh (`MeshData` API)
+2. Pass position/timestamp in computer buffer
+	- Position/timestamp in float64 (straight from sim)
+3. In vertex shader
+	- Read position
+	- Convert to smaller scale (and then convert into single precision)
+	- Clamp to near/far plane
+		- https://www.vertexfragment.com/ramblings/unity-prevent-object-culling/
+	- Generate tangent frames from change in position
+	- Apply offset from mesh vertex to position
+6. In pixel shader
+	- clip out pixels with timestep < now
+	- clip out vertices which have no timestamp data at all (past end of time)
