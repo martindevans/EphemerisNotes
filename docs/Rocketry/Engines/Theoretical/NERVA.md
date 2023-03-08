@@ -8,6 +8,7 @@ tags:
 ---
 
  - https://en.wikipedia.org/wiki/NERVA
+ - https://en.wikipedia.org/wiki/Pulsed_nuclear_thermal_rocket
 
 Development news:
  - https://www.nasa.gov/press-release/nasa-darpa-will-test-nuclear-engine-for-future-mars-missions
