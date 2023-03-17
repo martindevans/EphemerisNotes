@@ -1,3 +1,9 @@
+---
+tags:
+    - TechnicalDetails
+    - OrbitalMechanics
+---
+
 In [orbital mechanics](https://en.wikipedia.org/wiki/Orbital_mechanics "Orbital mechanics"), [Kepler's equation](https://en.wikipedia.org/wiki/Kepler%27s_equation) relates various geometric properties of the orbit of a body subject to a [central force](https://en.wikipedia.org/wiki/Central_force "Central force"). This can be used to calculate the position of a body (relative to the central body) at any time, without having to iteratively integrate acceleration and velocity over time.
 
 In Ephemeris all gravity sources (planets, moon etc) are kept to Kepler orbits, only free floating items (spaceships, satellites, missiles etc) are plotted step-by-step.

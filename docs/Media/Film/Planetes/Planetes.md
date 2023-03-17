@@ -15,7 +15,9 @@ Garbage collectors in space. In the future space travel is a normal every-day oc
 ### Episodes
  - [S1E1 - Outside The Atmosphere](S1E1%20-%20Outside%20The%20Atmosphere.md)
  - [S1E2 - Like A Dream](S1E2%20-%20Like%20A%20Dream.md)
- - 
+ - [S1E3 - Return Trajectory](S1E3%20-%20Return%20Trajectory.md)
+ - [S1E4 - Part Of The Job](S1E4%20-%20Part%20Of%20The%20Job.md)
+ - ...
 
 ### Notable
- - Story has a major change (introduction of debris collection laws) introduced by a very public disaster. Good way to introduce a large change into a story.
+ - Story has a major change (introduction of debris collection laws) introduced by a very public disaster (debris destroys civilian passenger space plane). Good way to introduce a large change into a story.

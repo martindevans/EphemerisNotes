@@ -4,5 +4,9 @@
  - [Unity Netcode For Gameobjects](https://docs-multiplayer.unity3d.com/netcode/current/about)
  - Custom
 	 - [Steamworks](https://steamworks.github.io/)
-	 - Epic Game Services
-	 - Lidgren
+		 - Requires Steam
+	 - [Epic Game Services](https://dev.epicgames.com/en-US/services)
+		 - Does **not** require epic store
+	 - [Lidgren](https://github.com/lidgren/lidgren-network-gen3)
+		 - No longer developed
+	 - [LiteNetLib](https://github.com/RevenantX/LiteNetLib)

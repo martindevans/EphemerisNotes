@@ -1,5 +1,8 @@
 ---
 title: Precision & Scale
+tags:
+    - TechnicalDetails
+---
 ---
 
 import FloatCalculator from '@site/docs/ImplementationDetails/PrecisionScale/FloatCalculator';

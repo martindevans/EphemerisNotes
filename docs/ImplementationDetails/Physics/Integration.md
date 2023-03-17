@@ -1,5 +1,9 @@
 ---
 title: Integration
+tags:
+    - TechnicalDetails
+    - OrbitalMechanics
+---
 ---
 
 In Ephemeris we start out with the acceleration acting on a body (calclulated from the nearby gravity sources) and need to calculate the velocity and then the position. This process is called **Integration**.
