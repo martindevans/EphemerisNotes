@@ -222,3 +222,55 @@ float4 frag(v2f i) : SV_Target
 ```
 
 Remember that the "burn" and "timestamp" data will be _interpolated_ between vertices. This means each pixel has a perfect measure of the time it is at, so we can clip out pixels that occur before now. Burn data is not quite perfect if there is a burn between two vertices, but this should never occur because the acceleration involved means that the orbit line will curve more at that point which naturally leads to more vertices.
+
+## Bonus Round: Stencils
+Back at the start of the article I showed this image as the final goal:
+![](Images/Unity_2023-03-17_16-56-31.png)
+
+There's one aspect of this we haven't addressed yet; around the "marker" (some kind of UI element marking a significant thing) the line is cut out. This isn't critically important, but it is nice to have.
+
+This is achieved using the [stencil buffer](https://docs.unity3d.com/Manual/SL-Stencil.html). The stencil buffer is an 8-bit buffer which is checked for every pixel, the pixel is only rendered if it passes the stencil check, it can be used to cutout pixels or to mark an area for rendering later.
+
+As you can see here the marker sphere is surrounded by a larger sphere which is preventing the orbit line from being rendered:
+![](Images/Unity_2023-03-19_15-18-40.png)
+
+This is the shader for that outer sphere:
+```clike
+Shader "Custom/DrawStencilOnly"
+{
+    SubShader
+    {
+        Tags { "Queue" = "Geometry-1" }
+
+        ColorMask 0
+        ZWrite Off
+        
+        Stencil {
+            Ref 1
+            Pass Replace
+        }
+
+        Pass {}
+    }
+}
+```
+
+Note that there is no HLSL here! Everything is done in the [ShaderLab](https://docs.unity3d.com/Manual/SL-Reference.html) configuration.
+
+Setting the `"Queue"` to `"Geometry-1"` causes this object to be rendered immediately before the normal geometry queue. This is important because we need the stencil buffer populated before the otehr geometry (including the orbit line) tries to read it.
+
+Setting the `ColorMask 0` means that no colour channels will be written by this shader, which means the sphere will be completely invisible.
+
+Settings `ZWrite Off` means that the larger sphere does not occlude things which are further away (if it did that the marker sphere would be invisible).
+
+The `Stencil` block configures the stencil to write the reference value (`1`) into the stencil buffer wherever the stencil check passes for this shader. The default is pass `Always`, so this will write 1 everywhere that the shader covers.
+
+Once all of this in place all that is needed it so add this to the orbit line shader:
+```clike
+Stencil {
+	Ref 1
+	Comp Greater
+}
+```
+
+This means that the orbit line is rendered where the reference value (`1`) is `greater` than the stencil buffer value. The stencil is 0 everywhere, except where markers have set it to 1.
