@@ -1,5 +1,5 @@
 ---
-title: Line Rendering
+title: GPU Line Rendering
 tags:
     - TechnicalDetails
     - Rendering
@@ -46,6 +46,7 @@ While working on line rendering I came across several other approaches for rende
 ## Approach 1: Pure GPU
 My first approach to solving this problem was intended as a "pure GPU" solution:
 1. Dump the orbital position data straight from the sim into a `ComputeBuffer`
+	1. It's not always as simple as just taking the entire sim data! See [Part 2](CPULines.md) for detail.
 2. Run a compute shader to create vertices along the line - adding extra vertices to interpolate the data.
 3. Draw line-strip vertices
 4. In geometry shader, emit new vertices to make the line wider (constant screen size).

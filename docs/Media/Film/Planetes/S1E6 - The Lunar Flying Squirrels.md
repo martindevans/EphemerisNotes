@@ -1,0 +1,14 @@
+ - Fee, Hackimaki and Tanabe have arrived at the lunar spaceport. The city is built into the ground, underneath the spaceport.
+ - Fee visits Technora 3rd division to discuss some administrative matters and meets an old friend. They talk about Dolf (administrator back at the space station) and how they both knew him in the past.
+ - Hachimaki and Tanabe walk through the lowest level of the city to find their accomodation. It's essentially a slum, badly maintained and still half under construction.
+ - The accomodation is full of weirdos, a ninja attacks them and they run.
+ - Hachimaki calls back to the section chief (who rented the room) to complain. Every time he finishes talking there's a long delay (lightspeed delay). The chief reminds him he has an appointment but is interrupted.
+ - The weirdos from the apartment catch up to them and interrupt the call. A chase ensues that ends up in a construction site, Hachimaki is buried in heavy construction materail and they co-operate to dig him out. Ending the fight.
+ - As they walk back to the apartment various people tell at the weirdos, telling them to pay their bill for laundry, or get a job etc. It's clear they're not employed or even have any money.
+ - Hachimaki finally makes it to his appointment (very late), it turns out to be an arranged date/matchmaking.
+ - Cut to Tanabe getting acquainted with the weirdos. They moved here on tourist visas, can't afford rent, just about get by on on odd jobs. As they're talking a fire alarm goes off, the hotel (where Hachimaki is) is engulfed in flame!
+ - As they gather around by the hotel the ninja notices a man and calls out to him. It's his ex-father in law. Turns out the woman hachimaki is meeting is his ex-wife! The FIL set up a matchmaking to make sure she has a "better" husband this time.
+ - The weirdos head into the burning building together to rescue his ex-wife.
+ - Hachimaki rigs together an oxygen generator (using fertilizer from the flower arrangements and calcium peroxide), they use it to get through the densest smoke. After that they bump into the ninjas.
+ - The way back is blocked, so they create a parachute and leap out of a window. It's only 1/6G so even a bad parachute will slow them enough.
+ - Cut to the hospital, where they all have broken arms and legs. Even in 1/6G landings hurt!

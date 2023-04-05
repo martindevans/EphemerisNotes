@@ -1,0 +1,16 @@
+- Opening voiceover (by Hachimaki) talks about how humans are not designed to live in space. An astronaut must watch their diet, exercise, live in cramped spaces and work hard. All while being exposed to high levels of cosmic radiation.
+- The moon is often used as a place for astronauts to recover, with some gravity and open space but without going all the way down on Earth.
+- The others come to visit hachimaki, who is recovering in the hospital. As they're talking an older man interrupts and says that young astronauts have it easy etc etc. He's called away by an announcement and they recognise his name (Harry Roland) as that of a famous old astronaut who explored the asteroid belt.
+- Hachimaki talks to a girl (Nono) who is looking up at the Earth through a window. She's interested in the Oceans. She says she's been on the moon for 12 years which Hachimaki is surprised by (she must have some terrible disease to be stuck recovering on the moon for 12 years, he assumes).
+- Tanabe brings Hachimaki an Apple at te hospital. It's a huge Apple because it was grown in the low-gra and high radiation environment of the moon. Harry Roland explains that there's 100x as much radiation exposure on the moon as on Earth and that space is the best place for an astronaut to die.
+- Late at night Hachimaki bumps into Nono in the common area and talks about Earth some more.
+- Next day Tanabe arrives to see hachimaki and Nono playing Cheat (the card game). She seems dejected and leaves quickly.
+- Harry Roland comes out of a Doctors office, it looks like he's received some bad news.
+- Doctors run around looking for Harry, he's disappeared. Cut to him out on the surface in a space suit.
+- Hachimaki leaves the hospital, saying goodbye to Nono on the way out. He's about to ask what disease she has that's kept her on the moon, but doesn't.
+- Fee and Hachimaki drive along a Lunar highway (outdoors, with a vacuum sealed car). As they're driving they spot a figure in a spacesuit leaning up against a rock!
+- Fee and hachimaki get out to check on him, it's Harry! he has severe nitrogen breathing issues and is suffering decompression sickness. Odd for a veteran astronaut.
+- As they're debating how to rescue him Harry asks to be left there, it's his time to go. He has Leukemia due to being in space for 20 years.
+- Cue to Hachimaki and Fee back at the hospital (presumably after reporting Harry's death). Nono hears them talking and invites Hachimaki to join her on a secret lunar spacewalk. As they're talking Nono remind Hachimaki she's only 12 years old and he finally realises she's been here her whole life, she's a Lunarian (one of the only 4).
+- Since she's grown up in low gravity her bones and muscles won't develop properly. She may never be able to visit Earth and see the oceans she loves to talk about so much. But that's ok, the moon is her home and the vast open regolith plains are her ocean.
+- Hachimaki, Fee and Tanabe meet up on a liner, returning to Earth orbit. Back to work!

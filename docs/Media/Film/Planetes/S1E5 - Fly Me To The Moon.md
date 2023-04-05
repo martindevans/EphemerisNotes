@@ -1,0 +1,13 @@
+ - Fee, Hackimaki and Tanabe are onboard a liner going to the moon. All the windows are covered with radiation shields with retract once they clear the van allen belt.
+ - Tanabe gets her wallet stolen (although she thinks it was just lost for now)
+ - Cut to two people discussing how terrible their situation is (they borrowed money off the mafia to pay for equipment, but the business went under ebcause space resources are much more abundant and cheaper).
+ - Hachimaki interrupts a movie being filmed in the cargo hold. hachimaki steps in to replace the actor he injured. Tanabe interrupts and punches Hachimaki.
+ - Fee reports them to security, since they're clearly not allowed to be filming onboard.
+ - Tanabe and Hachimaki help the two people search for their daughter (Sia) who has gone missing. As the parents search as well a man bumps into them (and pickpockets their wallet).
+ - Tanabe finds Sia hiding in an escape pod and talks to her about how cool space is. The family return to their cabin.
+ - Back at the cabin they try to get Sia to take some "medicine", they're going to commit suicide together. But they've lost the pills, the pickpocket stole them!
+ - Security try to arrest the pickpocket, but he runs away.
+ - Pickpocket takes Sia hostage in the lounge to keep security at bay.
+ - The pilots set up for a high-G roll of the entire liner.
+ - The parents argue with the pickpocket about how valuable Sia is, and internally realise they shouldn't have tried to kill themselves (and her).
+ - As the craft rolls everyone falls to the floor, Hachimaki (who was prewarned) is ready and grabs the pickpocket as he falls to the floor.
