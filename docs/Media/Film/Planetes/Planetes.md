@@ -20,6 +20,8 @@ Garbage collectors in space. In the future space travel is a normal every-day oc
  - [S1E5 - Fly Me To The Moon](S1E5%20-%20Fly%20Me%20To%20The%20Moon.md)
  - [S1E6 - The Lunar Flying Squirrels](S1E6%20-%20The%20Lunar%20Flying%20Squirrels.md)
  - [S1E7 - Extraterrestrial Girl](S1E7%20-%20Extraterrestrial%20Girl.md)
+ - [S1E8 - A Place To Cling To](S1E8%20-%20A%20Place%20To%20Cling%20To.md)
+ - [S1E9 - Regrets](S1E9%20-%20Regrets.md)
  - ...
 
 ### Notable

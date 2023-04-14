@@ -1,0 +1,20 @@
+ - Hachimaki and Tanabe are in space, Hachimaki uses hands signals to tell Tanabe to move to a private channel. He asks if she's seeing anyone. As she's thinking about how to answer an OSA cruiser turns up (some kind of space police?).
+ - An astronaut comes out of the spaceship straight towards Hachimaki and stops right in front of him (clearly an elite astronaut) and opens his faceplate. Hachimaki recognises him as his old teacher!
+ - He's Gigalt Gungulgash, member of the "Orbital Security Agency", he's here to conduct security training with the debris section. It turns out everyone knows him, since he used to work at the debris section before Tanabe joined.
+ - Cheng-shin turns down an invite to a date. He says he doesn't have a girlfriend but there is someone he's interested in (Tanabe).
+ - Montage of Gigalt putting the debris section through intense training (check equipment, dress a spacesuit in double time, memorise the position of the sun etc).
+ - Hachimaki talks to Tanabe about how he had an accident on his very first spacewalk and was terrified of space. But it was Gigalt that talked him back into it, and Gigalt means a lot to him.
+ - Tanabe brings up the question from earlier, and says she isn't seeing anyone. Hachimaki doesn't really respond...
+ - Gigalt talks about how Roland (the legendary astronaut who died in [episode 7](S1E7%20-%20Extraterrestrial%20Girl.md)) was his sensei. Fee breaks the news to him that Roland died last month.
+ - Debris section have a welcome party for Gigalt. Although it's so delayed it's now a farewell party! Everyone except Tanabe gets totally smashed.
+ - Gigalt asks Hachimaki how his relationship is with Claire. Tanabe is very shocked to hear that Hachimaki is dating someone, and relieved to hear that they broke up.
+ - Next morning Tanabe meets Gigalt at the Toybox, prepping for a mission. Hachimaki is off fetching his hachimaki. Gigalt says it's like a "switch" for him, putting on the headband puts him in the right frame of mind to work seriously.
+ - Tanabe asks why Gigalt nicknamed Claire "Swan". He says it's because swans look elegant but their legs are going like crazy underwater - and Claire pushes herself too hard to climb the corporate ladder.
+ - As the Toybox closes on the debris Fee picks up heat sources from the Debris. This seems to be another team deliberately _dumping_ waste in space. They can't just throw it overboard (it'd be detected right away) so instead they attach it to another known piece of debris to mask it. They use the arm to dock the Toybox to the other ship, locking it in place until the OSA can arrive.
+ - The debris dumpers try to cut off the toybox arm, but it's going to take a while because Toybox is so old that the arm is very tick and overbuilt. Hachimaki and Gigalt head out to slow them down.
+ - Fee uses the Toybox to push the two ships along towards the OSA ship to speed things up.
+ - Outside Gigalt saves Hachimaki from a ram attack by blowing his thrusters at the other guy, top push him back. But they hit him and knock him off into space with a damaged thruster. Gigalt smashes the thruster, but he's a long way from the two ships and drifting further.
+ - Just as Gigalt seems to be surrendering to his fate Tanabe rescues him using a wishbone.
+ - The debris dumpers break away from Toybox, and close in to murder Hachimaki. But it's too late! An OSA cruiser intercepts and clamps on to them.
+ - The OSA commander, Hakim Ashmead, introduces himself to Hachimaki. He's a student of Gigalt too.
+ - Gigalt nicknames Tanabe "Angel". As they discussing that he coughs up blood and reveals that he has Leukemia (just like his old teacher, Roland). He asks her to keep it a secret.

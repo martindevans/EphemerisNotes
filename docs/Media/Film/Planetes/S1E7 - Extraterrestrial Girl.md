@@ -2,7 +2,7 @@
 - The moon is often used as a place for astronauts to recover, with some gravity and open space but without going all the way down on Earth.
 - The others come to visit hachimaki, who is recovering in the hospital. As they're talking an older man interrupts and says that young astronauts have it easy etc etc. He's called away by an announcement and they recognise his name (Harry Roland) as that of a famous old astronaut who explored the asteroid belt.
 - Hachimaki talks to a girl (Nono) who is looking up at the Earth through a window. She's interested in the Oceans. She says she's been on the moon for 12 years which Hachimaki is surprised by (she must have some terrible disease to be stuck recovering on the moon for 12 years, he assumes).
-- Tanabe brings Hachimaki an Apple at te hospital. It's a huge Apple because it was grown in the low-gra and high radiation environment of the moon. Harry Roland explains that there's 100x as much radiation exposure on the moon as on Earth and that space is the best place for an astronaut to die.
+- Tanabe brings Hachimaki an Apple at the hospital. It's a huge Apple because it was grown in the low-gra and high radiation environment of the moon. Harry Roland explains that there's 100x as much radiation exposure on the moon as on Earth and that space is the best place for an astronaut to die.
 - Late at night Hachimaki bumps into Nono in the common area and talks about Earth some more.
 - Next day Tanabe arrives to see hachimaki and Nono playing Cheat (the card game). She seems dejected and leaves quickly.
 - Harry Roland comes out of a Doctors office, it looks like he's received some bad news.
