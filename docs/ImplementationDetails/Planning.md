@@ -10,5 +10,10 @@
 	 - [x] Persistent Settings
 		 - [x] ~~Graphics Settings~~
 	 - [ ] Modding
+ - [ ] Solar System Data
+	 - [ ] Fix data for some Jovian moons
+	 - [ ] Load into scene
+	 - [ ] Asset paths
+	 - [ ] axial tilt baked in prefab, or loaded from data?
 
 Tiny Solar System?
