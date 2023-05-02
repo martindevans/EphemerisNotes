@@ -12,8 +12,12 @@
 	 - [ ] Modding
  - [ ] Solar System Data
 	 - [ ] Fix data for some Jovian moons
-	 - [ ] Load into scene
-	 - [ ] Asset paths
-	 - [ ] axial tilt baked in prefab, or loaded from data?
+	 - [x] Load into scene
+	 - [x] Asset paths
+	 - [x] axial tilt
+		 - [x] Loaded from data
+	 - [ ] planet rotation
+		 - [ ] Loaded from data
+		 - [ ] Synced to global clock
 
 Tiny Solar System?
