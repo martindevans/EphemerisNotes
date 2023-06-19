@@ -135,6 +135,7 @@ RK4 is not energy preserving, which would normally eliminate it from considerati
 The [Runge-Kutta-Fehlberg method](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta%E2%80%93Fehlberg_method) (aka RKF-45) is a 4th order integrator with a 5th order error estimator, step size is automatically determined based on the estimated error. This means that the integator can take very large steps (e.g. several **minutes**) in open space and slows down to preserve accuracy in more complex environments (e.g. close approach to a planet).
 
 Some references on adaptive timesteps for RK methods:
+ - https://maths.cnam.fr/IMG/pdf/RungeKuttaFehlbergProof.pdf
  - https://stackoverflow.com/questions/67043427/how-to-perform-adaptive-step-size-using-runge-kutta-fourth-order-matlab
  - https://people.computing.clemson.edu/~dhouse/courses/817/papers/adaptive-h-c16-2.pdf
  - https://fncbook.github.io/fnc/ivp/adaptive.html#equation-adaptrkglobal
