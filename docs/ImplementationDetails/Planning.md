@@ -2,6 +2,8 @@
  - [x] [Kepler integration](Physics/Kepler.md)
  - [ ] Map view camera
 	 - [ ] Orbit rendering
+		 - [x] Kepler
+		 - [ ] NBody
 	 - [ ] Orbit picking
  - [ ] Ship view camera
 	 - [ ] Planet/Ship camera tricks
@@ -16,8 +18,8 @@
 	 - [x] Asset paths
 	 - [x] axial tilt
 		 - [x] Loaded from data
-	 - [ ] planet rotation
-		 - [ ] Loaded from data
-		 - [ ] Synced to global clock
+	 - [x] planet rotation
+		 - [x] Loaded from data
+		 - [x] Synced to global clock
 
 Tiny Solar System?
