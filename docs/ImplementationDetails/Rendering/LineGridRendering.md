@@ -1,5 +1,5 @@
 ---
-title: Line Grid Renfering
+title: Line Grid Rendering
 tags:
     - TechnicalDetails
     - Rendering
