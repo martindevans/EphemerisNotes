@@ -9,7 +9,7 @@ tags:
 
 Ephemeris has an "infinite" grid which acts as a reference to help understand the position of things within 3D space. This reference plane should have lines as thin as possible (1 pixel) without suffering from aliasing at any angle or distance.
 
-![](Images/ReferencePlane.jpg)
+![](ImplementationDetails/Rendering/Images/ReferencePlane.jpg)
 
 ## What Is Aliasing?
 In signal processing [aliasing](https://en.wikipedia.org/wiki/Aliasing) occurs when the signal has a higher frequency than the sample rate of a sensor measuring that signal. In graphics this manifests in two ways: temporal aliasing (the image changes faster than 60 fps) and spatial aliasing (there are details in the image smaller than 1 pixel).
@@ -50,7 +50,7 @@ else
 
 However, as discussed above this looks terrible due to aliasing. There is no single `WIDTH` value that looks good at all distances.
 
-![](Images/ReferencePlaneAliased1.png)
+![](ImplementationDetails/Rendering/Images/ReferencePlaneAliased1.png)
 
 The width could be dynamically selected, such that it is always 1 pixel wide. The best way to do this is to measure the change in the position from one pixel to the next and to constrain the width to that value.
 
@@ -64,7 +64,7 @@ float width = max(ddx(i.uv.x) + ddy(i.uv.y));
 
 However, this ends up with lines that are too wide in the distance. Scaling the width down by any factor results in aliasing at certain distances.
 
-![](ReferencePlaneTooWide.png)
+![](ImplementationDetails/Rendering/Images/ReferencePlaneTooWide.png)
 
 There are various other tricks for antialiasing 2D signed distance fields, for example you can find more [documented here](https://drewcassidy.me/2020/06/26/sdf-antialiasing/). However I found that none of these techniques worked well for single pixel lines.
 
@@ -137,7 +137,7 @@ float4 frag(v2f i) : SV_Target
 
 Finally this looks pretty good, except for the hard cut off in the distance (at the camera far plane):
 
-![](ReferencePlaneSharp.png)
+![](ImplementationDetails/Rendering/Images/ReferencePlaneSharp.png)
 
 Adding in distance based fading gets us the nice soft fadeout in the distance instead, which also gives the illusion that the lines are getting even thinner in the distance:
 
