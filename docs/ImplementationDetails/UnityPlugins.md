@@ -22,7 +22,7 @@
 - [Outline Highlighter](https://github.com/Arvtesh/UnityFx.Outline)
 - [Outline Effect](https://github.com/cakeslice/Outline-Effect)
 - [Real Stars Skybox](https://assetstore.unity.com/packages/2d/textures-materials/sky/starbox-29852)
-	- Uses [Yale Bright Star Catalog](/Webpages/YaleBrightStarCatalog)
+	- [Uses Yale](Webpages/StarCatalogue)
 - https://github.com/UnityCommunity/UnityLibrary
 	- Has some [shaders](https://github.com/UnityCommunity/UnityLibrary/tree/master/Assets/Shaders/3D)
 - https://github.com/ogxd/grid-shader-unity

@@ -1,0 +1,2 @@
+ - [Astronexus](http://astronexus.com/hyg)
+ - [Yale Bright Star Catalogue](http://tdc-www.harvard.edu/catalogs/bsc5.html)
