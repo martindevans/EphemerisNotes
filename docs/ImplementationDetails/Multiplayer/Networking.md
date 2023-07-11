@@ -8,7 +8,7 @@ tags:
 - All objects are on "rails" which can be sampled at points in time.
 	- Planets are on [[Kepler]] rails. They can be sampled at any point in time just by solving Keplers equation.
 	- Ships/Missiles are N-Body-ish - they are pulled by everything that's on a Kepler rail but not by each other.
-		- These rails must be [integrated](/Integration) step by step.
+		- These rails must be [integrated](../Physics/Integration.md) step by step.
 - Types of objects:
 	- Planets/Moons (Kepler)
 	- Missiles (N-Body)
