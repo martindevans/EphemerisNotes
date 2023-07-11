@@ -1,0 +1,24 @@
+ - Toybox deploys for ISPV-7. In the cockpit Fee asks Tanabe if she had a fight with Hachimaki, Tanabe denies it but not very convincingly.
+ - Hachimaki chats to Yuri about bad rations. Yuri seems distracted and stares out into space. While moving Hachimaki bumps into some flowers and damages them without noticing, Yuri looks saddened.
+ - Back in the office Lavie scolds Yuri for not using any vacation days at all for the past 5 years!
+ - Yuri receives a delivery of live carnations and says he's thinking of putting them in Toybox.
+ - Cheng-shen and Hachimaki are talking, Hachi says he doesn't understand Chen-shin's taste in women (because Cheng-shin is interested in Tanabe). Cheng-shin says he likes how straight forward she is at tackling problems head on. As they're chatting Hachi comments that she has been acting strangely recently, subdued.
+ - Tanabe practices equipping a space suit solo, she manages to break the 10 minute mark. Flashback to Gigalt who helped train her, but she discovered is dying from cancer in [the previous episode](S1E9 - Regrets). She's keeping it secret from everyone as he requested.
+ - Yuri is searching through a list of debris that has been collected, another colleague gives him a disk with more records on it. Yuri continues searching...
+ - Out at work in space the team collect a large debris field piece by piece that has collected all together in one spot. Tanabe seems a bit distracted, and when Hachimaki mentions Gigalt in passing she panics and accidentally scatters the debris with her thruster backwash.
+ - Back on Toybox Hachimaki chews out Tanabe, accidents can kill in space easily and she needs to be focused on the job. Tanabe tries to defend herself but can't say anything without giving away the secret, so interrupts herself.
+ - Late at night Yuri comes to put one of the carnations in the Toybox and discovers Tanabe there, hiding from everyone. Tanabe asks Yuri what it's like to lose someone you look up to. Yuri replies that carrying around secrets is a difficult thing, but when you lose someone there's no sadness and grief just emptiness.
+ - Just as Tanabe and Yuri are leaving Toybox Hachimaki spots them, he assumes Yuri has been teaching Tanabe and is angry at them both. He storms off saying he's a terrible teacher anyway! While he's angry he lays into Yuri, asking what he's been hiding and why he's searching all those debris records? He storms off before Yuri can answer.
+ - While Edel and Hachimaki are chatting Edel comments that white carnations (like the type Yuri has) mean "my love still endures".
+ - Down in records Yuri continues searching. Flashback time:
+	 - A passenger space liner cruises through space, just like the one in the opening credits.
+	 - Yuri and his wife are onboard, she has a compass as a necklace/good luck charm.
+	 - He comments that suborbital airlines are so common these days it's unusual for her to be afraid of them. he goes off to get them some coffee.
+	 - She settles down and looks out the window to see a twinkling light... camera zooms to reveal it's a single screw tumbling through space. Just like the opening credits!
+	 - The screw smashes into a window, killing everyone in the forward passenger section. Yuri survives because he was in the aft getting coffee.
+ - Philippe babbles on to Tanabe about marriage, marriage meetings, divorces etc. He mentions that even Yuri used to be married, which catches her attention (and Hachimaki listens in too). Philippe reveals the entire story with the Alnair-8 liner accident.
+ - Back out in space this time it's Hachimaki spacing out, as he stares at Yuri and thinks about what he heard.
+ - Fee calls the team back to Toybox, there's a cloud of micro debris heading for them. Tanabe and Hachimaki head back, but Yuri is looking at something and paying no attention - it's the compass! Yuri reaches for the compass but the cloud of micro debris hits him and knocks the wishbone away, pulling him out of reach of the compass.
+ - The wishbone was knocked so far off course it begins to tumble into the atmosphere (pulling down Yuri, who is unconscious). Tanabe and Hachimaki follow in the other wishbone.
+ - Yuri wakes up to find himself being dragged by Tanabe back up out of the atmosphere. And he has the compass in his hand!
+ - Later the team watch as Yuri leaves on single carnation in orbit, as a memorial for his wife. Technically creating more debris, but no one on the team is going to report him!
