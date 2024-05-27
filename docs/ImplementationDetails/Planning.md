@@ -3,8 +3,8 @@
  - [ ] Map view camera
 	 - [ ] Orbit rendering
 		 - [x] Kepler
-		 - [ ] NBody
-	 - [ ] Orbit picking
+		 - [x] NBody
+	 - [x] Orbit picking
  - [ ] Ship view camera
 	 - [ ] Planet/Ship camera tricks
  - [ ] [Multiplayer](./Multiplayer/Frameworks.md)

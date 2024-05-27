@@ -10,3 +10,6 @@
 	 - [Lidgren](https://github.com/lidgren/lidgren-network-gen3)
 		 - No longer developed
 	 - [LiteNetLib](https://github.com/RevenantX/LiteNetLib)
+	 - [KCP](https://github.com/Cysharp/KcpTransport)
+	 - [ENET C#](https://github.com/nxrighthere/ENet-CSharp)
+	 - [System.Net.QUIC](https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/quic/quic-overview)
