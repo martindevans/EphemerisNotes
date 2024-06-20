@@ -11,5 +11,9 @@
 		 - No longer developed
 	 - [LiteNetLib](https://github.com/RevenantX/LiteNetLib)
 	 - [KCP](https://github.com/Cysharp/KcpTransport)
+		 - Alpha
+		 - .NET8+ only
 	 - [ENET C#](https://github.com/nxrighthere/ENet-CSharp)
+		 - Low level c-style API
 	 - [System.Net.QUIC](https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/quic/quic-overview)
+		 - .NET8+ only
