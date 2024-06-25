@@ -1,2 +1,1 @@
- - https://github.com/ThinkDualBrain/Protomolecule
- - https://fontesk.com/d-din-pro-typeface/
+ - [D-DIN Pro](https://fontesk.com/d-din-pro-typeface/) ![[d_din_pro-1.jpg]]
