@@ -4,6 +4,6 @@ sidebar_position: 0
 title: Ephemeris
 ---
 
-Ephemeris is an (in-development) simulator of realistic near-future space warfare.
+Ephemeris is a simulator of realistic near-future space warfare. Currently in development.
 
-This site is a collection of notes related to the project - space, rocketry, combat and science fiction.
+This site is a collection of notes related to the project - game development, space, rocketry, combat and science fiction.
