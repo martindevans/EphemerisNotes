@@ -71,3 +71,16 @@
 - Further optimisations and improvements to `Myriad.ECS` parallel queries
 	- Main thread steals work when waiting, very slight speedup
 	- Catching and collecting exceptions from all parallel workers, instead of deadlocking when an exception is throw.
+## Thursday 11th
+- Clean up of `Myriad.ECS` threading.
+	- Considering how to refactor the new system to have a configurable threadpool, such that Unity jobs can act as the backend.
+- Refactoring prototype symbol drawing system
+	- Support for symbols on different layers
+	- Grab data from ECS for rendering
+## Friday 12th
+- Added `ChunkHandle` to `Myriad.ECS` chunk queries. This allows querying of chunk level properties.
+	- Updated various projects after breaking `Myriad.ECS` change
+- Experimented with putting instanced symbols into scene on layers
+- Started work on overlays - flipbook animated textures added over the top of the base icon
+## Saturday 13th
+- More work on flipbook overlay

@@ -146,6 +146,6 @@ private static (BezierCurve, BezierCurve) Split(float3 a, float3 b, float3 c, fl
 }
 ```
 
-This can be used to split the triangles into smaller triangles, reducing the overdraw. In this exampe the two triangles are adjusted so that they overlap, which hides artefacts around the join:
+This can be used to split the triangles into smaller triangles, reducing the overdraw. In this example the two triangles are adjusted so that they overlap, which hides artefacts around the join:
 
 ![Split Triangles](Images/Unity_2023-09-04_23-49-55.png)

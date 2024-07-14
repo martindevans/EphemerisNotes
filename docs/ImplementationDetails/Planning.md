@@ -1,10 +1,10 @@
- - [ ] Map view camera
-	 - [ ] Orbit rendering
+ - [x] Map view camera
+	 - [x] Orbit rendering
 		 - [x] Kepler
 		 - [x] NBody
 	 - [x] Orbit picking
- - [ ] Ship view camera
-	 - [ ] Planet/Ship camera tricks
+ - [x] Ship view camera
+	 - [x] Planet/Ship camera tricks
  - [ ] [Multiplayer](./Multiplayer/Frameworks.md)
  - [ ] Solar System Data
 	 - [ ] Fix data for some Jovian moons
