@@ -1,3 +1,9 @@
+---
+tags:
+  - devlog
+  - OrbitalMechanics
+  - Rendering
+---
 ## Monday 1st
 - Created "base" scene which contains the various necessary things to make up a scene
 	- Skybox config (galaxy)
@@ -84,3 +90,71 @@
 - Started work on overlays - flipbook animated textures added over the top of the base icon
 ## Saturday 13th
 - More work on flipbook overlay
+## Monday 14th
+- Tidied up symbol rendering code
+- Added a default component renderer to Myriad Unity integration, requiring less custom editors to be written for simple components.
+- Created systems to copy position between layers as necessary
+- Added symbols to `Astronomical` layer for ships
+- Tested close flying ships in small view (close enough to see the 3d model of the other ship)
+- Fixed Kepler body line rendering using the wrong camera for LOD
+	- Slightly increased max point count for Kepler lines
+- Built prototype script for steering spacecraft using keyboard, testing out rail invalidation and recalculation
+	- Unsurprisingly, this complex and largely untested system is broken!
+	- Fixed up page epochs in the relative rail
+	- Discovered the root bug - invalidation of the rail needs to _discard_ the results on in-flight integration job when it finishes!
+## Tuesday 15th
+- Discarding integrator data if the rail epoch has changed while the job/task was running
+	- Two remaining issues to fix:
+		- `RelativePagedRail` `BoundingSphere` calculation (part of nbody line picking) is sometimes trying to write out of bounds
+		- Entity jumps position when a burn is scheduled/cancelled
+- Debugging why nbody line picking isn't working
+	- Rewriting nbody picking to use a simpler picking system (simple linear scan, instead of recursive). This fixes the index out of bounds issue.
+	- Ray appears to be in the wrong space (needs to be relative to the origin to move back into world space)
+- Debugging entity jumping
+	- There are two jumps:
+		- A single frame jump to a position
+		- A persistent offset for the entire duration of the burn
+	- Investigating single frame jump
+		- Sampling the rail fails because two points are required (one either side of the sample time) but because the rail has been trimmed down to end at _now_ there's no point after now!
+		- Added extrapolation to rail sampler, if two points cannot be found it uses the last known good point and extrapolates. This seems to fix the one frame jump.
+	- Investigating shift
+		- Probably caused by linear interpolation of a non-linear curve. i.e. the sample is some way into an acceleration (changing velocity) but the sampler is linear (assuming constant velocity)
+## Wednesday 17th
+- Exported some orbital data from live sim, experimenting with it in Python
+- Some possible fixes
+	- Better interpolation, sticking closer to ground truth so the skip is smaller
+		- Run an integrator every frame (but lower precision) and re-sync with rails smoothly
+		- Fit a curve to the rail points (e.g. bezier) and interpolate along that
+	- "Fixup" step
+		- Detect when the rail is modified in the section that interpolation is currently sampling, run an explicit fixup step - interpolate from the last predicted position (even though it's wrong) to the next rail point, then interpolate as usual
+## Thursday 18th
+- Began some work prototyping a new orbit rail sampler, which detects discontinuities.
+- Removed "catch-up" mode in integrator - the current implementation can leave large "holes" in the rail since the catch-up work is not added to the rail
+	- Modified rail trimming to reset delta time back to min value, it'll rapidly go back up if it needs to.
+- Prototyping cubic bezier interpolation between points, that helps a lot! There's still some drift since cubic bezier is not a perfect approximation.
+- Built out a stateful sampler:
+	- Extrapolation phase - best guess when there's no available rail data
+	- Interpolation phase - when there's rail data, using cubic bezier
+	- Reconciliation phase - when there's rail data but we just recently finished extrapolating. In this case continue extrapolating _and_ interpolating, and slowly interpolate from one to the other. Lasts 30-60 frames.
+- Noticed that the spacecraft act differently depending upon if the rail was invalidated or not. **Even if there's no actual change**! Definitely a bug in how invalidation is done, or how recalculation is done.
+## Monday 22nd
+- Setup a test project to develop integrator interpolation
+- Integrated the same point forward, but using randomised timesteps, then compared distance between interpolated points
+- Tested 3 methods:
+	- Linear - terrible
+	- Bezier - also terrible but it's smoother, so a slight improvement over linear. Still has just as much error though.
+	- Kinematic - amazing, 30x less error. Also should be smooth. Assumes constant acceleration so not technically correct and still just an approximation.
+- Implementing kinematic interpolation in Ephemeris main project, problem seems to be completely fixed!
+## Tuesday 23rd
+- Removed "catch up" mode from `RailIntegrator` - running integration work on main thread when an entity is behind. Extrapolation mode in the sampler handles this now.
+- Added an event the integrator can send when entities are falling behind.
+- Tested the (very rough) keyboard controller script, movement now seems to be smooth with no jitter or weird drifting.
+## Wednesday 24th
+- Investigating why `NBodyOrbitLine` renderer picking is broken (it was broken a while ago when switching the camera system).
+	- Camera ray values coming from Unity seem to be completely wrong. Not attached to mouse, offset is dependent on resolution.
+	- [`Event.Current.mousePosition`](https://docs.unity3d.com/ScriptReference/Event-mousePosition.html) seems to be the wrong scale, using [`Input.mousePosition`](https://docs.unity3d.com/ScriptReference/Input-mousePosition.html) fixes it.
+	- Need to offset things by the transform position of the line renderer, to account for the camera being attached to a different thing to what the line is relative to.
+- Optimised nbody orbit picking
+	- Normalizing ray ahead of time, so distance calculations can just use `1.0`.
+	- Replaced many divides in sphere tests with a single `1/x` and using multiplies later.
+	- Placed a soft limit on the number of points returned.

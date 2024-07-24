@@ -1,3 +1,9 @@
+---
+tags:
+  - devlog
+  - Multiplayer
+  - Rendering
+---
 ## Monday 17th
  - Blender
 	 - Exporting to Unity

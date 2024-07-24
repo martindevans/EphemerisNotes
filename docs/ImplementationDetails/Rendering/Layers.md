@@ -15,7 +15,7 @@ In this mode you're focusing on planets, orbits etc - this is the "strategic" vi
 	 - Renders layers: `Astronomical Object`, `Astronomical Overlay`
  - `Small Camera`:
 	 - Disabled
-#### Final Layers
+#### Astronomical Mode Layers
 - `Astronomical Object`
 - `Astronomical Overlay`
 ### Ship Mode
@@ -27,7 +27,7 @@ In this mode you're focused on one single small object (ship, station, maybe ast
 - `Small Camera`
 	- Renders layers: `Small Object`, `Small Overlay`
 
-#### Final Layers
+#### Ship Mode Layers
 - `Astronomical Object`
 - `Small Object`
 - `Small Overlay`
