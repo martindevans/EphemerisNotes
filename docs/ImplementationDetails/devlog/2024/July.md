@@ -158,3 +158,38 @@ tags:
 	- Normalizing ray ahead of time, so distance calculations can just use `1.0`.
 	- Replaced many divides in sphere tests with a single `1/x` and using multiplies later.
 	- Placed a soft limit on the number of points returned.
+	- Considered using ray/cylinder tests, these are more expensive to evaluate but will have a tighter fit. Not implemented, it's fast enough at the moment with the soft limit preventing edge cases getting too extreme.
+## Thursday 25th
+- Experimenting with importing Decal Machine decals from Blender to Unity
+- Experimenting with settings (audio, graphics, sim fidelity etc)
+- Cleaned up some experimental scripts (migrated most of them to the main scripts folder)
+- Began updating `RailIntegrator` to stop integrating when an orbit intersects a Kepler body
+- Added collision detection to integrator - rails which impact a Kepler body are terminated and not integrated further.
+## Friday 26th
+- Deleting an entity when it reaches the end of it's orbit
+- Creating an symbol at the impact point of an orbit
+- Updating `Myriad.ECS` to have basic relationship support
+- Debugging symbol not appearing where it should
+## Sunday 28th
+- Updated `Myriad.ECS` to have proper disposable component support, auto disposing any `IDisposableComponent` when it is destroyed.
+- Updated Ephemeris to new `Myriad.ECS` version, this exposed a bug in the integrator which was not properly disposing jobs and thus leaked memory.
+## Monday 29th
+ - Tweaked postprocessing colour curves to make dark side of planets darker (but not as extreme as ACES, which wipes out half of the skybox).
+ - Tweak Luna material to have more close-in detail (normals as well as albedo)
+ - Added a stack of objects which the camera focuses on. When the camera focus object is destroyed it transitions to the previous objects on the stack.
+	 - Not quite a stack:
+		 - Only keeps the top-most instance of a thing
+		 - Dead items are removed from the stack
+		 - There is a max size, removes oldest objects when exceeded
+ - Updated systems that used phantom components to use disposable components where applicable
+ - Improved some orbital elements for Saturnian moons
+ - Imported ISS to replace boring test sphere
+	 - Worked out out to export textures from blender
+ - Improved shadow quality
+## Tuesday 30th
+- Working on FUI for docking sim
+- Updated `MyriadUnityIntegration` package
+## Wednesday 31st
+- Finding some SFX to use for thrusters
+- Setting up basic SFX playback in demo scene
+- Designing more FUI for docking sim
