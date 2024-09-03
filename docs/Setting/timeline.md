@@ -13,7 +13,8 @@ title: "Future Timeline"
  - 2024: [Hera](https://en.wikipedia.org/wiki/Hera_(space_mission)) space probe (ESA) launches
  - 2024: [DESTINY+](https://en.wikipedia.org/wiki/DESTINY%2B) space probe (JAXA) launches
  - 2024: [Europa Clipper](https://en.wikipedia.org/wiki/Europa_Clipper) space probe (NASA) launches
- - 2024, Mar: [Starship](https://en.wikipedia.org/wiki/SpaceX_Starship) vehicle (SpaceX) test flight 3.
+ - 2024, Mar: [[Starship]] vehicle (SpaceX) test flight 3.
+ - 2024, Jun: [[Starship]] vehicle (SpaceX) test flight 4
  - 2024, July: [Gaganyaan](https://en.wikipedia.org/wiki/Gaganyaan) crew capsule (ISRO) launches unmanned test flight
  - 2024, Nov: [VIPER](https://en.wikipedia.org/wiki/VIPER_(rover)) rover (NASA) lands on the Moon
  - 2024, Dec: [Gaganyaan](https://en.wikipedia.org/wiki/Gaganyaan) crew capsule (ISRO) launches unmanned test flight

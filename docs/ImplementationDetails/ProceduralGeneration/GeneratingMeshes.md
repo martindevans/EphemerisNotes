@@ -48,7 +48,7 @@ var vp = mesh.GetVertexData<Vector3>(0); // Use the same stream index as above
 vp.CopyFrom(vertices.ToArray());
 ```
 
-Now we need to choose if the index buffer will use 16 bir or 32 bit indices. It's better to use 16 bit if possible (consumes less memory). It's easy to automatically use the smaller format when possible with this boilerplate:
+Now we need to choose if the index buffer will use 16 bit or 32 bit indices. It's better to use 16 bit if possible (consumes less memory). It's easy to automatically use the smaller format when possible with this boilerplate:
 ```csharp
 if (indices.Any(i => i > ushort.MaxValue))
 {

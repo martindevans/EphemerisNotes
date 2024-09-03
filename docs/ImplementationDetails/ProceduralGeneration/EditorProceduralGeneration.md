@@ -6,7 +6,7 @@ tags:
 
 To procedurally generate content in the editor a [Scripted Importer](https://docs.unity3d.com/Manual/ScriptedImporters.html) is useful.
 
-The parameters of the generation can be stored in JSON format in a file with a unique file extension. For example `*.procline` for prcedurally generated lines:
+The parameters of the generation can be stored in JSON format in a file with a unique file extension. For example `*.procline` for procedurally generated lines:
 ```json
 {
 	"vertices": 512
