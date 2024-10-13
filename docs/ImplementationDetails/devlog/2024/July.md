@@ -3,6 +3,7 @@ tags:
   - devlog
   - OrbitalMechanics
   - Rendering
+sidebar_position: 7
 ---
 ## Monday 1st
 - Created "base" scene which contains the various necessary things to make up a scene

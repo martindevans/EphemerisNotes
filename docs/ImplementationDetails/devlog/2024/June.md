@@ -3,6 +3,7 @@ tags:
   - devlog
   - Multiplayer
   - Rendering
+sidebar_position: 6
 ---
 ## Monday 17th
  - Blender

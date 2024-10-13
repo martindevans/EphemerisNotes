@@ -4,6 +4,7 @@ tags:
   - DockingSim
   - PhysicsEngine
   - TechnicalDetails
+sidebar_position: 9
 ---
 **Participated in the 2024 Cylon GameJam for all of September up to the 24th.**
 ## Tuesday 24th
