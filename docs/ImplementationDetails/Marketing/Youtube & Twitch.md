@@ -1,0 +1,4 @@
+- https://oriolcosp.com/how-to-find-relevant-streamers-and-youtubers-for-your-game/
+- https://www.reddit.com/r/gamedev/comments/17t83yd/how_i_got_streamers_and_youtubers_to_play_my_demo/
+- https://oriolcosp.com/how-much-should-you-pay-streamers-to-play-your-game/
+- https://oriolcosp.com/how-to-email-streamers-to-get-your-game-covered/

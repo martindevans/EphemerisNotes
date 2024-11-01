@@ -7,10 +7,15 @@
 	- Huge collection of utilities
  - https://github.com/Unity-Technologies/com.unity.gis.high-precision-framework
 	- Pretty barebones :(
+- [Hot Reload](https://assetstore.unity.com/packages/tools/utilities/hot-reload-edit-code-without-compiling-254358)
+	- Used this in game jam, it was great for rapid development and debugging
 
 ## Debugging
  - [Runtime Introspection/Monitoring](https://github.com/JohnBaracuda/com.baracuda.runtime-monitoring)
  - [Graphy](https://github.com/Tayx94/graphy)
+## Audio
+- [Master Audio](https://assetstore.unity.com/packages/tools/audio/master-audio-2024-aaa-sound-287785)
+- [Sonity](https://assetstore.unity.com/packages/tools/audio/sonity-audio-middleware-229857)
 
 ## UI
 - https://github.com/infobeisel/AnyUI (map UI to any shape surface)
@@ -29,3 +34,5 @@
 	- Grid shader
 - https://github.com/Antoshidza/NSprites
 	- ECS Sprites
+## Dependency Injection
+- https://github.com/gustavopsantos/Reflex
