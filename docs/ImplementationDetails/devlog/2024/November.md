@@ -2,7 +2,7 @@
 tags:
   - devlog
   - TechnicalDetails
-sidebar_position: 10
+sidebar_position: 11
 ---
 ## Friday 1st
 - Finished off developing FUI dropdown menu
