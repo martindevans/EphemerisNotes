@@ -6,7 +6,10 @@ tags:
   - TechnicalDetails
 sidebar_position: 9
 ---
-**Participated in the 2024 Cylon GameJam for all of September up to the 24th.**
+
+## Sunday 1st
+- **Participated in the 2024 Cylon GameJam for all of September up to the 24th.**
+
 ## Tuesday 24th
 - Expanding out jitter dynamics scene in Ephemeris project
 - Debugging torque in jitter
