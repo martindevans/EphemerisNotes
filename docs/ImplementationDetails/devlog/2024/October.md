@@ -2,6 +2,8 @@
 tags:
   - devlog
   - TechnicalDetails
+  - DockingSim
+  - OrbitalMechanics
 sidebar_position: 10
 ---
 ## Tuesday 1st
