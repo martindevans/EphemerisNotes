@@ -4,16 +4,12 @@ tags:
     - TechnicalDetails
     - OrbitalMechanics
 ---
----
 
-In Ephemeris we start out with the acceleration acting on a body (calclulated from the nearby gravity sources) and need to calculate the velocity and then the position. This process is called **Integration**.
+In Ephemeris we start out with the acceleration acting on a body (calculated from the nearby gravity sources) and need to calculate the velocity and then the position. This process is called **Integration**. There are many choices of integration system, with many trade-offs.
 
-There are many choices of integration system, with many tradeoffs.
+## Glossary
 
-## Equations Of Motion
-
-This section is a very brief refresher on the equations of motion and some of the notation used.
-
+In this article, I will use the following symbols:
  - `a` = acceleration
  - `v` = velocity
  - `x` = position
@@ -21,6 +17,9 @@ This section is a very brief refresher on the equations of motion and some of th
  - `dv` = change in velocity
  - `dx` = change in position
  - `dt` = change in time
+ - `s` = position
+ - `u` = initial velocity
+ - `Acceleration(x)` = Acceleration at position `x` (e.g. calculate the gravity from all planets at this point)
 
 Acceleration is a measure of how much the velocity changed ($$dv$$) over some amount of time ($$dt$$):
 
@@ -60,7 +59,7 @@ The problem with this method is that it assumes nothing changes over the timesta
 
 We can calculate the position of an object under constant acceleration **exactly** using the [equations of motion](https://en.wikipedia.org/wiki/Equations_of_motion):
 
-$$s=ut+0.5at^2$$
+ - $$s=ut+0.5at^2$$
 
 So let's compare just about bad this is. Assuming initial velocity (`u`) is `10`, acceleration (`a`) is 1 and timestep (`dt`) is 1:
 
