@@ -1,0 +1,1 @@
+[Antimatter annihilation radiation](https://en.wikipedia.org/wiki/Annihilation_radiation) emits (mostly) 511keV photons.

@@ -1,0 +1,323 @@
+---
+tags:
+  - devlog
+  - Multiplayer
+sidebar_position: 1
+---
+
+## Saturday 4th
+- Swept collision test prototypes
+	- https://www.gamedeveloper.com/game-platforms/simple-intersection-tests-for-games
+	- sphere/sphere
+## Monday 6th
+- Updating packages
+- Fixing some project rot:
+	- [x] Settings handlers calling `get_persistentDataPath` in static initializer
+	- [x] background of UI panel is not initialised
+	- [x] Sol is not loading
+		- Seriously how did this ever work?
+- Investigating up-sampling settings (Unity STP)
+- Enabling [GPU resident drawer](https://docs.unity3d.com/6000.0/Documentation/Manual/urp/gpu-resident-drawer.html)
+- Updated [Sonity](https://assetstore.unity.com/packages/tools/audio/sonity-audio-middleware-229857)
+	- Fixed some build errors in new version
+- Imported [Mirror](https://assetstore.unity.com/packages/tools/network/mirror-129321)
+- Constructed a quick menu (host/join/exit)
+- Installed [Multiplayer Play Mode](https://docs.unity3d.com/Packages/com.unity.multiplayer.playmode@1.4/manual/index.html)
+- Created menu flow
+	- menu -> lobby -> gameplay
+- Lobby sync stuff
+	- Creating a UI "card" for each player in a way that supports late joining
+- Things not spawning on clients
+	- Maybe something to do with ready states?
+	- It was something to do with ready states.
+- Setup `BasicAuthenticator` with username/password
+	- Only using password for lobbies
+## Tuesday 7th
+- Working player metadata (initially names)
+- Working out why VS debugger won't attach
+	- Or it attaches, but breakpoints don't work
+	- This has been an intermittent problem for a while
+	- `Refresh` action fixed it this time
+- Back to names for players
+	- Saving name
+	- Splitting out to separate component, general pattern for player metadata in lobby
+		- Can't use generics in a load of places related to Mirror, making factoring out a generic data object impossible. This may become a problem...
+	- Refactored again in separate parts
+		- Lobby Data Object
+			- Contains the actual data, and the SyncVar/RPC/Commands necessary to sync it
+			- One per player, separate component for each bit of data
+		- Lobby UI Panel
+			- One per player
+			- Component for each "data binding", two way binding reads and writes to the networked data object
+			- Top level components which walks the tree, telling each component to setup bindings
+## Wednesday 8th
+- Split data objects into base classes (can't make it generic, so I have to duplicate it one per type).
+- Added `BaseLobbyPlayerBooleanData` and `LobbyPlayerReadyData`
+- Creating UI elements for ready indicator
+- Setting up host start button to disable itself until everyone is ready
+- Setup bindings for collections of objects
+	- Used this to show number of ready players on start button
+- Modifying player list UI ready for teams
+- Discussed naming on Discord
+	- There's another game named Ephemeris: [https://store.steampowered.com/app/3179370/Ephemeris/](https://store.steampowered.com/app/3179370/Ephemeris/ "https://store.steampowered.com/app/3179370/Ephemeris/")
+	- Discussion with some ideas starts [here](https://discord.com/channels/983527753196388383/983527753846521920/1326671744010031154)
+- Refactored various network utility behaviours into more atomic behaviours and relocated them into main project
+- Removed mostly useless `sender` parameter from UI event stuff
+## Thursday 9th
+- Refactoring lobby player data into more general lobby data
+- Designing new player list UI which supports teams
+- Syncing team data
+- Binding team data to UI
+	- Showing name
+	- Showing max count per team
+	- Showing empty slots
+	- Changing team list when a scenario is selected
+- Added test scenarios
+- Showing scenario name in lobby UI
+## Friday 10th
+- Removed scenario test code
+- Added description field to scenarios
+- Fixed some network events being invoked twice on the host
+- Moving players cards into team panels
+- Experimenting with another team panel UI design
+	- Reverted
+- Removed concept of team slots, it's a lot of unnecessary UI complexity
+- Adding buttons to empty slots to join teams
+- Moving players between teams when button is clicked
+	- Fixing empty slot (de)spawning as players move teams
+- Moving players to team zero and clearing ready state when changing scenario
+- Playtest
+	- Can't connect remotely
+	- Testing with another port and a VPN
+	- Checking release vs development build stuff
+	- [x] Implement lobby team player count
+	- Move unassigned players list somewhere else to prevent UI moving around
+		- Just the end of the list instead of the start
+		- Separate panel for unassigned/spectators
+	- [x] Fix remote connections
+- Impromptu docking sim v2 playtest
+	- Rendering issues, mostly skybox flickering (possible due to VA screen?)
+## Saturday 11th
+- Testing multiplayer connectivity on LAN
+- Fixed connectivity (probably)
+- Possible issue with cards not despawning when players disconnect
+- Investigated Steamworks transport backend for Mirror
+	- https://github.com/Chykary/FizzySteamworks
+	- Installed [Steamworks.NET](https://github.com/rlabrecque/Steamworks.NET?tab=readme-ov-file)
+	- Seems to work pretty seamlessly, but it won't work for local testing. Going to need a quick way to swap them automatically
+## Monday 13th
+- todo:
+	- [ ] Test connection with KCP
+		- [ ] Internet
+	- [x] Test connection with Steamworks
+		- [ ] LAN
+		- [x] Internet
+	- [x] Investigate cards despawning when players leave lobby
+	- [x] Develop a convenient way to swap KCP and Steamworks backends
+		- For now just drag and drop the one you want
+		- I definitely won't forget to do this and waste 10 minutes debugging it in the future
+	- [x] Move spectators list to bottom
+	- [x] Move join button to team title bar
+	- [x] Remove join button from empty slots
+	- [x] Add ability to kick players
+	- [x] Host validate team assignments
+		- General framework for host logic applied to lobby metadata
+	- Added scenario primary and secondary colours
+	- Showing scenario description in lobby
+	- [x] Remote player can't join last team (off by one in server validation?)
+## Tuesday 14th
+- Investigating details of Mirror scene loading
+- Added a UI element to switch network backends
+- Syncing all scenario settings, storing them in scene data so they're accessible in the gameplay scene
+- Setting up a script which reads scenario data and configures scene loading scripts
+	- [ ] Make this send a message to the host when ready
+	- Configuring solar system loader based on scenario
+- Removed audio listeners in all planet content scenes, prevents warning about multi listeners during loading
+- Added other game scene stuff (camera rig, postprocessing volume, symbol renderer)
+- Started building loading overlay (blocking view of game until loading is complete)
+- Sketched out some scripts for the networked loading process
+	- Also ensuring this process can work without a server, so I can load the scene directly for testing in editor
+## Wednesday 15th
+- Syncing player data from server to clients
+	- Consider refactoring this into an ECS system later
+- Setting player to ready as soon as the game scene is loaded (even before planets are streamed in)
+- Investigating using `Resources`/`StreamingResources` to store campaign/scenario files
+- Working out a data format for campaigns and scenarios
+- Debugging scene objects not spawning in game scene
+	- Need to request a player object before doing things in scene
+	- Spawning an empty player object
+- Building out more scenario serialization format
+	- Rapidly remembering why XML sucks to use
+	- Fiddling with XML serialisation of colours
+- todo:
+	- [ ] Add some way to select ship/fleet on lobby UI
+	- [ ] Send selected ship/fleet info to host
+	- [x] Block loading process until all clients have loaded planets
+		- [x] Freeze sim time while this is happening
+	- [ ] Load ships/fleets once every client has loaded solar system
+	- [x] Send message back to host to start time
+		- Leave sim time frozen, players can use the normal time management UI to unfreeze when they want
+## Thursday 16th
+- Investigating `System.Text.Json` for Unity
+- [`Unity.Serialization`](https://docs.unity3d.com/Packages/com.unity.serialization@3.1/manual/index.html) is an option
+- [`Json.NET`](https://www.newtonsoft.com/json) is the classic dotnet JSON package, still very popular
+	- Looks like it's already in my project due to some other package pulling it in!
+	- Unity maintain a package for it: https://docs.unity3d.com/Packages/com.unity.nuget.newtonsoft-json@2.0/manual/index.html
+	- Rewritten XML stuff to use JSON
+	- Custom converter for colours<->hex code
+- Modified lobby to use scenarios loaded from file
+- Building UI for time speed controller
+	- Showing:
+		- Current time
+		- Pause
+		- Button for each speed
+- Binding time display text in ECS, experimenting with how to drive UI in ECS paradigm
+- Updated `Myriad.ECS` to return query count from delegate queries, consistent with all other query types.
+- Working out a rough data model for representing remote players in the ECS
+	- Need this to store time speed requests somewhere, so I can query them in the UI bindings
+- Building system for setting tooltip to list of players requesting this speed
+## Friday 17th
+- [x] Make time-speed buttons prefabs
+	- [x] Link up popup on hover for buttons
+- [ ] Actually do multiplayer time management
+- Moving some bits of code from the temporary multiplayer test scene to more permanent locations
+- Rewritten UI data binding to manually walk the hierarchy, avoiding any allocations
+- Work on Myriad/Myriad integration to build some utilities
+	- `GenericDisposable`
+	- Shared CommandBuffer
+	- `CommandBuffer.Clear()`
+	- `CommandBuffer` pooling
+- Started building behaviour to create an entity representing remote players (needed for binding into UI, which is all done through ECS)
+## Saturday 18th
+- Updated `Myriad.ECS` package in main project
+- Added option to enable "auto destruct" (i.e. destroy GO when entity is destroyed)
+- Added optional reverse destruct (i.e. destroy entity when GO is destroyed)
+- Binding UI with autodestruct both ways
+- Binding player objects with autodestruct one way (GO -> entity)
+- Using tagged disposable to store UI event bindings in ECS
+## Sunday 19th
+- Building a better entity/GameObject destruct system, with a flags enum determining mode
+- Discovered a bug in Myriad, leaving entities in an invalid state if a phantom entity is modified and deleted in the same command
+- Fixed that bug
+## Monday 20th
+- Updated Myriad/Unity binding package to use the version with the bugfix
+- Added some basic stats to the inspector which could help track down similar issues in the future
+- Fixed some other minor inspector bugs
+- Fixed issue with skybox reflections on smooth surfaces (e.g. Earth water)
+- Debugging issues in docking sim caused by new binding stuff
+	- Systems aren't running because setup isn't finished
+	- Setup isn't finished because it's waiting for the binding system to do something
+	- Fixed by moving binding system to a separate group that is always running, even before setup is complete
+- Cleaned up `MyriadEntity` binding (storing less redundant things, returning a nullable which integrates better with C# nullability checking)
+- Fixed breakage in main project from those changes
+- Improved planet loading - all planet objects are deactivated in their respective scenes and are only activated once loading is complete
+- Fixed broken skybox reflections on water (reflection map data was baked at some point)
+- Made a start on time sync systems (finding the minimum request across all players)
+- Updated `Space Graphics Toolkit`
+## Tuesday 21st
+- Worked out general flows of user inputs to game actions through network
+- Started implementing that for time sync system
+- Implemented inspector for `EventBusService` listing all event buses
+## Wednesday 22nd
+- Hooking up the CMD/RPC flow for time speed requests
+- Spawning player data entities in game scene
+- Time speed requests work
+- Tweaking time speed UI slightly
+	- Different colours for local and remote requests
+	- List of players requesting the speed (shown on hover) also shows the time speed for that button
+- Cleaning up ready status/player spawn logic
+## Thursday 23rd
+- Improved Map/Reduce queries in Myriad.ECS
+- Considering how to apply CPU backpressure to time speed requests
+	- As integration rails get shorter (below some limit), time should slow down to allow the integrator to catch up
+	- When a rail gets too short (less than 30 seconds at the current playback speed) time speed is set to 1x
+	- Added an indicator to the UI when a time speed request is coming from a backpressure override
+## Friday 24th
+- Adding in a button to spawn random nbodies, attempting to deliberately overload the integrator
+	- Extracting code from other ad-hoc places that spawn nbodies, starting refactoring into a set of helpers
+	- Spawning rails with negative rail length does a pretty good job at overloading the integrator.
+	- Oops
+- Profiling with lots of nbodies
+	- Lots of unexpected allocations in `WorldHost.Update`
+		- [x] Some of this seems to be coming from UI updating (binding text etc)
+			- This seems to be an editor-only allocation
+		- [x] `ConvertPagedRailToRelative`
+			- array pool is running dry
+			- Using unity `NativeArray` instead
+		- [x] `RailIntegrator.Update`
+			- Extracting results, array pool is running dry
+			- Using unity `NativeArray` instead
+		- [x] `NBodyOrbitLine.SetBurns`
+			- Skipped trimming excess, but I think this is actually fine. It's expected when initialising a new body.
+		- [x] Small allocations in `InstancedSymbolDrawer`
+			- It was running `Init()` every frame
+	- Every `NBodyLineRenderer` costs 1,038,476 vertices, that's too many
+		- ~~It's also not visible~~
+			- Not a bug, just need to send a `SetRailRelativeOrigin` event before they become visible
+## Monday 27th
+- Directly using the integrated data in `NativeArray`, instead of copying
+	- The copy was necessary before the changes on Friday, to copy from Unity NativeArray to normal C# array
+- Worked out some more of the work schedule for the next few months, organised some issues/tags
+- Moved some unfinished items from the multiplayer sprint to backlog issues ready for a second multiplayer sprint later
+- Designing an LOD system for `NBodyLineRenderer` to reduce vertex count
+	- Updating vertex shader to add LOD support
+	- Simplified pixel shader
+	- Refactoring line renderer to pick an appropriately sized mesh, instead of always using the largest
+	- Investigating how to pick LOD level
+		- For each bounding sphere: determine screen size, pick largest, some function to map from size -> LOD level
+		- Create a Unity job to find the largest apparent size of bounding spheres, triggering it every frame if the job is not already running
+		- Ignoring scene camera when finding camera for LOD calculation
+		- Tweaked values mapping from apparent size to LOD level
+## Tuesday 28th
+- Ignoring parts of orbit line which are off screen for LOD calculation
+- Tweaked min and max LOD values
+- Testing with 100 orbits at 21600x realtime (6 hours/second)
+	- `RailIntegrator` main thread time is spiking each time it runs
+		- `SynchronousIntegration` is running, slowing down the main thread, this is probably happening more often than necessary.
+		- Disabled synchronous integration entirely, it should only be used in extremely bad cases and arguably just makes things worse by slowing the main thread even more!
+	- `ConvertPagedRailToRelative` main thread time is also spiking
+		- This isn't in a job yet, no surprise this is slowing us down
+		- `BoundsMinMax.Create` is the biggest cost, which **is** a surprise!
+			- Using SIMD for this
+	- Still a _lot_ of vertices
+		- Started converting lines from 4 vertices per point to to 3
+		- Modified line generator script to produce 3 vertices per point
+		- Fixed up `NBodyOrbitLine` assuming 4 verts, in just one place
+	- `SetWorldPositionFromRail` could maybe do with some speedups
+		- 900us for 163 entities (5.5us each)
+		- This is mostly just the plain cost of calculating kinematic interpolation
+## Wednesday 29th
+- Converting `ConvertPagedRailToRelative` to use jobs
+	- Modifying `PagedRail` to store a list of jobs which are currently referencing it, protecting the arrays it holds from being deallocated while a job is in flight
+		- Turns out this isn't needed, we can just copy the arrays and modify them in place for the relative rail.
+	- Rewritten relative paged rail conversion so it works in place on existing arrays, this makes it a lot easier to do in a job and removes the need for the `PagedRail` to track job dependencies
+- Profiling relative rail code
+- Considering design for "partial" queries
+	- Pass in a "Cursor" object which tracks how far through the query execution got
+	- Query can be interrupted (e.g. max entity count limit)
+	- Executing query again (next frame) using the cursor resumes from there
+	- There's a lot of work that could be split up like this
+- Apply burst attributes to relative rail conversion
+	- Burst doesn't like some type punning tricks with Span
+	- Rewritten to do the same with `NativeArray.Reinterpret` doesn't work either!
+## Thursday 30th
+- Applying `BurstCompile` to more code
+- Rewriting `ConvertPagedRailToRelative` to use a parallel-for job for offsetting, and a chained job for bounds generation
+- Updated `SetWorldPositionFromRail` to do less work most of the time:
+	- Near the start point, just predict forward
+	- Near the end point, just predict backward
+	- In the middle 10%, do both and smoothly interpolate between them
+- Reviewed all jobs in the project, applied `BurstCompile` where possible
+- Rewritten SIMD code in `BoundsMinMax.Create` to work with burst
+- Implemented `Cursor` queries in `Myriad.ECS`
+	- Execution of a query has a budget, when that budget is exceeded execution is stopped and the cursor is set to the current position. Executing again with the same cursor resumes at approximately the same position. This way any world that needs doing regularly, but not _instantly_ can be spread over multiple frames.
+## Friday 31st
+- General code cleanup
+	- Moving some events into the events namespace
+	- Cleaned up extension methods
+	- Cleaned up some JSON converters
+- Testing assets:
+	- [UGUI Super TreeView](https://assetstore.unity.com/packages/tools/gui/ugui-super-treeview-86571)
+		- Seems good!
+		- Added to FUI project, done lots of code cleanup (all fairly minor)
+		- Started working out styling with FUI

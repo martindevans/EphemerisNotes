@@ -1,0 +1,7 @@
+- [Kepler](https://github.com/aaronjridley/Kepler/tree/main)
+	- Some orbital tools to allow us to simulate satellites and rockets and asteroids
+- [Payload Calculator](https://autonoma.ca/calculators/rocket/payload/)
+	- Calculate payload mass for rockets based on various parameters (rocket fuel, thrust, atmospheric drag, surface gravity etc)
+	- [source](https://autonoma.ca/calculators/rocket/payload/Rocket.js)
+- [42](https://github.com/ericstoneking/42)
+	- A general-purpose simulation of spacecraft attitude and orbit dynamics. Its primary purpose is to support design and validation of attitude control systems, from concept studies through integration and test
