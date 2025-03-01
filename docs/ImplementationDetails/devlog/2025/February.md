@@ -1,0 +1,243 @@
+---
+tags:
+  - devlog
+sidebar_position: 2
+---
+## Monday 3rd
+- Cleaning up [UGUI Super TreeView](https://assetstore.unity.com/packages/tools/gui/ugui-super-treeview-86571) demo scripts into something usable for Ephemeris
+- Experimenting with building a custom tree view using vanilla Unity layout primitives
+	- Unity layout is very slow with deeply nested hierarchies
+- Back to cleaning up Super TreeView
+## Tuesday 4th
+- Refactoring tree view layout system
+- Connecting lines to child items and sibling items, based on new layout events
+- Fixed expanding/collapsing sub trees
+- Deleting some demo code from asset, moving the rest out of the FUI package
+## Wednesday 5th
+- Cleaning up super treeview editors
+- Fixing potentially unbounded memory use in pooling
+- Splitting demo script up into smaller/more composable scripts
+	- Connect to sibling
+	- Connect to the first child
+	- Expand/Collapse toggle button
+	- Label
+	- Icon
+- Refactored layout events to simplify event handling when elements are recycled/moved to another subtree
+- Working out how to do live tree search (rapid and efficient showing and hiding of many tree nodes)
+	- Removing and adding the nodes would work, but seems expensive. Maybe do-able with careful pooling but maintaining state seems like a nightmare.
+	- Scaling items to zero height could work
+		- Layout system needs work to respect scale
+		- Some thing like lines connecting to nodes will look weird (trying to connect to zero height nodes)
+## Thursday 6th
+- Created `Detach` and `Attach` methods which act like `Delete` and `Insert`, but do not manage object life time. This allows rapidly removing and re-adding items.
+	- Fixing layout issues caused by detach/attach
+- Added support for disabling objects, updated layout algorithm to ignore disabled objects
+- Fixed creating new objects not initialising everything in the right order
+## Friday 7th
+- Adding methods to recursively enable nodes in tree view
+- Removed some expand/collapse animation (scaling mode)
+- Cleaning up clipping related code, no longer dynamically adding and removing components
+- Begun implementing filtering
+	- Partially implemented as a separate filter component
+		- Need to handle new nodes added after the filter is applied
+	- This is going to have too many `GetComponent` calls during UI updates
+## Monday 10th
+- Started on a new system for filtering
+	- Caching info in behaviours (just one lookup)
+	- Maybe apply filter in coroutine (spread work out over more frames)
+	- Handling add event and applying filters as soon as items are added
+- Chasing down layout issue when enabling items
+	- Modified helper for invalidating layout to walk _up_ tree instead of down
+	- Added the same system when enabling all (faster path)
+- Adding UniTask package to FUI project
+- Applying changes in a coroutine, spreading the work of a huge UI tree over more frames
+- Starting a new layout with the same filter again every time a node is added or removed
+## Tuesday 11th
+- Creating tree view prefabs:
+	- General prefab with icon, vertical line, content box
+- Modifying collapsing so it always takes the same time, no matter how deep the subtree
+- Removed async applying, it was causing very hard to track down layout issues in weird edge cases
+- Deferred applying filter until update, this means several changes to the filter within one change only incur one apply
+## Wednesday 12th
+- Stylising prefab in FUI style
+	- Creating icons
+	- Creating crisp outlines
+	- Adding blur background on content
+- Fixed some layout issues when content height changes
+## Thursday 13th
+- Adding a highlight to tree view items
+	- Created a behaviour to show highlights and "ping" them
+- Refactoring node caching, so less behaviours need looking up at runtime
+- "Pinging" nodes when they are matched
+- Final cleanup
+	- Moved scripts into final locations in FUI package
+	- Added editor menu items to create tree view
+- Updating packages in main project
+- Added treeview into multiplayer gameplay scene
+- Investigating occasional slowdowns at high timespeed
+	- Modified backpressure to be based on the shortest _sampled_ rail, instead of shortest integrated rail
+	- Modified rail sampler to not begin sampling until there is valid rail data to sample. This prevents fresh entities from causing backpressure
+	- Test entities seem extreme:
+		- Added in the past
+		- Extreme precision
+		- Very short max rail length.
+		- Fixed that - there's testing a worst case scenario, and there's whatever that was!
+- Discovered that updating the cinemachine package broken astronomical cameras
+## Friday 14th
+- Reverted Cinemachine package
+	- This fixed the camera
+- Upgraded Cinemachine again
+	- Issue seems to be Y axis is bound to radial movement, scroll does nothing
+	- Discussion question: https://discussions.unity.com/t/cinemachineorbitalfollow-incorrect-axes/1600687
+	- Reverted it again while waiting for a reply
+- Rewriting astronomical camera controller to use new input system
+	- Can probably just use [CinemachineInputController](https://docs.unity3d.com/Packages/com.unity.cinemachine@3.0/manual/CinemachineInputAxisController.html)
+- Experimenting with a new astronomical camera controller
+	- [ ] Right click + move mouse: orbit around focus point
+	- [ ] Mod + Right click + move mouse: orbit around focus point, faster?
+	- [ ] Mod2 + Right click + move mouse: move focal point (pan)
+## Saturday 15th
+- Experimenting with stencil buffer for lasers
+- Putting together a test scene with decals (emissive, for hot spots) and screen space lens flare
+## Sunday 16th
+- Experimenting with depth nodes in URP to render lasers at right depth
+- Got it working with stencils!
+	- Process explained in this video: https://www.youtube.com/watch?v=EzM8LGzMjmc
+		- Set material on something (e.g. damage blob) that writes a value to the stencil, does not write colour or depth
+		- Move everything you want stencilled to a separate layer
+		- Modify renderer asset to remove this layer from `Opaque Layer Mask` and `Transparent Layer Mask`. This prevents it from being rendered.
+		- Add a `Render Object`
+			- Set Layer Mask to this separate layer
+			- Override stencil, Compare `Equal` to whatever the value was that was written in step 1
+## Monday 17th
+- Using new input system with [CinemachineInputController](https://docs.unity3d.com/Packages/com.unity.cinemachine@3.0/manual/CinemachineInputAxisController.html) for astronomical cam
+- Added a pan input with a modifier (Shift + Right Click + Drag)
+	- Enabled `Input Consumption` which makes more specific bindings (e.g. `Shift + Right Click + Drag`) pre-empty less specific ones (`Right Click + Drag`)
+- How to keep panning values?
+	- Switch away from target1, switch back to target1, should it restore the pan?
+		- Yes
+		- Focus stack might already handle this, as long as everything has a VCAM
+	- Need a re-centering button
+- Created camera pan script using new input system
+## Tuesday 18th
+- Minor cleanup on camera stack controller
+- Started on a tree view controller
+	- Individual "section controllers" can add root sections and a system to manage themselves
+- Created a tree view controller for kepler bodies
+	- Finding them and tagging with marker component
+	- Processing static bodies too
+- Updated `SolarSystemHost` using old inheritance based way of setting up worlds to use `GameTimeWorldHost` (partially switching to the newer composition-based way)
+	- Fully migrated to composition-based sim host
+	- Moved utility bits of old `SolarSystemHost` out to new scripts
+## Wednesday 19th
+- Restyling treeview prefabs to make them more compact and slightly less visually noisy
+- Making prefabs auto size to content by default
+- Setting up search for treeview in main project
+- Cleaned up tree view string filter test code and moved it into main project
+- Generating "filter tags" for planets as they are added to the UI, e.g. `Solar/Earth/Luna`
+- Case insensitive matching/filtering
+- Adding click handler to treeview prefab
+- Resetting camera to origin when moving planets
+	- [ ] Causes a jump, need to warp the camera during transition
+- Moving the camera around Jupiter sucks, it's too big
+	- [ ] Panning and scrolling should be relative to planetary radius
+- Fixing weird Jupiter colours
+	- Tinted orange/brown, when it should just be white
+- Quick investigation into rail sampling cost
+	- Timings with 200 entities (very rough):
+		- 550us with kinematic interpolation
+		- 430us with linear interpolation
+		- 390us with no interpolation
+## Thursday 20th
+- Continuing investigation into rail sampling cost
+	- Adding "hinting" - storing where valid data was last frame and using that if it's still applicable
+		- Page hints: **480us**
+		- Index hints: **405us**
+		- Hinting with Linear interpolation (not actually usable, just for comparison): **320us**
+	- Future optimisation: use linear interpolation when things are out of the camera frustum
+- Copied ship name generator from Protologic, added a few more name fragments
+- Attaching names to generated NBodies in test scene
+- Showing list of NBodies in UI
+	- [x] Scroll bar
+		- Something is offsetting the child content of the scroll view
+		- Caused by `TreeView.Init`
+		- Removed `TreeView` setting it's own layout properties
+	- [ ] Click focus on astro/near view?
+- Fixed error with Jupiter Axial tilt loading
+## Friday 21st
+- [x] Import new sound libraries
+- Noticed some performance spikes in editor
+	- Profiled in build, all seems ok
+- Removed `Sol` from planets list, reducing indentation by one
+- Compacted tree view layout some more
+- Updated small camera to use new input system
+	- [x] Panning does not work for this camera, it breaks the compositing trickery
+- Cleaned up page hinting optimisations
+- Fixing some errors caused by deleting tree view nodes
+- Noticed some jittering
+	- Reduced how aggressive partial interpolation is, so it's smoother (errors are spread over a longer time)
+- Added some buttons for `lock` and `relative` mode on planets
+- Noticed poor perf when scrolling
+	- Seems like `Pixel Perfect` canvas is expensive
+	- [ ] Layout scales with number of items in canvas, so split UI into more canvases (e.g. one for the scroll content)
+## Monday 24th
+- Added button to make rails relative to planets
+- Adapting camera min radius to planet size
+	- Scroll sensitivity automatically adapts too
+- Fixed scale of Europa
+- Adding physics colliders to planets, so they can be clicked on
+- Fixing some UI elements eating raycasts
+- Refactoring on click scripts
+- Debugging why raycasts aren't working at all now
+	- Fixed raycasts not working in sub canvases
+- Created click handler to focus planets
+	- Attached to planet prefabs
+## Tuesday 25th
+- Added invisible "backboard" objects to camera, to catch all raycasts that don't land on anything else
+- Changed planet focus to be double click
+- Refactored content importers, moving them to the main project assembly
+- Started on a crosshair, showing what's selected/hovered over
+	- [x] Move to target
+	- [x] Move 4 corners independently
+	- [x] Move lines
+	- [x] Animate it?
+	- Created animation for crosshair appearing
+	- Locking crosshair onto gameobject
+	- Creating animator state machine for cross hair (appear/disappear)
+	- Resizing based on screen size of target
+## Wednesday 26th
+- Investigating a single frame flicker when snapping view from planet to planet
+	- Delayed switching scene origin by one frame
+- Created a pool of crosshairs, so multiple objects can be highlighted at once
+- Designing near/far view system
+	- Tab to switch between views (if the current entity supports it)
+	- When switching from entity -> entity, show the same view (near/far) if new entity has it
+	- [ ] Implement explicit near/far mode in camera controller (at the moment it's implicit)
+	- [ ] If given an entity on no camera layer, find on in hierarchy
+		- [ ] Add a marker at the root pointing to the relevant layers?
+- Creating a system for managing view modes
+	- Added view mode to camera manager
+	- Creating a method to get supported view modes from a GameObject 
+	- Created marker component pointing to different bodies in different view modes
+## Thursday 27th
+- Updating camera stack controller to switch view modes dynamically
+- Fixed issue with cinemachine camera channels not being set correctly
+- Creating a method to switch view mode, if the current focus object supports other modes
+- Adding button to switch view mode
+- Added a general script to trigger buttons from an input action (i.e. hotkey)
+- Experimenting with cinemachine cameras for a "glance" feature when hovering over something
+	- Can set a camera to only control rotation
+	- Slewing to things at extreme distances seems to be broken (even though it's only rotating)
+	- Child VCams don't seem to be visible to the brain
+	- [CinemachineMixingCamera](https://docs.unity3d.com/Packages/com.unity.cinemachine@2.1/api/Cinemachine.CinemachineMixingCamera.html) is a thing, but that kind of requires doing it manually
+## Friday 28th
+- Fixing planet visual radii
+	- Mercury
+	- Venus
+- Imported improved Venus surface texture
+- Experimented with packing roughness info into mercury texture
+- Creating a fuel tank component, for tracking total fuel on an entity
+	- Updated engine burn system to subtract fuel as burns happen
+- Removing old Docking Sim fuel tank component
+	- Fixing up docking sim scripts referring to furl
+	- Fixing pod prefab to work with new view modes

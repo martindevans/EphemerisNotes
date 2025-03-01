@@ -1,2 +1,3 @@
  - [https://buried-treasure.org/2020/10/getting-your-game-noticed-is-very-very-hard/](https://buried-treasure.org/2020/10/getting-your-game-noticed-is-very-very-hard/ "https://buried-treasure.org/2020/10/getting-your-game-noticed-is-very-very-hard/")
  - Presskit template: https://www.wanderbots.com/blog/templates-for-contacting-content-creators
+ - Find streamers to play game: https://www.gamereach.gg/
