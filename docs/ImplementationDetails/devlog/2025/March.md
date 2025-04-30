@@ -228,7 +228,7 @@ sidebar_position: 3
 ## Friday 28th
 - Building comms system to sync nbody rail data
 - Rough prototype of syncing
-	- [ ] Packet encoding allocates lots (takes temp copy of data arrays)
+	- [x] Packet encoding allocates lots (takes temp copy of data arrays)
 	- [x] Rail trimmer (removing pages before current time) interferes with sync
 		- Running on both client and server
 		- Not syncing changes to the first page, unless _all_ pages are removed
