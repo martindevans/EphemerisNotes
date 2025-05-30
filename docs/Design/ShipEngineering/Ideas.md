@@ -1,6 +1,6 @@
 General ideas for ship design mechanics. Not necessarily _good_ ideas!
 ## Resources
-Management of various resources which are either used up (fuel is burned) or just used at the moment (e.g. 90% of the crew is currently dedicated to doing X).
+Management of various resources which are either used up (e.g. fuel is burned) or just used at the moment (e.g. 90% of the crew is currently dedicated to doing X).
 - Heat
 	- Radiators
 	- Heat sinks
