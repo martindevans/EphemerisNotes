@@ -164,7 +164,7 @@ sidebar_position: 1
 	- Looks like it's already in my project due to some other package pulling it in!
 	- Unity maintain a package for it: https://docs.unity3d.com/Packages/com.unity.nuget.newtonsoft-json@2.0/manual/index.html
 	- Rewritten XML stuff to use JSON
-	- Custom converter for colours<->hex code
+	- Custom converter between colours and hex codes
 - Modified lobby to use scenarios loaded from file
 - Building UI for time speed controller
 	- Showing:

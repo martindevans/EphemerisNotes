@@ -164,7 +164,7 @@ sidebar_position: 4
 - Fixed an issue where entities that are destroyed by impact too quickly (e.g. created inside a planet) never properly initialise
 - Fixed issue in `CopyOrientationToUnityTransform` system accessing destroyed transform
 ## Friday 18th
-- Working on a new binding system for GameObject <-> Entity, should be more robust to very short lived entities (destroying the entity before the binding is even created)
+- Working on a new binding system for GameObject to Entity, should be more robust to very short lived entities (destroying the entity before the binding is even created)
 ## Monday 21st
 - Finishing rewrite of binding system
 - Pulled into main project, fixed breaking changes, tested in docking sim scene
