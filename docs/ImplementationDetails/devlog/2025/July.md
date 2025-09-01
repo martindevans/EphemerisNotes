@@ -113,9 +113,9 @@ sidebar_position: 7
 - Setting up octree to index all bullet points
 - Using octree to find nearby bullets for rendering
 - Dynamically adjusting query range based on number of bullets within range, to ensure the max buffer size is not exceeded
-		- Linear growth/shrink. Too slow to adapt, sometimes renders nothing due to not finding a suitable distance.
-		- Binary search. Converges faster, but still ends up doing several expensive octree queries per frame.
-		- Added limiting to octree to queries, so they will abort if they hit a limit. This means I can get a result I **know** will fit in the buffer (and slowly reduce range when it happens).
+	- Linear growth/shrink. Too slow to adapt, sometimes renders nothing due to not finding a suitable distance.
+	- Binary search. Converges faster, but still ends up doing several expensive octree queries per frame.
+	- Added limiting to octree to queries, so they will abort if they hit a limit. This means I can get a result I **know** will fit in the buffer (and slowly reduce range when it happens).
 ## Friday 18th
 - Test scene for target leading
 - Find intercept point. Solve:
