@@ -33,6 +33,7 @@ General ideas for damage model mechanics. Not necessarily _good_ ideas!
 #### Contact High Explosive
 - When the shell hits, trigger an explosion at the surface (see explosive damage type below)
 	- Explosion falls off with distance. Deformation, spalling, breaking a hole all possible.
+		- If spalling, treat this as pure kinetic damage, emitted from inside the intact armour. As well as weakening (but not breaking a hole) this section.
 	- Shrapnel shards fly off at explosive speed, do not slow down with distance.
 #### Armour Penetrating
 - When a shell hits, calculate penetration results:
@@ -74,3 +75,7 @@ $$B = \frac{V * \sqrt{P}}{K * \sqrt{D}}$$
 - K: Armour resistance constant, default to `2400`.
 ## Lanz Odermatt Equation
 Calculates penetration depth of a long-rod penetrator, used for modern tank shells. Ref: https://www.longrods.ch/perfeq.php
+
+## Armour Types
+### Bulk Armour
+- e.g. steel plate
