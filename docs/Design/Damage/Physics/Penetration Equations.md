@@ -6,6 +6,19 @@ Penetration equations calculate the effects of an impact on armour. Cratering, s
 - **Ballistic limit**: At the ballistic limit there's a 50% chance of penetration.
 - **Single Plate**: Armour scheme with one single plate of armour.
 - **Double Plate**: Armour scheme with 2 plates, separated by a gap. Front (bumper) plate shatters the projectile, gap allows fragments to spread out. a.k.a. Whipple Shield.
+## Damage Types
+Mostly summarised from [Structural Damage Prediction and Analysis for Hypervelocity Impacts - Handbook](https://ntrs.nasa.gov/api/citations/19960016651/downloads/19960016651.pdf).
+1. Hit and bounce
+	- Possible spallation
+2. Hit and penetrate
+	- Possible shatter
+	- Possible melting/vaporisation
+3. Debris cloud hit
+4. Vapour cloud hit
+
+- Direct hits at low speed penetrate a thin whipple shield with almost no changes.
+- Direct hits at high speeds penetrate and shatter into a cloud of debris, but also add a smaller projectile made out of the bumper material going straight on
+- Hits above $65\degree$ can ricochet, in this case the projectile shatters and bounces off harmlessly. Spallation from the bumper continues inward along the normal.
 ## Tank Archives
 Equations for low speed regime - tanks (~1.5km/s) and battleships (~1km/s). Source: https://www.tankarchives.com/2014/10/penetration-equations.html
 
@@ -61,11 +74,7 @@ $$d = 2.06 \cdot t \cdot \frac{\rho_p}{\rho_t}^{-0.159} \cdot \frac{2.68 \cdot F
 **For Crater Depth**:
 
 $$p = 1.38 d^{1.1} \cdot B H^{-0.25} \cdot \rho_p^{0.5}\rho_t^{-0.167} \cdot V^{0.67}$$
-**For Ballistic Limit**:
-
 $$t_b = 1.8 p$$
-**For Spallation Limit**:
-
 $$t_s = 3p$$
 - `p`: Crater depth on target (cm)
 - $t_b$: Target thickness for ballistic limit (cm)
@@ -79,12 +88,9 @@ $$t_s = 3p$$
 Similar to the Rockwell equation, same range of speeds. Only valid when $(\rho_p / \rho_t < 1.5)$.
 
 $$p = 5.24d^{1.056} \cdot BH^{-0.25} \cdot \rho_p^{0.5}\rho_t^{-0.167} \cdot E^{-0.33} \cdot V^{0.67}$$
-**For Ballistic Limit**:
-
 $$t_b = 2 p$$
-**For Spallation Limit**:
-
 $$t_s = 3p$$
+
 - `p`: Crater depth on target (cm)
 - $t_b$: Target thickness for ballistic limit (cm)
 - $t_s$: Target thickness for spallation limit (cm)
@@ -98,12 +104,9 @@ $$t_s = 3p$$
 Modified version of previous.
 
 $$p = 5.24d^{1.056} \cdot BH^{-0.25} \cdot (\frac{\rho_p}{\rho_t})^{0.5} \cdot (\frac{V_n}{C})^{\frac{2}{3}}$$
-**For Ballistic Limit**:
-
 $$t_b = 1.8 p$$
-**For Spallation Limit**:
-
 $$t_s = 2.2 p$$
+
 - `p`: Crater depth on target (cm)
 - $t_b$: Target thickness for ballistic limit (cm)
 - $t_s$: Target thickness for spallation limit (cm)
@@ -121,6 +124,7 @@ Equations presented in [Whipple Shield Sizing Equations](https://ntrs.nasa.gov/a
 
 $$t_b = 0.25d \cdot \delta_p/\delta_b$$
 $$t_w = 0.16 \cdot d^{0.25} \cdot (\delta_p\delta_b)^{1/6} \cdot M^{1/3} \cdot V_n/S^{0.5} \cdot (70 / \sigma)^{0.5}$$
+
 - `t`: thickness
 - `d`: projectile diameter (cm)
 - $\delta$: Density ($g/cm^3$)
@@ -161,6 +165,7 @@ $$d = \begin{align}
 When $V_n > 7km/s$:
 
 $$d = 3.918t_w^{2/3}\rho_p^{-1/3}\rho_b^{-1/9}(V\cos\theta)^{-2/3}S^{1/3}\left(\frac{\sigma}{70}\right)^{1/3}$$
+
 - d: Projectile diameter (cm)
 - $t_b$: Bumper thickness (cm)
 - $t_w$: Rear-wall thickness (cm)
@@ -183,28 +188,16 @@ Calculates the average cone angle of debris cloud after hypervelocity impact and
 
 $$\theta = \arctan\left(0.6 \cdot\frac{\rho_bt_b}{\rho_pd_p}\right) for \left(\frac{\rho_bt_b}{\rho_pd_p}\right) < 1$$
 $$\theta = \arctan(0.6) = 31\degree for \left(\frac{\rho_bt_b}{\rho_pd_p}\right) \geq 1$$
+
 ### Piekutowski Shatter Fragment Diameter
 Calculates the largest shatter fragment diameter, developed for 2017-T4 aluminium spheres impacting 6061-T6 aluminium sheets. Characterised at two specific thickness/diameter ratios. [Source](https://hadlandimaging.com/wp-content/uploads/2021/06/NASA-CR4707-Report-1996.pdf).
 
 $$d_f = \left(204.8 \cdot V^{-2.24}\right) for \left(t_b/d_p = 0.049\right)$$
 $$d_f = \left(147.1 \cdot V^{-2.24}\right) for \left(t_b/d_p = 0.084\right)$$
+
 - $d_f$: Largest fragment diameter (mm)
 - V: Velocity (km/s)
 - $t_b$: Bumper thickness
 	- Unit is arbitrary, as long as it's consistent with $d_p$
 - $d_p$: Projectile diameter
 	- Unit is arbitrary, as long as it's consistent with $t_b$
-### Damage Types
-Mostly summarised from [Structural Damage Prediction and Analysis for Hypervelocity Impacts - Handbook](https://ntrs.nasa.gov/api/citations/19960016651/downloads/19960016651.pdf).
-
-1. Hit and bounce
-	- Possible spallation
-2. Hit and penetrate
-	- Possible shatter
-	- Possible melting/vaporisation
-3. Debris cloud hit
-4. Vapour cloud hit
-
-- Direct hits at low speed penetrate a thin whipple shield with almost no changes.
-- Direct hits at high speeds penetrate and shatter into a cloud of debris, but also add a smaller projectile made out of the bumper material going straight on
-- Hits above $65\degree$ can ricochet, in this case the projectile shatters and bounces off harmlessly. Spallation from the bumper continues inward along the normal.
