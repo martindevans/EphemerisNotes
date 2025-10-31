@@ -95,3 +95,5 @@ sidebar_position: 10
 	- Mouse click
 - Creating repo for IMPACT binaries
 	- https://github.com/martindevans/IMPACT
+- Experimented with a different layout system to fix weird scaling
+	- Reverted, didn't work well at most sizes
