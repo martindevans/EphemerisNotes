@@ -1,4 +1,4 @@
-`Ephemeris` [is already taken]([https://store.steampowered.com/app/3179370/Ephemeris/](https://store.steampowered.com/app/3179370/Ephemeris/ "https://store.steampowered.com/app/3179370/Ephemeris/")), I need a new name.
+`Ephemeris` [is already taken](https://store.steampowered.com/app/3179370/Ephemeris/), I need a new name.
 
 ## Criteria
 - `Name: Subtitle`
