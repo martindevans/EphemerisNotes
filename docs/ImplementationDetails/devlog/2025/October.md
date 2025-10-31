@@ -5,7 +5,7 @@ tags:
 sidebar_position: 10
 ---
 ## Wednesday 1st
-- [September](2025/September) was cut short by holiday, continuing work on armour model
+- September was cut short by holiday, continuing work on armour model
 - Finished penetration path for energy dissipation based armour model
 - Designing spallation path
 ## Thursday 2nd
