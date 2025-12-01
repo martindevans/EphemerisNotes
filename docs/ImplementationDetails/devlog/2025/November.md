@@ -1,0 +1,242 @@
+---
+tags:
+  - devlog
+sidebar_position: 11
+---
+## Saturday 1st
+- Expanding "Add Layer" panel
+- Fixing scroll on "Add Layer" panel
+- Adding panel to change layer material
+## Monday 3rd
+- Adding "event data" panel which shows all of the events (penetration/spallation) in an impact
+- Noticed some energy leaks
+	- Fixing energy model to properly account for all energy:
+		- Kinetic energy forward (velocity)
+		- Kinetic energy in expansion of shatter clouds (dispersion velocity)
+		- Thermal energy in projectile
+	- Added "impact" event to act as an energy sink when a projectile hits a layer and is blocked
+	- Fuzzing 1,000,000 shots, total energy absorbed is always exactly the same as initial projectile energy!
+- Added an "events" window to IMPACT, showing the path of the projectile through the armour
+## Tuesday 4th
+- Updating buttons on IMPACT menu
+	- Adding `Thermal Analysis` button
+	- Fixing button numbering (it was out of order)
+- Creating new orbit line picking UI panel
+	- Moving picking code from `NBodyOrbitLine`
+	- Need to handle position offsets (see: `NBodyOrbitLineSystem`)
+	- Picking works!
+	- Investigated tighter bounds
+		- [Welzl's algorithm](https://en.wikipedia.org/wiki/Smallest-circle_problem) is `O(n)`, but probably more expensive than my current system
+- Debugging event propagation
+	- A graphic catches raycasts and consumes the event, there doesn't seem to be a way to not consume the event
+	- Custom `Graphic` might do it?
+## Wednesday 5th
+- Investigating implementing custom Graphic
+	- Update pick results whenever pointer is down
+	- Consume raycast when pointer is down and > 0 results
+	- Custom graphic seems to be handled differently to a built in Graphic.
+		- `Image+Click Handler`: handler receives click events
+		- `Custom+Click Handler`: no click events, all consumed by graphic
+	- Using `Image` + `ICanvasRaycastFilter` instead
+- Setting up dropdown menu to show picked results
+	- Placing dropdown on screen, ensuring it does not hang off the side
+	- Actually just place it consistently
+- Noticed poor LOD on orbit lines
+	- Deleting picking canvas fixes this????
+	- Can't reproduce
+- [ ] Scrolling the dropdown also zooms the camera, need to find some way to block that
+## Thursday 6th
+- Investigating Cinemachine input - blocking input when over UI
+	- `EventSystem.current.IsPointerOverGameObject()`
+		- This gets suggested a lot, but I have in world elements (e.g. planets) that I don't want to block camera input.
+	- `event.Use()` in a UI element does **not** work
+	- Could detect mouse over event and disable the input map
+		- Would need to be a mouse over for the entire canvas
+		- Come back to this later
+- When clicking on orbits, lots of potential pick points are generated
+	- If there's just one, click on it without showing a dropdown
+	- If there are multiple show dropdown
+		- Always show the closest point to the ray at the top
+		- Sort all others by time
+		- Show short ship ID
+- Defined ECS components for different types/parts of a name. e.g. for "USS Enterprise D"
+	- Prefix: "USS"
+	- Suffix: "D"
+	- Code: "NCC-1701-D"
+	- Full: "USS Enterprise D"
+	- Abbreviated: "ENT"
+	- Proper: "Enterprise"
+- Briefly investigated Unity Localization package (https://docs.unity3d.com/Packages/com.unity.localization@1.5/manual/Locale.html)
+	- Usage seems very allocation heavy :/
+- Building proper title with short entity name and time into future
+- Adding `number.AsUnitName()` extension methods to physical units library
+## Friday 7th
+- Using `long` instead of `string` for ID in dropdown, avoiding string allocation when creating dropdown items
+- Adding click handler for pick element and pick list
+- Building prefab for click option
+- Fixed mask on scroll view cutting off some content near the edge
+- Need a system for showing symbols attached to rails at some point in the future
+	- Created system to sample position for entities at a fixed timestamp
+	- Debugging symbol positions being offset from where they should be
+		- Position is in world space, but it's in the future so the relative positioning is wrong since it's based on the position it's relative to _now_.
+		- [ ] Need to sample from the relative paged rail, or offset based on future position properly
+## Sunday 9th
+- Experimenting with wrapping Myriad entity component data in a Unity native array in a way that works with jobs (and maybe Burst compiler)
+- Experimenting with refactoring `Myriad.ECS` to use `EntityId` instead of `Entity` in many places. Better for working with jobs.
+- If I implement some kind of burstable/job extensions to Myriad, I'm going to need codegen in Unity:
+	- https://github.com/mono/t4
+	- https://assetstore.unity.com/packages/tools/utilities/t4-code-generation-63294
+## Monday 10th
+- Modifying event bus to split senders and receivers, no change in functionality but it makes setting up events more readable.
+	- Refactoring systems to use these new methods
+- Deleted system created on Friday for displaying at a fixed timestamp, need to handle relative positioning
+- Working out what needs to be made relative to what to render these in the right position on screen
+- Added system to calculate position of planetary surface attached objects
+	- Bases, missile launchers, radars, targets etc
+- Refactoring everything to do with planetary rotation rate to use `RadianPerSecond` unit instead of `double`
+## Tuesday 11th
+- Considering design for symbols
+	- What should be used for pick points?
+		- Generic "pick point" marker
+		- Even more generic "contextual thing here" marker
+		- Specific maker for the entity type (ship/missile etc)
+	- Marker alert levels, some kind of overlay to differentiate an urgent marker from a general info marker
+- Adding overlays to orbit pick markers on hover
+- Adding callbacks to dropdown element (shown/hidden)
+- Adding line renderer to canvas using https://github.com/Unity-UI-Extensions/com.unity.uiextensions
+	- Connecting line to 3D entity at one end and 2D UI element at the other end
+- Added setup code for attaching names to entities
+- Adjusting blending for instanced symbols
+	- Clipping out alpha < 0.5
+	- Multiplying remaining alpha with colour, for a softer edge
+- Extracting icons from team entity to show on UI
+## Wednesday 12th
+- Investigating templated code generation for Unity
+	- dotnet-t4 is based on `Mono.TextTemplating`: https://github.com/mono/t4/tree/main/dotnet-t4
+		- Debugging weird issue causing tools to fail
+	- Trying https://assetstore.unity.com/packages/tools/utilities/t4-code-generation-63294
+		- Errors in Unity 6, issue open here: https://github.com/deniszykov/t4-templates-unity3d/issues/7
+- Designing selection system
+	- Options:
+		- Exactly zero or one item can be selected
+			- Some items can be grouped, in which case the group can be selected
+		- Multiple selection:
+			- Many items can be selected
+			- One is "focused" (last one selected)
+	- Selection can be:
+		- An nbody
+			- Could also be a sensor track, which is just an approximation of an nbody
+		- A point on an nbody orbit
+			- Could also be a sensor track, which is just an approximation of an nbody
+		- A kepler body
+- Creating basic components and helpers for managing selection entities
+- Investigating potential unit confusion bug in engine burn calculation
+	- Defining `Newton` and related units for units library
+	- Defining `KilogramPerSecond` for units library
+	- Using new units in engine burn stuff instead of `double`
+	- Seems to be fine
+- Sending `OnSelectOrbitRaycastPoint` event when clicking on point
+- Improving inspector for `EventBusService` with generic drawers
+- Removing pick points which are more than 5x the distance of the closest, that filters out a lot of the noise
+## Thursday 13th
+- Fixing issue in `EventBusService`  inspector sometimes not returning a drawer object
+- Showing extra data like event count on inspector
+	- Investigating why some events are very noisy (sending every frame?)
+		- It's expected for these events
+- Added ability to "mute" event channels, preventing listeners from receiving messages
+- Creating system for receiving selection events and processing them
+	- Added input map for additive selection mode
+	- Assigning order to selected items, can be used to e.g. move focus through selection
+- Improved materials for earth (cloud and water details)
+- Experimenting with introducing a "lock manager" into `Myriad.ECS` which can lock archetypes. Queries will take and release locks as they run. This would allow jobbified queries (where taking the lock just blocks on the job handle).
+## Friday 14th
+- Handling selection of orbit points which are in the past (due to delay between clicking and choosing)
+- Creating a symbol indicating selected rail points
+- Dynamically adding/removing overlay to indicate which symbol is the focused entity
+## Monday 17th
+- Updating t4 template asset in Myriad+Unity integration project (it's been fixed)
+- Fixing an issue in template generator not auto-regenerating
+	- https://github.com/deniszykov/t4-templates-unity3d/issues/8
+- Removing pick points from the list which are before the current time
+	- Replacing points before "now" with a point exactly at "now" targeting the same entity
+- Setting up system to render icon for selected NBody
+	- If an nbody is selected when already selected only move focus
+- Experimenting with job based queries
+## Tuesday 18th
+- Debugging ray picking sometimes being offset from mouse ray
+	- Interpolating time in picking to be more accurate
+- Removing pick options that are very close in time to the previous option
+- Doing all picking work even when the mouse isn't clicked
+	- Showing potential pick points every frame
+- Improving selection very near the start of the rail (i.e. now)
+- Got basic job queries working
+	- Refactored to allow a "scheduler" passed in as part of the query to schedule jobs.
+		- More complex job chains
+		- Different jobs for different chunks/archetypes
+## Wednesday 19th
+- Experimenting with a lock/safety system built into Myriad.ECS
+	- Myriad can call "Block" when executing a normal query, which will be implemented on the Unity side to wait for jobs
+- Creating a new scene for an orbit/burn gizmo (like the KSP one)
+## Thursday 20th
+- Creating manoeuvre node gizmo
+	- Investigating colours for axes (taking into account colour blindness)
+	- Rendering tricks to draw circle and lines as constant size in screen space with faked occlusion
+	- Using stencils to block out shapes
+## Friday 21st
+- Tweaking manoeuvre gizmo, adding some elements to give a better sense of perspective
+- Removed constant line length stuff (per line), it looks very weird as perspective shifts.
+	- Instead setting length for all three lines together
+	- Creating icons for 3 axes
+- Attaching invisible clickable handles
+- Creating an integration with the Unity safety system for the `Myriad.ECS` safety manager
+	- Jobs scheduled in the Unity job system which use Myriad data attach a handle to the archetype
+	- Queries touching archetypes wait on that handle
+## Monday 24th
+- Improving dashed ring on gizmo
+- Creating helper function for stencil functionality
+- Adding drag handlers on the 3 axis handles
+- Animating handle icons on hover
+- Drawing direction indicator line
+- Offsetting icons as they are dragged
+- Screen space trickery to get dragging right
+	- Find closest point between mouse and ray in screen space
+	- Convert back to WS pos to use as drag distance
+## Tuesday 25th
+- Updating T4 codegen package
+- Refactoring dragging to be done entirely in screen space, invariant to scale/distance
+	- Doing this in view space, not screen space, to be resolution invariant
+	- Clamping positions to screen, so the max input is when you drag right to the screen edge
+	- Endless fiddling with bounds checking
+	- Screen space line drawing to fix weirdness with extremely long lines at extreme view angles
+- Find a place to put a cancel button
+	- Middle is too crowded
+	- Floating off to the side looks weird
+	- End of the burn indicator line
+## Wednesday 26th
+- Hooking up cancel button
+	- Make it clickable
+	- Make it actually cancel
+- Experimenting with rings to indicate total delta-v
+	- Tweaking input to make it relative to input so far. This allows tweaking very precise burns and also huge burns
+		- Might need some tweaks to make it ramp up over time?
+## Thursday 27th
+- Cleanup of gizmo code
+- Beginning to hook up gizmo to burn scheduling system
+	- Current system does not have a good definition for mass. Need to know:
+		- Current mass (right now)
+		- Dry mass (can never go below this)
+		- Fuel mass (right now)
+	- Components:
+		- `Dynamics.Mass`
+		- ???
+		- `EngineBurnFuelTank`
+## Friday 28th
+- Building components for mass:
+	- `DryMass` - not expected to change often, changes should be made by updating the value
+	- `WetMass` - expected to change, auto updated every frame by a system that sums up masses
+	- `Dynamics.Mass` - the actual current mass, auto calculated from `dry + wet` every frame
+- New system to update fuel tank based on active engine burns
+	- Instead of directly updating mass: update fuel, wet mass calculated from fuel, mass calculated from wet mass
+- Converting fuel tank to store m3, instead of L
+	- Fixing old docking sim minigame to handle changes in fuel
+- Improving job based queries (disposal safety, to detect misuse)

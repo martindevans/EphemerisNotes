@@ -97,3 +97,7 @@ sidebar_position: 10
 	- https://github.com/martindevans/IMPACT
 - Experimented with a different layout system to fix weird scaling
 	- Reverted, didn't work well at most sizes
+- Released v0.2
+- Changes based on feedback
+	- Fixed Energy Absorbed panel actually showing energy NOT absorbed
+	- Added Kevlar
