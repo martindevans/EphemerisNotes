@@ -1,0 +1,249 @@
+---
+tags:
+  - devlog
+sidebar_position: 1
+---
+## Monday 5th
+- December notes and 2025 summary.
+- Planning long term work
+- Some optimisation work on orbital interpolation
+- Cleaning up issue tracker
+	- Closed previous Epic (joust)
+	- New epic (combat alpha)
+- Adding components to represent engine thrust and mass flow
+	- Fixing everything that interacted with engine burns to use these
+## Tuesday 6th
+- Investigating per-chunk dirty bits for `Myriad.ECS`
+	- Need a counting bloom filter (to un-set dirty bits) if using bloom filter
+	- Clearing a dirty bit that's already clear must be a no-op, so a counting bloom filter isn't good enough
+	- If dirty bits aren't components this becomes a new dimension the safety system must handle
+	- This seems like a lot of effort for marginal gain. Just doing chunk-shared components would probably be better.
+- Optimising bloom filter for fast query pre-filtering
+	- Expanded from 384 buts to 512 bits
+	- Sped up SIMD path by reducing copying
+- Added implicit cast from `Entity` to `EntityId`
+- Adding unique IDs to kepler bodies, so they can be identified across the network
+	- Just use Wikidata IDs, parsed as `uint32`
+- Starting work on orbit "events"
+	- Calculating "major" body and distance to it in integrator
+	- Checking for change in major body (SOI change event)
+	- Checking for change in sign of distance delta (periapsis/apoapsis)
+- Implementing equality for `EntityId` by hand instead of using `record` - compatible with Burst compiler
+## Wednesday 7th
+- Storing generated events in rail pages
+- Updating inspector to show events
+- Investigating why major body in Luna orbit changes between Earth and Sol!
+	- Could use hill sphere generated as part of planet asset. SOI isn't truly spherical though
+	- Using $GM/r^3$ instead of $GM/r^2$ produces better results
+- Encoding rail page events into network package
+	- Adding support for writing interleaved sequences of compressed doubles to [HandySerialization](https://github.com/martindevans/HandySerialization).
+## Thursday 8th
+- Testing multiplayer
+	- Seems to be allocating an enormous amount
+		- Bug in `Myriad.ECS` "Collect" queries (infinitely growing capacity)
+		- Chasing down allocations in UI (TextMeshPro)
+			- Editor only allocations of strings!
+	- Bullets aren't properly synced?
+		- They appear on clients, but look awful
+	- Investigating poor performance
+		- Reducing triangle counts on all planets (probably not actually important, but an easy win)
+		- Bullet stuff is too expensive:
+			- [ ] `RailIntegrator`
+				- Looks like there are "urgent" entities blocking the queue
+			- [x] `SetWorldPositionFromRail`
+				- This one is always expensive
+			- [x] `SetScenePositionFromRelativeFuturePosition`
+				- Even with no entities matched!
+				- Skipping more work if matched entity count is zero
+				- Optimised `FindKeplerObjects` (span lists)
+			- [x] GPU bullet rendering
+				- Early out if there are no bullet edges
+			- [ ] Collisions are expensive
+				- [ ] Got octree _and_ SAP being setup - octree is used for rendering
+- Refactored rail events to store Kepler body ID instead of entity
+	- Significantly simplifies networking!
+## Monday 12th
+- Debugging why bullet rails are being marked as urgent
+	- They integrate 0.5s ahead, but urgency is if they're below min length
+	- Set min length to just a tiny bit below the pre-integrate time
+- Fixed name getting set every frame in the bullet test scene, which was ruining performance
+- Investigating cost of setting up bullet sweep & prune
+	- Largest cost seems to be setting up the job, copying data into input buffers
+	- Possibly due to checking entity structured
+	- Checking the entire chunk instead of each entity individually (for aspect)
+	- Created a "chunk aspect" to retrieve entity structure once per chunk too
+- Adding a way to check entity structure (`HasComponent`) for chunk handle to `Myriad.ECS`
+- Tested with 1300 active spaceships, top systems:
+	- `SetWorldPositionFromRail`: 3ms
+		- [ ] Use cheaper sampling modes for far away bodies?
+			- Would need to be careful about collision detection quality. Not just distance from camera, but also proximity to other bodies
+	- `RailIntegrator`: 1.1ms
+	- `CopyScenePositionToUnityTransform`: 0.75ms, 0.6ms (2 different layers)
+		- [ ] Don't do this work for things that don't need it (e.g. not in camera view)
+	- `CreateRailImpactSymbol`: 0.8ms
+		- [x] Opt some entities out of this checking
+			- Or specifically opt _into_ allowing a rail end symbol
+			- We don't actually want this for bullets
+- Fixed memory leak of orbital rail event collection if rail is modified while job is running
+## Tuesday 13th
+- Sharing the array of kepler data between all jobs in integrator, instead of making a copy per job
+- Pre-integrating bullets for a bit more time, and shortening the min-rail length. Reduce the chance of bullets becoming urgent.
+- Opted bullets out of automatic creation of impact symbols
+	- Saves time
+	- Don't want these symbols for bullets anyway!
+- Tested in multiplayer again
+	- Perf is better
+	- [x] Events aren't synced?
+		- Setting events into page
+		- Fixed syncing of null events
+	- [x] Possible memory leak in encoding/decoding
+		- False positive as far as I can tell
+## Wednesday 14th
+- Investigating pooling for tree view
+	- Needs to be added in to the treeview library itself
+- Adding orbit picking panel to multiplayer game scene
+	- Added gizmo creation systems
+	- Changing orbit with gizmo works in multiplayer!
+- Upgrading to Unity 6.3
+	- Installing editor
+	- Upgraded project
+	- Name collision with `Entity`/`EntityId` since they've been moved into `UnityEngine`
+	- Reimport
+		- Surprisingly fast!
+	- Everything seems to work
+## Thursday 15th
+- Testing in Unity 6.3 properly
+	- Disabled old input system
+	- Replaced some deprecated method calls
+	- Updating packages
+- Added narrowphase colliders to bullet test scene
+- Investigating using the same sweep and prune collection for rendering as collision
+	- Not really practical, S&P stores edges not points
+- Caching some more data about the next chain link entity
+	- Using this cache to accelerate sweep and prune filling (don't need to follow the entity relation, it's all stored locally)
+	- Speeds up S&P setup work by about ~30%, since it no longer has to query entity structure at all
+- Moved all structural checks to the `QueryBuilder`, instead of doing it dynamically within the query
+	- About ~30% faster
+	- Added helpers in `Myriad.ECS` to do this more cleanly for future queries
+## Friday 16th
+- Doing some planning for the combat alpha
+- Investigating damage model system (optimising)
+	- Using `TryGetComponentRef`
+	- Adding measurements of cache hit rates
+- Adding `TryGetComponentRef` to `Myriad.ECS` - merges together several checks into one method
+- Disabled legacy Unity input system (it's being deprecated)
+	- This broke some FUI stuff
+		- Fixing usage in FUI framework
+## Monday 19th
+- More fixing FUI framework to not use legacy `Input` system
+- Tweaking system list to show time relative to total update time (16ms)
+- Noticed potential resource leak in Job based queries
+	- Added `OnSystemDisabled` callback to `Myriad.ECS` system groups and system group items
+	- [x] Use this in demo/test job based query systems
+		- These aren't in use in the main game yet, need to be cautious when I do use them
+- [ ] Investigating how to dismiss orbit gizmo when clicking on empty space
+	- There's already "backboards" at the camera far plane to capture clicks on nothing
+		- Clicks on backboard are inconsistent?
+			- Camera frustum in scene view is misaligned with the actual ray!?
+## Tuesday 20th
+- Investigating weird camera frustum issue
+	- `Mouse.current.position.value` returns different value when called in `OnDrawGizmos`!
+	- `Physics.Raycast` returns different (correct) results compared to the camera `PhysicsRaycaster`!
+	- `PhysicsRaycaster` calculates the distance to the far plane incorrectly, so it misses some collisions when the camera is rotated.
+	- Unity discussion topic: https://discussions.unity.com/t/physicsraycaster-incorrect-ray-length/1704971
+## Wednesday 21st
+- Working around physics raycaster bug
+	- Adding a child camera, disabled, with far plane set to 1.5x parent camera. Physics raycaster is attached to this.
+	- Created a script to manage this process
+	- Producing a reproduction project to submit a Unity bug report
+	- Applied workaround/hack with that extra camera to the camera compositing stack prefab
+	- Clicking in empty space dismisses current selection. Finally!
+## Thursday 22nd
+- Investigated adding "high watermark" to system time, so systems which spike leave a visible marker
+	- Results are too noisy to be useful
+- Started creating system to create, update and destroy icons for orbit metadata
+- Added new `TypedReference<T>` component to `Myriad.ECS`
+	- This helps with the frequent problem of following entity relationships being costly (due to multiple repeated checks) in two ways:
+		- Checks are all done at once, combining some of the work
+		- Check results are cached, so next time the link is cheaper to follow
+## Friday 23rd
+- Refactoring `TypedReference<T>` into `TypedEntityReference<T>`
+	- Code generation for multiple types, from 1 to 16
+- Refactoring some existing systems to use `TypedEntityReference`
+	- Attach to planet surface
+	- Attach to rail at future time
+- Noticed that orbit gizmo is in wrong position for some time (1 frame?) when first created
+	- Looks like this has been an issue at least for a couple of weeks, so it wasn't broken by the `TypedEntityReference` changes
+	- Moved prefab out to xyz=1000000, so it's not visible until the system places it in the right place one frame later
+## Monday 26th
+- Working on systems for creating and maintaining rail metadata icons
+- Created a general purpose "zipper" to keep two rails in sync
+	- This same pattern is used other places, could port there
+		- [ ] Rail -> RelativeRail
+		- [ ] Rail -> NetworkRail
+	- Used this to create new "icon rail" that is zipped with the main orbital rail to create icons for all metadata events
+	- [x] Need to remove icons which are in the past
+## Tuesday 27th
+- Removing rail icons which are in the past
+- Profiling relative rail attachment system
+	- Adding hinting for rail sampling (caching some work)
+	- Storing kepler hierarchy offset (caching more work)
+	- Investigating why cache is refreshing more often than expected
+		- It's fine, this is from picking results (mouse moving, busting cache)
+	- Sharing `CommandBuffer` used for deletion with other systems
+- Using new `TypedReference` and `TryGetComponentRef` in more places:
+	- `SetWorldPositionFromSurfaceCoordinate`
+	- `DrawBulletsWithGpuCompute`
+	- `NativeEcsOctree`
+	- `CopyWorldPositionBetweenEntities`
+	- `CreateRailImpactSymbol`
+	- `SetScenePositionFromWorldPosition`
+	- `FindKeplerObjects`
+- Fixing issue in `Myriad.ECS` that caused `TryGetReference` to not work the same as `HasComponent`+`GetComponent`
+## Wednesday 28th
+- Investigating why adding orbit gizmo sometimes cuts line short but then doesn't show gizmo
+	- Seems to be when gizmo is placed at a time past the line max time length (soft cap, so it can be exceeded in some cases)
+	- Extending the line past this time makes the gizmo appear
+		- It's out at xyz=1000000, i.e. position it not being set
+	- Modified adding a burn to a rail to synchronously integrate up to the start of the burn right away: ensures rail isn't too short
+	- Modified rail integrator to integrate up to max length or last_burn+extra_time whichever is *later*. This means there's always some rail showing what the last burn does
+- Using Fused-Multiply-Add in RKF45 integrator, faster and more accurate
+- Adding some extension methods to collections to do more work in jobs
+	- Adding `[BurstCompile]` to these new jobs
+	- Reviewing other jobs in codebase to burst compile where possible
+- Researching GPU driven text rendering
+	- I can extract glyph info from text mesh pro
+	- Instanced render quads with this glyph info
+	- Potentially call TMP pixel shader, unclear if it can be imported?
+## Thursday 29th
+- Updating Myriad version in ECS benchmark: https://github.com/friflo/ECS.CSharp.Benchmark-common-use-cases/pull/13
+- Cleaning up `GetRefTuple` in Myriad, pushed the core logic up into `Chunk`
+- Profiling SolarSystem scene
+	- Removed allocation in `ResizableComputeBuffer` (using native memory)
+	- Fixed closure allocation in `ConvertPagedRailToIconRail`
+	- Investigating Cinemachine `ResolveAndReadInputAction` allocation - seems to be a profiler false positive
+- Building standalone player (more accurate profiling)
+	- Investigating usage of double in `NBodyLine` shader (not supported on Vulkan)
+	- Building normally works, it's only building a development build with "auto connect profiler" that does not!
+## Friday 30th
+- Building development build (no profiler)
+	- Fails with some Burst/AVX problems
+		- Only from one particular AVX optimised method? Deleted it for now.
+	- Noticed some allocations:
+		- [ ] `CinemachineInputAxisController.Update`
+			- Investigated this one before and been unable to resolve it
+		- [x] `EventSystem.Update`
+			- Setting `MaxRayIntersections` on `PhysicsRaycaster` to fix this
+		- [x] `BaseSimulationHost.Update`
+			- This is due to Unity not properly taking an allocation free path in struct allocation when generics are involved
+	- [ ] OrbitPicking is very expensive
+		- This needs to be jobbified or something
+- Experimenting with using `uint2` instead of `double`
+	- Writing a function to convert to single precision
+- Added loop unrolling to `Myriad.ECS` queries
+## Sunday 1st
+- Bonus round!
+- Added a primitive "soft float" system just for doubles on Vulkan
+	- Supported ops:
+		- Convert to float using only integer maths
+		- Compare 2 "soft doubles" to see which is greater
