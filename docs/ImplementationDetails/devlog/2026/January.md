@@ -151,6 +151,7 @@ sidebar_position: 1
 	- `Physics.Raycast` returns different (correct) results compared to the camera `PhysicsRaycaster`!
 	- `PhysicsRaycaster` calculates the distance to the far plane incorrectly, so it misses some collisions when the camera is rotated.
 	- Unity discussion topic: https://discussions.unity.com/t/physicsraycaster-incorrect-ray-length/1704971
+	- Reported issue: https://issuetracker.unity3d.com/issues/physicsraycaster-ray-length-is-incorrect-when-casting-from-rotated-camera
 ## Wednesday 21st
 - Working around physics raycaster bug
 	- Adding a child camera, disabled, with far plane set to 1.5x parent camera. Physics raycaster is attached to this.

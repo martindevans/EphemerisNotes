@@ -1,0 +1,244 @@
+---
+tags:
+  - devlog
+sidebar_position: 2
+---
+## Monday 2nd
+- Publishing January notes
+- Creating build for profiling
+	- It works with the GPU "softfloat" system, no more vulkan errors
+- Investigating cinemachine allocation
+	- Seems like a cinemachine bug: https://discussions.unity.com/t/cinemachine-allocation-every-frame-with-readcontrolvalueoverride/1707067
+- Investigating cost of orbit picking
+	- Jobbified one small part
+	- Needs a rewrite in the future to make the whole thing into a parallel pipeline over all the data pages
+- Looking at network spawning of missiles
+	- Cleaning up the `CreateSpaceshipEntity` used in the multiplayer test scene
+		- Generalising initialisation system so it can be used for other entities
+		- Mass initialisation
+		- Engine burn initialisation
+		- Name initialisation
+## Tuesday 3rd
+- Setting up missile test scene for guidance etc
+	- Simple greedy assignment of thrusters seems to work pretty well
+	- Creating basic missile guidance ship for ship to ship missiles (with gravity, just for testing)
+		- Direct guidance (point at target and go)
+		- Ballistic guidance
+		- Constant correction of impact point (kinda almost but not quite proportional navigation)
+		- Proper PN
+- Creating a project to reproduce the cinemachine bug
+	- Easily reproduced, it's not something weird in the main project causing it
+	- Submitted
+## Wednesday 4th
+- Creating explosion prefab for missile test scene
+	- Setting up flipbooks
+- Investigating better thruster assignment
+	- Iterative gradient based approach is simple and efficient
+	- Experimenting with techniques for faster convergence
+- Added Augmented Proportional Navigation (APN)
+	- Needs testing vs moving and dodging targets
+- Refactoring messy prototype code, ready to build new solvers and missile control types
+## Thursday 5th
+- Importing an old plane model I made into Blender
+	- Working out texture export settings
+		- Unity doesn't seem to use embedded textures until they are extracted
+	- Building a simple physical flight model
+		- Jet engine
+		- Lift
+		- Drag
+		- Basic NPC pilot
+		- Added manual flight controls and tweaked flight model
+		- Better turning through pitch tweaking
+		- Added "brain" which constantly tweaks target vector to fly in a circle around a point
+## Friday 6th
+- Added virtual cameras for tracking aircraft
+- Added accelerometer and feeding data into APN
+	- Lots of misses
+	- The way I'm using APN sucks, need to handle the mix of extra acceleration plus APN commanded acceleration
+## Monday 9th
+- Debugging missiles misses
+	- Trying new way to set direction to accelerate
+	- Added new "magic" RCS that just snaps to the right direction, removes any possible RCS problems
+	- APN implementation was wrong! Perfect hits every time
+	- Added back iterative RCS solver, missing again
+		- Tweaking iterative solver, better but still kinda sucks
+	- Investigating proper thruster allocation instead of iterative approximation (gaussian elimination)
+	- Experimenting with particle swarm optimisation
+		- This could be robust to damaged thrusters, which is a nice bonus
+		- Easy to add a term to minimise total throttle commands
+## Tuesday 10th
+- Creating better test scene for different missile RCS solvers
+- Improving particle swarm solver
+	- Reducing ringing (tuning PID)
+	- Automatic damping (soft dead-band near setpoint)
+	- Investigating better torque setpoint generator ("dead-beat" controller)
+		- More complex, not implementing for now
+	- Missiles in AA test scene are still missing, but they're closer to the target
+## Wednesday 11th
+- Debugging missile near misses
+	- NaN produced by angle calculation under extreme accelerations
+- Created a new type of "magic missile" that applies torques directly, skipping RCS solver stuff
+	- Tweaked some guidance stuff
+	- Massively reduced controller power
+	- Subtracting missile acceleration off APN acceleration input, to make net acceleration
+		- Perfect hits every time!
+## Thursday 12th
+- Swapping in iterative solver is back to missing (but close)
+	- Probably just a tuning issue?
+- Porting missile stuff to ECS instead of GO prototypes
+	- `Unity.Dynamics` is a bit rough
+		- Investigating using `Unity.Physics` (already using it for collisions)
+		- Refactoring `Myriad.Dynamics` internals to use `Unity.Physics` for integration
+			- Reverted, too much of a mismatch to what I need
+		- Rewritten helpers for applying force and torque
+	- Fixed docking sim to use new helper methods
+	- Fixed unrelated bug in integrator for nbodies without burn schedules
+## Friday 13th
+- Updating old test scene to compare `Myriad.Dynamics` and standard Unity physics
+	- Looks good
+- Adding `Myriad.Dynamics` based missile to missile pointing test scene
+	- It's a bit prone to "exploding" with massive angular velocity
+		- Looks like an error in the way damping is done (overshooting constantly)
+- Creating "gates" which automatically wait on job handles in the system list. Makes organising query jobs much easier
+- Experimenting with totally faking missile turning (cheaper, simpler, more stable)
+	- Doesn't look realistic at all, adding enough smoothing and damping to make it realistic is just physics sim!
+- Trying optimal bang/bang control
+	- Working pretty well!
+## Monday 16th
+- Porting optimal control scheme to `Myriad.Dynamics`
+	- Refactored how inertia tensor is stored
+	- Added angular damping to `Myriad.Dynamics`
+	- Refactored how physics entity aspects are handled
+		- Splitting linear and angular into 2 separate aspects. Allows rotating entities without position (e.g. for entities where position is done with nbody physics)
+		- Creating a new combined aspect, that just delegates all work to the other two
+	- Modifying angular integrator to use jobs if there are enough entities
+- Updating job queries to accept not being given a query object
+- Added editor for query job completion gate
+	- Added support for open generics in system editor attribute
+- Made integration of linear and angular velocity parallel with each other (only when there are enough entities to justify the overhead of a job)
+	- Also burst compiled inner loop
+- Creating a new scene for missiles with nbody physics
+- Optimising `SetWorldPositionFromSurfaceCoordinate` system
+	- Caching planet data, skipping a entity structure checks
+	- No longer calculating planet orbital velocity (not needed), just position
+## Tuesday 17th
+- Creating a new scenario file for missile testing
+	- Adding some helpers to `OrbitSet` to help with loading scenarios
+- Refactoring inspector for sensor platforms
+	- Showing multiple sensors in the editor for one platform
+	- Splitting phased array inspector up into helpers (e.g. drawing antenna data)
+	- Creating inspector for RADAR jammer
+- Investigating why sensor octree update times are varying so wildly
+	- Using phases (i.e. splitting entities over frames) instead of cursor query (splitting _chunks_ over frames)
+	- The actual sensor (phased array radar) is expensive, but only occasionally, causing oscillations
+		- Optimised that system a bit
+- Attempting to use jobs for `CopyScenePositionToUnityTransform` system
+	- Adding direct span access to component in job query scheduler
+	- It works! But initialising the `TransformAccessArray` (magic required to use managed `Transform` in a job) is too expensive for this to ever be worth it.
+## Wednesday 18th
+- Investigating physics of optical sensors (mostly for IRST), building helper functions
+	- Angular resolution
+	- Range uncertainty
+	- Received power
+- Spawning missiles in orbital test scene
+	- [ ] Add basic APN guidance, see how badly that goes
+## Thursday 19th
+- Building basic APN guidance system for orbital space
+	- Estimating target and missile acceleration
+	- Spawning missiles with random velocities near launcher
+	- Making a missile prefab
+		- I'm fed up of seeing the ISS
+	- Scheduling a burn very close in the future, applying APN acceleration
+		- This causes position flickering
+			- Integrating ahead a little further to fix this
+		- [x] Calculate correct thrust for target acceleration
+		- Lots of near misses, but this was from a very easy starting point
+		- Turning to face next burn
+- Investigating AND/OR queries for Myriad.ECS
+	- Could be done, but would probably need a major refactor of `QueryDescription`
+	- [ ] Rename `Exclude` to `ExcludeAny` (exclude entity if any of these are matched)
+	- [ ] Add `ExcludeAll` (exclude entity if _all_ of these are matched)
+## Friday 20th
+- Adding validation to burn scheduler, so it can't use more mass than what's actually available!
+- Investigating adding a different way to handle end-of-rail errors
+	- Currently, working with nbodies is tricky due to the risk of invalidating the rail and causing end-of-rail sampling errors (which appear as jittery movement). Could I just switch to live integration of the body when sampling off the end, then fixup any drift (shouldn't be much) when the rail becomes valid again?
+	- Two possibilities:
+		- [ ] Live integrate everything, apply error correction to constantly pull back towards rail
+		- [x] Rail sample everything, live integrate only things that can't be sampled
+			- With error fixup afterwards
+## Monday 23rd
+- Implement orbital extrapolation in rail sampler
+	- [x] Sample rail as normal
+	- [x] When sampling off the end of the rail, integrate to the current time
+		- Integrating with low precision integrator to the correct timestamp
+	- [x] When returning to rail sampling, store the difference as error vector and fix it over time
+		- Using the "fixup" path (used when the rail is modified during interpolation) for extrapolation fixup too
+- Adding "chunk flags" to `Myriad.ECS`, allowing skipping work when it's not needed in a chunk
+	- Using these to skip entire chunks in extrapolation
+- Some sampling issues
+	- [x] Possible NaN in interpolation constants
+		- Looks like this was just a bug in the inspector
+	- [x] `PagedRail.GetPoints` doesn't distinguish end-of-page and degenerate single-point pages
+- Added script to show glowing exhaust, size based on thrust
+- General cleanup of component editors
+	- Created helpers for modifying physical values (e.g. input `"1hr"` to produce `3600`)
+## Tuesday 24th
+- Large errors generated sometimes when rail changes
+	- ~~Maybe caused by negative interpolation constant?~~ Nope.
+	- Seems to be associated with large thrust
+	- Tested just always falling back to extrapolation (i.e. the "just-in-time" integration idea):
+		- Smooth movement, simpler code, roughly the same cost, could probably be jobbified
+		- Can diverge from rail, maybe more costly to network
+- Creating new `SetNBodyWorldPosition` system which live integrates entities to the current timestamp (in jobs)
+## Wednesday 25th
+- Testing live integration
+	- Handling engine burn data (copying into flat array)
+	- Movement looks correct, but is not attached to the rail line (by a very long way)
+		- Fixed drift caused by integrating one extra timestep
+- Updating rail position system to specifically ignore live-integrated nbodies, so they can both run
+	- Adding configuration for what entities are live integrated
+	- Adding special case for live integration of bodies with no burns (e.g. bullets)
+- `BulletChainSolarSystem` scene is totally broken
+	- Fixed (double integration bug)
+## Thursday 26th
+- Testing `BulletChainSolarSystem` scene some more (large scale)
+	- Old interpolation system:
+		- 120 bullet entities => 250us
+		- Scales roughly linearly, main thread
+	- New live integration:
+		- 600 ship entities => 200us
+		- 1050 ship entities => 250us
+		- Scale is almost flat, work is done in jobs
+	- Fixed query error in interpolation system (properly excluding live nbody entities from rail interpolation)
+- Handling engine burns which exceed allowable fuel usage
+	- Burns are scheduled in advance, using some amount of fuel. Even if fuel usage is validated at that point then later changes (e.g. damage causing a fuel leak) could invalidate those checks, leading to phantom fuel usage (including possible negative mass, if sufficient phantom fuel is used).
+	- Solutions:
+		- [ ] ~~Add a system to cancel at the point where mass goes negative?~~
+		- [x] In the integrator, don't allow negative mass
+			- [x] Pass in wet+dry mass for more accurate checks
+	- Changes:
+		- Ensuring current total mass (dry+wet) does not go negative
+		- Modifying acceleration query to handle fuel changes
+			- Substepping to the exact point in time when mass is exhausted
+			- Passing in masses separately
+				- DryMass (constant)
+				- WetMass (along with timestamp of when this mass measurement was taken)
+- Significant divergence when doing burns (at high time speed?)
+	- Maybe caused by max steps on live integration
+		- Increased default max steps, stops the lagged movement at high time speed, but doesn't fix drift
+	- [x] At high time speed engine burn fuel usage may be wrong?
+	- [x] Removing burns with negative duration!
+	- [ ] Consider tracking the rail over time and slowly pulling live integration towards it
+		- Options
+			- Sample occasionally, store error and fix it over the sampling period
+			- Sample only at the exact rail points, that way there's little/no interpolation
+## Friday 27th
+- Removing max steps from live integrator - when this limit is hit the nbody falls behind and this causes many other problems.
+- Adding monitoring for max steps of any nbody
+	- Enormous step counts in some cases
+		- Caused by substepping to the time when fuel runs out, when fuel has already run out it sets the timestep to 0!
+		- Fixed substepping
+- Investigating divergence
+	- Scheduling burns does not always invalidate the paged rail?
+		- [ ] Invalidating the rail seems to leave some pages untouched at high time speed?
+- Fixed rail data events not being handled properly when the rail is invalidated/rewound
