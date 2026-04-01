@@ -1,0 +1,324 @@
+---
+tags:
+  - devlog
+  - guns
+  - testing
+sidebar_position: 3
+---
+## Monday 2nd
+- Investigating potential issue with rail invalidation not rewinding far enough at high time speed
+	- Adding extra information to the inspector for data pages
+	- Doesn't seem to be a real bug
+- Cleaning up February notes
+- Modifying orbit rail picking to be done mostly in parallel jobs, instead of the main thread.
+	- Probably slower for a small number of picks, but scales much better for large numbers.
+- Added live-integration based extrapolation back into rail sampler (temporarily removed last month while developing live integration system)
+## Tuesday 3rd
+- Drafting "what is kessler" for Discord
+- Considering sensor/tracks refactor
+	- Current system:
+		- Relationships:
+			- `Sensor Platform` (E) -> `Sensor` (E)
+			- `Sensor Platform` (E) -> `TrackCollection` (C) -> `Track` (E)
+			- `Sensor Platform` (E) <- `Track` -> `Target` (E)
+		- System updates sensor(s), sensor updates track(s)
+			- This is a problem, sensor updates do a lot of spatial querying (expensive) and chase a lot of entity relationships (expensive)
+	- New idea:
+		- [ ] Rather than actually scanning the sky for tracks, create a new track for every detectable object in the universe when it is created. Only remove tracks when the target entity is destroyed.
+		- [ ] Attach `SensorTrackable` to things
+		- [ ] Implement `SensorTrackLifecycleSystem`
+		- [ ] Implement `SensorTrackable` on destroy logic
+## Wednesday 4th
+- AFK
+## Thursday 5th
+- Implementing new life cycle for sensor tracks
+	- [x] When a new `Trackable` entity is created, create a new `Track` entity for every `TrackCollection`
+	- [x] When a new `TrackCollection` is created, create a new `Track` entity for every `Trackable` and add it to the collection.
+	- [x] When a `Trackable` is destroyed, remove it from all `TrackCollection`s
+	- [x] When a `TrackCollection` is destroyed, destroy all `Tracks` that it owns
+- Added new way to get deferred entities after they're created in `Myriad.ECS`
+- Fixing bug in `Myriad.ECS` collect queries
+- [x] Track entities are not getting created
+	- Trackables and platforms are created on the same frame, so neither creation logic runs!
+- [ ] Phased array radar cannot track things (because position deviation of new tracks is infinity)
+	- Expected - need to add broadband scanning
+- [x] Need to add a max cap on deviation values now that they're no longer culled when large
+## Friday 6th
+- Converting deviation decay systems to jobs
+- Converting sensor cross reference systems to jobs
+	- Not doing this, they all reference the same data as each other so there's less parallelism available without a refactor
+- Improving `TypedEntityReference` in `Myriad.ECS` (faster, simpler)
+## Monday 9th
+- Improving visualisation in RADAR test scene
+- Creating components for tracks, for the new sensor updating system
+- Created system to initialise tracks with sensor info
+	- [ ] Need to calculate time factor for tracking
+- Created system for RADAR Scan
+	- [x] Implement this
+	- [ ] Line of Sight check
+		- [ ] Shared system between all sensor systems for kepler body positions?
+- Created system for RADAR Track
+	- [x] Implement this
+- todo:
+	- [x] Tracking beam size
+	- [x] Tracking duration
+	- [ ] Line-of-Sight Obstacles
+	- [ ] Remove unused fields of PhasedArrayRadar
+## Tuesday 10th
+- Updating RADAR track system to decide which tracks it should track
+	- Overall tracking is slower, the more targets there are
+- Creating RADAR scanning
+	- Count contacts
+	- Decide which ones to track
+	- Determine beam angle and SNR based on worst case assumptions about track position/range etc
+- todo:
+	- [x] Line of sight
+	- [x] Remove unused fields of PhasedArrayRadar
+	- [x] Set threshold values (perfect/infinite error)
+- Profiling
+	- [x] GetRadarCrossSection: 5.26ms
+		- This can be cached!
+	- [x] CalculateSNR: 5.31ms
+	- [x] AdjustTrackingResolutionSNR: 2.37ms
+	- [ ] UpdateDeviations: 1.83ms
+## Wednesday 11th
+- Creating system to calculate all kepler positions every frame, sensors systems can use this to check LoS
+- Caching RCS (radar cross section) per-track
+- Pre-calculating some values in RADAR scanner and re-using them every frame
+- Jobbify RADAR scan
+	- Can't do this with current structure, list (components) contains a list (of sensors)
+- Created system to do LoS checks once, all sensors can use this
+	- [x] RADAR track
+	- [x] RADAR scan
+## Thursday 12th
+- Investigating GitHub CI runner for Unity projects
+	- https://github.com/game-ci/unity-test-runner
+- Debugging issue with resource disposal in job queries
+	- Job gates take a copy of the handle, so it's being disposed twice (on both copies)
+	- Needs future work to improve this
+- Testing obstacles/LOS with RADAR
+	- [x] Wrong range calculation
+	- [x] LoS check is inverted
+	- [x] LoS should be line segment not infinite ray
+	- [x] comparing SNR and SNR(dB) is wrong
+	- [x] Properly handling zero range (clamp to 1mm minimum)
+	- [x] Fixed RADAR tracking time factor
+## Friday 13th
+- More work on CI
+	- Access token for private packages
+	- Hanging forever while running edit mode tests?
+- Improved sensor track inspector (fixing perf issues with lots of tracks)
+- Setting up test coverage reporting
+- Tests for various helpers/extensions:
+	- Colour
+	- Span
+	- Stats
+		- Variance is wrong (incorrect weight)
+		- StdDev is wrong (same reason)
+	- Find Min/Max
+	- List
+	- Rail serialisation
+	- Quaternions
+		- IsNaN checks check is incorrect
+	- Enum
+	- Plane
+	- ULong
+	- v128/v256
+	- TimeSpan
+## Monday 16th
+- Updating editor version to `6.3.11f1`
+- More tests!
+	- long3
+		- Fixed off-by-one bounds checking, actual memory safety error!
+	- BoundsMinMax
+	- BitList128
+	- BitList256
+	- FixedSizeStackList
+	- Metre3
+	- LineSegment3D
+		- Sphere intersection test broken
+		- Line closest point not clamping to segments properly
+	- BoundsSphere
+	- Double3Extensions
+	- NativeHashMapExtensions
+	- NativeArrayExtensionsTests
+	- RootFinder
+		- Inverse interpolation checks the bounds of the guess incorrectly, sometimes guessing a worse value
+	- NativeSliceExtensions
+	- NativeHashMapExtensions
+	- NativeMultiHashMapExtensions
+	- SimpleRandom
+	- NormalizedRay3D
+		- Double normalisation (not a bug, just inefficient)
+	- UnityMathematics.Random.Extensions
+	- System.Random.Extensions
+	- Up to 13.2% total coverage
+	- ColorConverter
+		- Falling back to default colour (magenta) due to incorrect formatting
+	- JSON SingleOrArrayConverter
+	- InterceptCalculator
+		- Failing to calculate intercept during projectile boost phase
+			- Running out of iterations in the root finder
+			- Reduced max-time, no point searching for intercepts so far into the future
+- Designing orbital intercept solver
+	- Writing a lambert solver, going to need this to solve intercepts in keplerian space
+## Tuesday 17th
+- Continuing with lambert solver
+	- Building a single-revolution variant (this is what I actually need 99% of the time)
+	- Tests
+	- Optimisation
+- Messing with some ideas for a cool menu design
+	- https://www.youtube.com/watch?v=YQz-ZpTW3A4
+	- https://www.youtube.com/watch?v=9pKj3PnHw3Y
+## Wednesday 18th
+- Tests
+	- Octree
+	- Parallel Octree
+	- Ray3D
+		- Fixed NaN for parallel/zero length rays
+	- ExponentialMovingAverage
+	- SweptBoundingSphere
+		- Incorrect AABB
+	- DualRailZipper
+- More menu work
+## Thursday 19th
+- Tests will continue until morale improves
+	- SceneUnit
+	- SceneUnit3
+	- SingleExtensions
+	- `NetworkWriter`/`NetworkReader` extensions
+	- JobExtensions
+	- GameObjectExtensions
+	- BoundsCone
+	- long3 operators
+	- Root finder fuzzing
+		- Fixed bug in handling negative ranges which caused it to diverge away from solution!
+	- Particle swarm optimisation
+	- 22.6% coverage
+- Creating scene for testing orbital gunnery
+	- Systems for shooter and defender
+	- Tag components
+	- Refactoring system/scenario loading
+- Adding some new capabilities to campaign/scenario loading
+	- "Parallel" orbit generation
+	- Vector generators
+## Friday 20th
+- Fixing RootFinder bug exposed yesterday
+- Gunnery test scene
+	- Setting up system to shoot at defender
+	- [x] Spawning bullets - need to setup position sync components for them!
+	- [ ] Bullets are not attached to rails - rail sampler query is not picking them up for some reason
+- Refactoring NBody setup
+	- Split into 3 components: `NBody`, `LiveNBody`, `RailNBody`
+	- New setup struct - forces choices of one of the three integrator types (rail, live, none)
+	- New editors for the new components
+	- [x] Update integrator systems to use new components
+	- [x] Fix all call sites
+- Fixed thread safety issue in `Myriad.ECS` query jobs
+## Monday 23rd
+- Investigating why test bullets are not having their position set
+	- Recent changes for extrapolation in rail system added a requirement that Nbodies have the capability to make burns (needed for extrapolation). Bullets don't have this!
+- Added 1 second of extrapolation to all rails when first created, gives time for position systems to warm up
+- Added activation to scene objects, so they can be disabled until the position is first set
+- Investigating parallelising `FindClosestVisualProximitySystem`
+	- Needs access to `Entity` which isn't possible in a job query
+	- Exposing `EntityId` array in `Myriad.ECS`
+		- [ ] todo: use this in job queries
+## Tuesday 24th#
+- Updating Myriad+Unity integration to expose entities to job queries
+- Updating `FindClosestVisualProximitySystem` to use job for some of the work
+- Attaching gun (using bullet chain system) to test ship
+	- [x] System to assign targets to guns
+	- [ ] System to points guns at targets and shoot
+		- Setting up gun rotation local transform
+		- Optimising bullet link culling
+## Wednesday 25th
+- Refactoring some more bullet culling systems
+- Encountered exception testing at high time speed
+	- `IndexOutOfRangeException` in `Myriad.ECS.Worlds.Chunks.Chunk.AddEntity`
+	- Adding tests to cover this
+		- Reproduced the error - full chunks are not handled properly in some cases
+		- Fixed
+		- Also optimised `Archetype.HasComponents` checks while working on this
+			- Replaced set membership check with array lookup
+- Created basic system to point guns at assigned targets
+	- Shooting the wrong way?
+		- [ ] Need to use `WorldTransform` to determine gun direction for aiming
+## Thursday 26th
+- Implementing gun aiming properly
+	- It works!
+- Switching job query scheduler to use finer grained scheduling (per `archetype+component`, instead of just per `archetype`)
+	- Updating safety system
+	- Updating all query types
+	- Updating Unity+Myriad package
+## Friday 27th
+- Improving bullet rendering
+	- Shorter
+	- Brighter
+	- Additive blending
+	- Replaced texture with a soft curve
+	- Randomised brightness
+		- Removed this, don't have a stable per-bullet ID to use in the shader for randomisation
+- Setting up test projectiles with collisions
+	- Target needs:
+		- `BroadphaseSphere`
+		- `NarrowphaseCollider`
+			- Need to tag collider leaves with entity ID
+				- Made this optional - use the root entity if the leaf is not tagged with an entity
+- Optimising collision handling system
+	- [ ] Use typed reference for `BulletNarrowPhaseHit`?
+		- [ ] `LinkEntity`
+		- [ ] `ColliderId`
+		- No point, hit is only used once so caching doesn't help!
+- Fixed damage model lookup (no longer fetching armour damage model from the bullet!)
+- Setting up damage model
+	- Target needs `ArmourComponents.DamageModel`
+	- Bullet needs `BulletDamageContainer`
+		- Attach to gun, it will be auto copied to bullets
+- Narrowphase collision handling is incredibly expensive
+	- Looks like it's the job completion that's taking time
+		- Maybe due to the use of a ParallelQueue (it's safe, but still has thread contention to maintain an ordering guarantee that I don't actually need)
+		- Investigating writing a custom `NativeBag` parallel collection
+			- Maybe I can use `NativeStream`?
+			- Using `NativeArray<UnsafeList>`
+			- No change D:
+		- `innerLoopbatchCount` was set way too high. Problem solved.
+		- [ ] This _could_ be expanded to a pipeline with more parallelism
+			- Job 1 processes pairs into individual bullet rays
+			- Job 2 goes parallel over individual rays
+## Monday 30th
+- Added temp code to delete entities as soon as they take a hit from a bullet
+- Setting up kinematic chain for turrets (base rotates to azimuth, barrel rotates to elevation)
+	- [x] Temp component for rotating base to target yaw
+	- [x] Temp component for rotating gun cradle to target elevation
+	- [ ] Port temp stuff to permanent system
+- Messing with some ideas for rendering flares from phased array lasers
+	- Place quad on array, billboard to camera, draw flare pattern calculated by shader
+	- GPU friendly Approximation for sidelobes: https://www.desmos.com/calculator/aevjp5ss0z
+## Tuesday 31st
+- Finished up temp systems for turret pointing
+- Added a new system resource cleanup to `Myriad.ECS`
+	- Using this in bullet system group
+- Ported turret rotation code to a proper system
+- Researching assignment problem (optimally assigning PDCs to incoming targets)
+	- Algorithms:
+		- Hungarian algorithm is optimal, but `O(n^3)`
+		- Greedy assignment (assign best gun to best target, repeat) is fast but non optimal
+		- Auction Algorithm is fast and near optimal
+	- Some extra complexity:
+		- Multiple targets (jobs), more than number of PDCs (workers)
+		- Costs change constantly (every bullet that is fired reduces the danger, since that target has a probability to be destroyed)
+		- Multiple guns could attack one target
+		- Some guns might want to target groups of close objects (e.g. flak)
+		- Some guns may attack multiple targets, but get less efficient for every one they attack simultaneously (e.g. phased array laser)
+- Building system to link together gun targeting and turret kinematic chain
+
+
+- CreateSpaceshipEntity
+	- Needs an object specifying gun mounts as an initial field
+- Missiles
+	- [ ] Sensors tracking missiles
+- Camera
+	- Add an option to snap view to locked onto an orbit gizmo
+- Turrets
+	- [ ] Split `Gun` component up a bit?
