@@ -3,6 +3,7 @@ tags:
   - devlog
   - guns
   - testing
+  - sensors
 sidebar_position: 3
 ---
 ## Monday 2nd
@@ -312,13 +313,3 @@ sidebar_position: 3
 		- Some guns might want to target groups of close objects (e.g. flak)
 		- Some guns may attack multiple targets, but get less efficient for every one they attack simultaneously (e.g. phased array laser)
 - Building system to link together gun targeting and turret kinematic chain
-
-
-- CreateSpaceshipEntity
-	- Needs an object specifying gun mounts as an initial field
-- Missiles
-	- [ ] Sensors tracking missiles
-- Camera
-	- Add an option to snap view to locked onto an orbit gizmo
-- Turrets
-	- [ ] Split `Gun` component up a bit?
