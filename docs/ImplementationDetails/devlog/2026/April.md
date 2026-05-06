@@ -1,0 +1,232 @@
+---
+tags:
+  - devlog
+  - lobby
+  - multiplayer
+  - menu
+  - ui
+sidebar_position: 4
+---
+## Wednesday 1st
+- Finishing up orbital gunnery work from March
+	- Moving target assignment components from turret base to gun
+		- Gun controls turret, instead of the reverse
+	- Splitting up` Gun` component
+		- `GunMuzzleVelocity`
+		- `GunBulletDivergence`
+- Writing up March notes
+## Thursday 2nd -> Monday 6th
+- AFK: Easter Holiday
+## Tuesday 7th
+- Updating packages
+- Trying to get GitHub CI building and running edit mode tests
+	- Ran out of disk space?
+	- Added a build step to free up as much space as possible on the runner (https://github.com/jlumbroso/free-disk-space)
+	- Asset importer is crashing
+		- Switched to Windows fixed it
+	- Access issues with private packages again
+- Continued work on menu
+	- Colour theme
+	- Settings menu skeleton
+- Investigating how inviting people to play through Steam works
+	- [ImplementationDetails/Multiplayer/Steamworks]
+## Wednesday 8th
+- Creating mod config file
+- Setting up mod settings menu skeleton
+- Designing lobby creation flow
+	- Need to handle lobby creation failure to allow offline play!
+- Creating `GlobalLobby` wrapper, which abstracts lobby handling
+- Creating `SteamworksAsync`, handling the complexity of calling Steamworks methods as a simple `async` call.
+- Implemented `OfflineLobby` and `SteamworksLobby`
+## Thursday 9th
+- Steam is problematic for testing - cannot run 2 instances of the game locally.
+	- Build a simple lobby service I can run locally, acts as a different backend to the lobby in game
+	- Build simple websocket server with similar semantics to Steamworks
+		- Using ASP.NET
+		- Build client side connection
+			- [x] Connect
+			- [ ] Create lobby
+			- [ ] Set data
+			- [ ] Leave lobby
+			- [ ] Events on data change
+	- Json serialization is difficult
+		- `System.Text.Json` _can_ be used with Unity but it pulls in a lot of deps
+		- `Newtonsoft` can be used, but requires a specific version which is a Unity package. Depending on it might conflict
+		- (Roll on CoreCLR upgrade, fixing this)
+		- ~~Write my own very basic JSON read/writer?~~
+		- Use `HandySerialization` (already in use for game networking)
+## Friday 10th
+- Work on lobby server
+	- Serialization
+	- More packet types
+	- Event handling (informing clients when things change)
+	- Publishing protocol package to nuget, common to client and server
+- Splitting up experimental client side code into separate "providers":
+	- Unsteam (my testing server)
+	- Steam (duh)
+	- Offline (fake provider, for when Steam is down)
+## Sunday 12th
+- Building a CLI application to interact with test lobby server, handy for testing
+## Monday 13th
+- Continuing lobby CLI test app
+	- Implementing chat
+	- Storing state in client
+	- Unit testing
+- Implementing some of the Steam lobby system in main game
+- Implementing "offline" lobby system (always fails to create a lobby)
+- Fixing issues with async Steam call cancellation
+## Tuesday 14th
+- Installing `uLayout` (`https://github.com/pokeblokdude/uLayout.git`)
+	- Having some weird issues with sizing - stale cache?
+- Building mod config panel
+	- Scroll views are pain
+- Back to working on lobbies
+	- Using https://github.com/endel/NativeWebSocket in Unity
+	- ~~Cannot connect~~ It helps if the server is running
+	- Hooking up event handlers for creation/join
+	- `Connect` is hanging forever?
+		- Seems like the returned task contains an infinite loop (the message pump) and should not be awaited?
+## Wednesday 15th
+- Fixing connection hang
+- Implementing other message types for lobby server
+	- [x] LobbyCreated
+	- [x] LobbyEnter
+	- [x] LobbyChatUpdate
+	- [x] LobbyDataUpdate
+	- [ ] LobbyChatMessage
+- Setting up lobby screens in menu
+- Creating a loading spinner modal overlay
+## Thursday 16th
+- AFK most of the day
+- Setting up campaign lobby canvas
+- Adding planets to main menu background
+	- Configuring camera shots for each planet
+- Menu state management
+	- Loading
+	- Creating lobby
+	- Show lobby
+	- [ ] Handle failure
+		- [ ] Add a popup
+## Friday 17th
+- Setting up campaign/scenario menu skeleton
+	- Title
+	- Leave/Ready buttons
+	- Main content panel
+	- State manager
+- Fixing loading spinner
+- Leaving lobby
+	- [ ] Steam
+		- [ ] Add callbacks/events for leaving
+	- [ ] Unsteam
+	- [x] Offline
+## Monday 20th
+- Background camera controller for main menu
+- Tweaking postprocessing profile
+- Setting up campaign/scenario menus (lobby browser)
+- Scenario lobby list UI
+- Fetching lobby data
+	- [x] Common framework for it
+	- [x] Steam
+	- [x] Unsteam
+		- [x] Server
+		- [x] Client
+	- [x] Offline
+	- [ ] Show lobby data in UI
+## Tuesday 21st
+- Setting up metadata keys for lobbies
+	- Every lobby has a name
+- Lobby list UI
+	- Error overlay
+	- Loading spinner
+	- "No Games" state
+	- Prefab per lobby
+		- [ ] Name
+		- [ ] Map/Scenario
+		- [ ] Ping
+		- [ ] Other flags?
+			- Ranked
+			- Password
+			- Player Count
+- Lobby ping estimation
+	- [x] Unsteam
+	- [x] Steam
+## Wednesday 22nd
+- Auto changing theme colour when planet switches
+- Implementing ping estimation for lobbies
+	- [x] Steam
+	- [x] Unsteam
+- Lobby list item
+	- [x] Match name
+	- [x] mode
+	- [x] map
+	- [x] player count
+	- [x] ping
+	- [ ] Other labels?
+- Add player count to lobby metadata object
+## Thursday 23rd
+- Tweaking lobby list item
+	- [x] Player count text formatting
+	- [x] Error handling
+	- [x] Click handler (join on click)
+	- [ ] Joining modal
+		- [ ] Password popup
+			- Style
+			- Submit button
+			- Cancel button
+			- Submit on enter
+			- Join task
+				- [x] Switch to event based?
+	- [x] Password/Lock icon
+- Fiddling with Jupiter texture quality
+	- Compressed 16k source texture enough to use (100MB file size limit)
+	- Increased VRAM usage from 128MB to 512MB!
+	- Barely noticeable quality difference in scene
+	- Reverted to 8k
+## Friday 24th
+- Setting up lobby join event handler
+- Updating Unsteam lobby server to handle creation/metadata better
+	- [x] HTTP endpoint for create (instead of websocket message)
+	- [x] Initial metadata in creation request
+	- [x] Return initial metadata in creation response
+	- [x] Join endpoint
+- Requiring that lobbies are tagged with certain metadata
+- Collection serialisation for [HandySerialization](https://github.com/martindevans/HandySerialization) library
+## Monday 27th
+- Updating `Myriad.ECS` version in integration package
+- Updating packages in main project
+- Updating packages in Unsteam server
+- Begun setting up lobby player list
+	- Adding way to get player list from lobby
+	- Properly sync lobby member data in Unsteam
+		- [x] Server
+		- [x] Client
+## Tuesday 28th
+- Fixing issue with Unsteam lobby membership tracking
+- Retrieving name/avatar from Steamworks
+- Setting up lobby player plate UI
+	- [x] Raw ID
+	- [x] Name
+	- [ ] Avatar
+	- [ ] Rank?
+	- [ ] Selected fleet?
+- Setting up Steamworks stats tracking
+- Calculating a user rank based on total games played as well as overall win rate
+## Wednesday 29th
+- Designing rank calculation algorithm
+- Player panel:
+	- Ready indicator
+	- Rank badge icon
+	- Avatar
+- Designing team panel
+	- Title bar
+		- Name
+		- Player/Slot count
+		- Join button
+		- Add AI button
+		- Total fleet point value (mass/cost)
+## Thursday 30th
+- Laying out team panel header
+- Adding ID to `Campaign`/`Scenario` objects
+- Spawning team panels from scenario spec file
+- Adding budget (mass and money) to scenarios
+- Showing budget on team panel
