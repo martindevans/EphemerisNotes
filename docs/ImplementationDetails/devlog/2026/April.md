@@ -11,7 +11,7 @@ sidebar_position: 4
 - Finishing up orbital gunnery work from March
 	- Moving target assignment components from turret base to gun
 		- Gun controls turret, instead of the reverse
-	- Splitting up` Gun` component
+	- Splitting up `Gun` component
 		- `GunMuzzleVelocity`
 		- `GunBulletDivergence`
 - Writing up March notes
@@ -28,7 +28,7 @@ sidebar_position: 4
 - Continued work on menu
 	- Colour theme
 	- Settings menu skeleton
-- Investigating how inviting people to play through Steam works
+- Investigating how inviting people to play through Steamworks
 	- [ImplementationDetails/Multiplayer/Steamworks]
 ## Wednesday 8th
 - Creating mod config file
@@ -230,3 +230,4 @@ sidebar_position: 4
 - Spawning team panels from scenario spec file
 - Adding budget (mass and money) to scenarios
 - Showing budget on team panel
+- Creating dropdown selector prefab
