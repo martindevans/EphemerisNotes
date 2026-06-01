@@ -1,0 +1,271 @@
+---
+tags:
+  - devlog
+  - lobby
+  - multiplayer
+  - menu
+  - ui
+sidebar_position: 5
+---
+## Friday 1st
+- Finishing April work
+- Implemented leaving Unsteam lobby
+- todo:
+	- [x] Leave lobby button
+	- [x] Indicate over budget
+		- [x] cost
+		- [x] mass
+	- [x] show player in team
+		- [x] implicit spectator team
+		- [x] switch teams
+	- [x] set title text
+	- [ ] choose campaign/scenario
+	- [x] metadata
+		- [x] map
+		- [x] mode
+		- [x] name
+		- [ ] password
+## Monday 4th
+- Lobby `Invite` button
+- Added button to select a random scenario
+- Showing lobby title
+- Adding IDs to all test campaigns/scenarios/teams
+- Adding budgets to all teams
+- Ready state
+	- [x] Per-player indicator
+	- [x] Toggle ready
+	- [ ] Launch game when ready
+- Password
+	- [x] Button
+	- [x] Click to show overlay
+		- [x] dismiss overlay
+	- [ ] Change password
+	- [x] Set "is password protected" state
+## Tuesday 5th
+- Building application to test through Steam
+	- Fixing some build errors (editor only stuff)
+	- Testing
+		- [x] Launching app hangs for ~5 seconds
+		- [x] Menu transitions are sluggish?
+		- [ ] Lobby list doesn't show anything
+		- [x] Steam overlay won't open
+	- Investigating hang
+		- `TMP Parse Text`/`TryAddCharacter` takes all the time
+		- Switching from dynamic to static font asset seems to have fixed it
+			- Docs: https://docs.unity3d.com/Packages/com.unity.textmeshpro@3.2/manual/FontAssetsDynamicFonts.html
+	- Investigating overlay
+		- Now it works *shrug*
+	- Sluggish transitions
+		- Probably the same font issue
+	- Testing round 2
+		- Game won't launch
+			- Need `steam_appid.txt`!
+- Refactoring some code into lobby helper methods, simplifying UI code
+- Creating script to launch gameplay when everyone is ready
+	- Right now that's a no-op
+- Testing 3
+	- [ ] Leave and rejoin doesn't work
+		- Definitely *rejoin* that's broken
+	- [ ] Password text doesn't always auto focus (inconsistent)
+## Wednesday 6th
+- Fixing issues from test yesterday:
+	- [x] Leave and rejoin:
+		- Leaving lobby never updated lobby service, so it never knew we left in the first place!
+	- [x] Password autofocus
+- Adding tooltip to rank badge
+- Started adding UI for selecting fleet
+- Creating Dropdown prefab
+## Thursday 7th
+- Fleet selection for player
+- Fleet serialisation system
+	- Loading fleets
+	- Caching fleets
+	- Lightweight fleet info (name/description etc without full spec)
+	- Caching fleet info list
+## Friday 8th
+- Updating to Unity 6.4
+	- Installing (6000.4.6f1)
+	- Backup copy (on desktop, Unity 6.3)
+	- Errors:
+		- [x] Shapes error
+			- Fixed by update
+		- [x] Unified Universal Blur
+			- Issue: https://github.com/lukakldiashvili/Unified-Universal-Blur/issues/54
+			- PR Fix: https://github.com/lukakldiashvili/Unified-Universal-Blur/pull/55
+			- Removed package
+	- Warnings:
+		- `GetInstanceID`
+			- Replace with `GetEntityId().GetHashCode()`
+		- `FindFirstObjectByType`
+			- Replace with `FindAnyObjectByType`
+		- `FindObjectsByType`
+			- Replace with `FindObjectsByType` without sort param
+	- Features:
+		- Enabled direct storage
+## Saturday 9th - Thursday 14th
+- On Holiday!
+## Friday 15th
+- Investigating shader warmup
+	- PSO caching:
+		- https://discussions.unity.com/t/prevent-shader-compilation-stutters-with-pso-tracing-in-unity-6/951031
+		- https://docs.unity3d.com/6000.3/Documentation/Manual/shader-prewarm.html
+- Refactoring lobby fleet selection
+	- Splitting self/other into two behaviours
+	- Handling spectators properly
+	- Moving UI (Dropdown) management into one place
+	- Async loading of fleet listing
+- Launching gameplay when all players are ready
+	- Adding start game event to lobby interface
+		- [x] Unsteam server
+		- [x] Unsteam lobby client
+		- [x] Steamworks client
+## Saturday 16th
+- Upgraded Myriad Unity package to Unity 6.4
+- Created https://github.com/martindevans/HandyUnityLogging
+- Checked old bug report: https://unity3d.atlassian.net/servicedesk/customer/portal/2/IN-133371
+	- Fixed in Cinemachine 3.1.6!
+## Monday 18th
+- Creating script to begin connecting network session when lobby is "launched"
+	- [ ] Host
+	- [ ] Client
+- Creating loading scene
+	- Spawn network manager
+	- Configure address and connect network
+	- Spawning player prefab
+- Tweaking Io planet texture (reducing saturation)
+## Tuesday 19th
+- todo:
+	- [x] Handle exception in `ScenarioLoaderController.LoadAsyncExceptionHandler`
+		- [x] Destroy network
+		- [x] Transition to main menu
+		- [x] Popup on main menu with error message
+	- [x] Handle exception in NetworkScenarioLoader
+	- [x] Fix time control
+		- Just needs a player entity spawned to hold state
+	- [ ] Replace game scene UI/HUD
+	- [ ] Add orbits to all scenarios
+	- [x] Set name for network players
+	- [x] Delete old lobby data system
+		- `Assets.Scenes.Multiplayer0.Scripts.Lobby`
+	- [x] Spawn player object explicitly on server
+		- [ ] Send object with player config
+			- [x] Name
+			- [x] ID
+			- [x] Team
+			- [ ] Fleet?
+		- [x] Move into UniTask/async
+## Wednesday 20th
+- Updating Unified Universal Blur
+	- Removed on Friday 8th, fix has been merged upstream now
+	- Updated in UI project
+	- Added back to main project
+- Refactoring network connection script
+	- Cleaning up connection scene
+- Modifying UI framework to store theme settings in an asset (re-usable across scenes)
+	- `ThemeColor` asset
+	- `ThemeTint` asset
+	- Integrating with existing assets (backwards compatible)
+	- Updating editor
+	- Helpers for converting old format to new format
+	- Creating editors for new types
+	- Fixing styling on `Connecting` panel in main project
+- Passing per-player team GUID over network
+## Thursday 21st
+- Removing mask bullet effect on menu
+- Adding ship info to fleet file
+	- Refactoring storage caching of fleets in memory
+	- Serialisation to JSON and bytes
+- Cleaning up network scenario loading code
+- Adding some more tests
+	- Suppressing coverage for various things
+	- Fixed bug with radar/optical resolution scaling with aperture area instead of diameter
+## Friday 22nd
+- Splitting some prototype code off to separate assemblies, so they can be ignored in coverage
+	- DockingSimulator
+	- GunLeadingOrbital
+- More tests
+	- RADAR physics
+	- Optical physics
+	- Kepler BodyProperties
+	- OrbitRailPage
+		- Fixed bug calculating the end time of the page
+	- RailEvent
+	- UserRank
+	- NativeArrayOfEngineBurnExtensions
+	- ExtractPairsJob
+	- NumberGenerator/Vector3Generator/OrbitGenerator
+- Recreating RADAR scenario: goldstone planetary radar tracking 3mm sphere 1000km away
+	- Sanity checking numbers
+	- Implementing helper for Johnson-Nyquist thermal noise calculation
+	- Unit mixup bug!
+		- Noise is in watts (power)
+		- receive is in joules (energy)
+	- Helper function for RCS calculation
+		- Including Rayleigh scattering
+		- Not including Mie scattering, nobody likes Mie
+## Monday 25th
+- Splitting off more prototype code into assemblies
+	- GunLeading
+	- Missiles
+	- RadarBeams
+	- Octree
+	- OpticalLandingSystem
+	- ReferencePlane
+	- TurretTargeting
+	- Symbols (instanced)
+	- SweptSphere
+- Additional tests
+	- BodyProperties
+	- PhasedQuery
+		- Fixed edge case with zero phases not working properly
+	- EventBus
+	- Layers
+	- FleetInfo
+	- RootFinder (Quadratic)
+	- RootFinder (Iterative)
+	- NativeArrayOfUnsafeListExtensions
+	- WorldExtensions
+	- IncrementalUpdateOctreeSystem
+## Tuesday 26th
+- Tests will continue until morale improves:
+	- `EngineBurn`
+	- Entity Selection
+- Modifying lobby system to better handle current lobby membership
+- Adding fleet creation to `NetworkScenarioLoader
+	- [[Connection & Loading Process]]
+	- Back and forth designing process
+		- Client spawns fleet
+		- Server spawns fleet
+		- Client spawns individual ships
+	- Decision:
+		- Once planet loading is done, switch game to "spawning mode", time is frozen and players can create ships (choosing initial orbit etc). Server checks budget remains within limits.
+- Switching lobby helper methods to use GUIDs directly instead of strings
+	- Removed a load of possible error paths where a string was not a valid Guid
+## Wednesday 27th
+- Testing
+	- RKF45 Integrator
+		- Basic kinematic checks
+	- RailIntegrator
+		- More advanced orbital tests
+	- Cleaned up memory leaks in test code
+- Setting up temp UI for spawning ships
+- Creating `ShipSpawningManager` to handle loading process
+	- ShipSpawningManager
+		- Manages process
+		- Handles comms
+	- ShipSpawningRootElement
+		- Root UI element
+			- Interfaces defining nested elements
+- This sucks, refactoring:
+	- Building a central "game state manager" which allows the server to explicitly switch states
+		- Auto show/hide loading overlay when in loading state
+		- Auto how/hide spawn menu when in spawning state
+	- Creating NetworkBarrierManager which handle generic synchronisation of all players
+		- They all block on a "barrier" waiting for everyone else to do the same
+## Thursday 28th
+- Switching loading overlay and spawn menu to manage themselves based on gamestate
+- New script to manage loading overlay (event based, decoupled from actual loading)
+- It's too hot to think.
+## Friday 29th
+- Setting up loading progress UI to use new event based loading progress system
+- Tweaking menu UI (removing spinning mask thing that confused everyone)

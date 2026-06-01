@@ -97,3 +97,6 @@ var pos3 = _quaternion * new Vector3(x, y, 0);
 ```
 
 This is where the final orbital parameters are used, they define a plane which tilts the $x$,$y$ position into 3d.
+
+## References
+- https://www.alanzucconi.com/2025/09/04/orbital-mechanics/
