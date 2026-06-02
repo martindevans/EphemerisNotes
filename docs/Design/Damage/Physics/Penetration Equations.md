@@ -1,3 +1,9 @@
+---
+tags:
+  - physics
+  - article
+  - kinetic_weapons
+---
 Penetration equations calculate the effects of an impact on armour. Cratering, spalling and full penetration.
 ## Glossary
 - **Crater depth**: depth of crater without penetration.
