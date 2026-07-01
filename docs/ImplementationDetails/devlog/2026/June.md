@@ -1,0 +1,246 @@
+---
+tags:
+  - devlog
+sidebar_position: 6
+---
+## Monday 1st
+- Cleaning up May notes
+- Updates dependencies in Ephemeris-Notes build/publish action
+- Adding `IsSpectatorPlayer` tag to player entities
+- Researching laser damage physics: [Lasers](Design/Damage/Physics/Lasers.md)
+## Tuesday 2nd
+- More laser research
+	- Airy disc size
+	- Jitter
+	- Game system:
+		- Measure range to target
+		- Calculate $M^2$, partly from initial ship design, partly from runtime modifiers (e.g. thermal stress)
+		- Calculate airy disc spot size at that range
+		- Apply jitter
+		- Use that spot size to calculate damage
+- Developing orbit editor gizmo
+	- Extracting orbit sampling jobs from `KeplerBodyLineRenderer`
+	- Fixed bug in kepler sampling job
+		- [x] Same bug is duplicated in `KeplerBodyLineRenderer`!
+		- Porting `KeplerBodyLineRenderer` to use extracted code, instead of keeping a copy
+## Wednesday 3rd
+- Unit tests for new kepler sampling jobs extracted from line renderer
+- Using polyline rendering for drawing orbit flattened into XZ plane
+	- Debugging why it's not rendering at all
+		- Weird ztest settings
+	- [ ] Need to add support for closed polylines
+	- Thickness can't go narrower than the base mesh
+	- Adding job to normalise polyline distances
+	- Removed polyline, doesn't really help with understanding orbit and can be confusing
+	- Adding ground track
+		- Rotations are weird?
+			- Kepler orbits calculate in swizzled coordinate frame (XYZ)
+			- Using plane normal instead
+	- Colouring orbit based on Y coordinate (above/below plane)
+		- Adding more points into the line either side of the zero crossing, for a sharper colour transition
+## Thursday 4th
+- More colours
+- Fixing transparency on flattened orbit (polylines in general)
+- Experimenting with lines attached to periapsis
+	- Dropline (periapsis to plane)
+	- Droparc (periapsis to plane)
+	- Arc from periapsis to ascending/descending node (whichever is closer)
+- Refactoring prototypes
+	- Split settings into sensible modules
+	- Share all orbit related calculations
+## Friday 5th
+- Changing all lines that are not in the orbit plane to grey, subtle hint on plane alignment `colour == in plane`.
+- Adding markers at the foci
+- Drop arcs from latus rectum points to plane
+- Simplifying colours scheme:
+	- Flat plane guidelines
+	- Orbit plane guidelines
+	- Out of plane guidelines
+- Adding support for open orbits (parabola/hyperbola)
+	- New method for generating orbit points, sweeping over true anomaly range instead of time
+	- All the guidelines are broken
+	- Added a new pole line through planet
+	- Not drawing both ascending/descending nodes if the orbit only crosses the plane once
+	- Not drawing apoapsis lines on open orbit
+	- Added back in ring drawing, ignoring rings that don't make sense
+- Added in Luna prefab, ~~rings are wrong scale?~~
+- Adding helpers for drawing arrows
+	- Straight
+	- Curved
+## Monday 8th
+- Fixing font error
+- Experimenting with curved arrow thickness
+- Added extra ring in XZ plane (where focus point droplines contact plane)
+- Adding mouse raycast for grab handles
+- Storing handle state (currently dragging etc)
+- Working out what guide arrows to show
+	- Periapsis
+		- [x] Altitude
+		- [x] Around orbit (in plane)
+		- [x] Inclination
+	- Apoapsis
+	- Descending node
+		- [x] Twist
+			- Circle
+			- Very twisty arrow
+## Tuesday 9th
+- Investigating how to do input properly
+	- Don't use `Mouse` directly, use a pointer
+	- Add generic input actions for things (next point, next mode, move value)
+	- Mouse and non-mouse will basically be two independent modes
+	- Added input settings class, with actions for next/prev mode
+- Refactoring orbit axes out into separate classes, to handle the extra state associated with input
+	- Also refactoring out handles
+	- Orbit editor -> handles -> axes
+	- [x] Twist axis
+		- [x] Ascending node
+		- [x] Descending node
+	- [x] Arc axis
+		- [x] Apoapsis in plane
+		- [x] Apoapsis perpendicular plane
+		- [x] Periapsis in plane
+		- [x] Periapsis perpendicular plane
+		- [x] Ascending node in XZ plane
+		- [x] Descending node in XZ plane
+	- [x] Linear axis
+		- [x] Periapsis alt
+		- [x] Apoapsis alt
+		- [x] Descending node alt
+		- [x] Ascending node alt
+- [ ] Input issue: `shift+tab` doesn't work, it always triggers the `tab` action
+	- Input consumption is enabled
+## Wednesday 10th
+- Refactoring to add input stuff to new axis classes
+- Implementing linear axis drag
+- Added "orbit modifier" interface that accepts axis values and modifies orbit
+	- [ ] Twist
+		- [ ] Ascending
+		- [ ] Descending
+	- [x] Arc
+		- Implementing dragging
+			- Dragging in the pi to 2pi range isn't working as expected?
+				- Orbit normal calculation breaks as it crosses over zero
+		- [x] Apoapsis in plane
+		- [x] Apoapsis perpendicular
+		- [x] Periapsis in plane
+		- [x] Periapsis perpendicular
+		- [x] Ascending in XZ
+		- [x] Descending in XZ
+	- [x] Linear
+		- [x] Periapsis
+		- [x] Apoapsis
+		- [x] Ascending
+		- [x] Descending
+- [ ] Need to lock out all other handles when any handle is active
+## Thursday 11th
+- Continuing with handles from yesterday
+	- Ascending XZ
+	- Descending XZ
+	- Apoapsis perpendicular
+	- Periapsis perpendicular
+- Locking handles so that multiple cannot be selected at once
+- Adding slight input damping, smooths out rapid mouse moves
+- Unifying twist axis to just be a special case of arc
+	- Need to change the line that connects mouse to twist ring
+		- Split into a base "curved arrow" class, with arc and twist subclasses
+## Friday 12th
+- Input mode for twist axis
+	- Click, drag to ring to set start point, drag around ring to set angle
+	- Capture initial inclination when dragging out of the ring, set inclination based on that + delta
+	- Draw angle ticks
+## Monday 15th
+- Adding "orbit validator" which checks that drag handles are not creating an invalid orbit
+- Switching some orbital methods to take `Radian` instead of `double`, verifying no unit confusion
+- Removed arc from apside to node (broken in some quadrants, doesn't really help visually)
+- Scanning orbit to find closest point to mouse
+	- [ ] Need to calculate the true anomaly for the selected point
+- Refactoring open/closed orbit sweep to unify them into the same method
+	- Removing camera adaptation, just render lots of points instead
+	- Keeping track of true anomaly for each orbit point, returning this so mouse selection can use it
+## Tuesday 16th
+- Adding flattened orbits back in
+- Experimenting with an indicator showing selected orbit point
+	- Crosshair, aligned with orbit radial out
+	- Line from mouse to orbit
+		- Change style when outside radius
+	- Separate setting for selection stuff
+		- [x] Move radius setting over
+- Refactoring:
+	- [x] Move orbit path to `Values` struct
+		- Some work can be done in a job while other drawing is happening
+		- Simpler lifetime management of native resources
+	- [ ] Add ability to create/destroy additional `TrueAnomaly` markers, usable by other systems
+		- Color
+		- Size
+		- Pulsing?
+## Wednesday 17th
+- Trying out [Project Auditor](https://docs.unity3d.com/6000.4/Documentation/Manual/project-auditor/project-auditor.html)
+	- Many _many_ false positives for code
+	- Useful results for content
+		- Tweaking importer settings for SFX and music
+		- Setting up default importers for audio with [Preset Manager](https://docs.unity3d.com/6000.4/Documentation/Manual/class-PresetManager.html)
+			- Applying to lots of audio clips
+		- Investigating creating a tool to force apply presets to folders
+			- Not easy, don't bother for now
+		- Enabled mipmap streaming
+		- Expanded async upload buffer
+- More tests
+	- Span sort
+	- Root finder edge cases
+	- `RigidTransformDouble`
+	- `Plane3D`
+	- Exclude pure data components to remove noise in coverage report
+	- Fixed some memory leaks in tests
+	- More stuff I forgot to take note of
+	- `PolylinePathGenerator`
+- Added `UnityEvent` for clicking on orbit and selecting a position
+## Thursday 18th
+- Converting `OrbitEditor` into prefab
+	- Fix render layer
+	- Input handling
+	- Icon is tiny when zoomed out
+		- Constant screen size
+- Ui panel to show orbit info
+- Todo:
+	- [ ] Create orbit container in spawn mode
+	- [ ] Create editor in spawn mode
+	- [ ] Bind them
+	- [ ] Create spaceship at selected point
+## Friday 19th
+- Experimenting with pork chop generator
+	- Potentially incorrect unit for velocity (km/s to m/s) in kepler calculation
+		- Switched to central difference for now
+	- Creating job to find minimums in a native array
+	- Creating a colourmap that can be used in jobs
+	- Job to convert double array to texture (with colourmap)
+	- Applying updates to texture is very slow?
+		- Solving lambert problem 1E6 times is overloading the job scheduler - other jobs are going slow because there's no space to schedule them. Something to be aware of when scheduling very heavy work in the future!
+	- Splitting work up into a quadtree, subdividing nodes that need it
+## Saturday 20th
+- Bilinear interpolation of quadtree data to texture
+## Sunday 21st
+- Triangulating quadtree, rendering as mesh with vertex colours
+## Monday 22nd - Friday 26th
+- **Too hot to think**
+## Friday 26th
+- It's still too hot
+- Improving mesh approximation of porkchop plot
+	- Adding centre vertex with triangle fan (better interpolation)
+	- Rejecting some nodes (very high dv value that we don't care about) for subdivision, using the extra details elsewhere
+	- Sharing vertices between adjacent triangles in mesh
+	- Still looks worse than texture (bilinear) version at all levels of detail
+## Monday 29th
+- Improving menu planet randomisation
+- Researching space based solar power projects, notes in [timeline](Setting/timeline.md)
+- Disabled fleet selection in lobby
+	- [ ] Remove all the supporting code for syncing fleet choice
+- Setting up selection of orbit point for spawning ships
+## Tuesday 30th
+- Investigating potentially incorrect velocity calculation in kepler orbit
+	- Unit test says analytical and central difference produce the same results
+	- Pork chop generator finds huge differences!?
+	- Mass mixup! For an orbit of Earth around Sol mass used should be Sol mass not Earth mass!
+	- Tightening up some unit tests around this area
+- Removed FleetStorage, refactored into ShipStorage
+- Removed fleet selection related bits from lobby
+- Add ship selection dropdown to in game spawn menu

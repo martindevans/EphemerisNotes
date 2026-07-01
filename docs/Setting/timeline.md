@@ -2,7 +2,7 @@
 title: "Future Timeline"
 ---
 
-## Actual Events
+## Planned Real World Events
 
  - 2021: [Lucy](https://en.wikipedia.org/wiki/Lucy_(spacecraft)) space probe (NASA) launches
 ---
@@ -30,7 +30,6 @@ title: "Future Timeline"
  - 2028: [Rosalind Franklin](https://en.wikipedia.org/wiki/Rosalind_Franklin_(rover)) Mars rover (ESA) launches
  - 2028: [Dragonfly](https://en.wikipedia.org/wiki/Dragonfly_(Titan_space_probe)) space probe (NASA) launches
  - 2028, Sept: [Artemis 4](https://en.wikipedia.org/wiki/Artemis_4) spacecraft (NASA) 4 person lunar orbit and landing using [Starship HLS](https://en.wikipedia.org/wiki/Starship_HLS)
- - 2028, Sept: [Lunar Gateway](https://en.wikipedia.org/wiki/Lunar_Gateway) space station (NASA) in lunar orbit
 ---
  - 2029: [99942 Apophis](https://en.wikipedia.org/wiki/99942_Apophis) asteroid passes by Earth at an altitude of 32,000km
  - 2029: [Rosalind Franklin](https://en.wikipedia.org/wiki/Rosalind_Franklin_(rover)) Mars rover (ESA) lands at Oxia Planum
@@ -41,6 +40,22 @@ title: "Future Timeline"
  - 2030, Sept: [Artemis 6](https://en.wikipedia.org/wiki/Artemis_6) spacecraft (NASA) 4 person lunar orbit and landing using [Starship HLS](https://en.wikipedia.org/wiki/Starship_HLS)
 ---
  - 2034: [Dragonfly](https://en.wikipedia.org/wiki/Dragonfly_(Titan_space_probe)) space probe (NASA) arrives at [Titan](https://en.wikipedia.org/wiki/Titan_(moon))
+## Proposed Events
+### Space Based Solar Power
+- JAXA OHISAMA
+	- Planned GW scale system in 2040s
+- China
+	- Planned MW demonstrator in 2030s
+- UK [Space Energy Initiative](https://spaceenergyinitiative.org.uk/space-based-solar-power/)
+	- 40MW demonstrator in LEO 2027-2030
+	- 500MW demonstrator in operational orbit 2032-2035
+	- 2GW production system in operational orbit 2036-2039
+- Overview Energy
+	- Demonstrator in 2028
+	- 1GW commercial power delivery in 2030
+- ESA
+	- [Solaris program](https://en.wikipedia.org/wiki/Solaris_(solar_power)) performed feasibility studies in 2022, with final results presented in 2025
+	- Program seems to have been killed, can't find any further news about continued funding past 2025. [Project homepage](https://www.esa.int/Enabling_Support/Space_Engineering_Technology/SOLARIS) is a 404.
 
 ## Reference
  - https://en.wikipedia.org/wiki/Future_of_space_exploration

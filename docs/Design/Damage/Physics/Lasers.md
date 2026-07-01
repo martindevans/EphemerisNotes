@@ -66,6 +66,7 @@ $$\theta_{actual} = M^2 \cdot \theta_{diffraction}$$
 
 ### Minimum Spot Size
 The smallest spot size a  laser can be focused to. Airy disc formula.
+
 $$R_{spot} = \frac{1.22 \cdot \lambda \cdot L}{D_{aperture}} \cdot M^2$$
 - $R_{spot}$ is the spot diameter
 - $\lambda$ is the wavelength of the laser
