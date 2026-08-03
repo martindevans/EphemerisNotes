@@ -215,6 +215,7 @@ sidebar_position: 6
 	- Job to convert double array to texture (with colourmap)
 	- Applying updates to texture is very slow?
 		- Solving lambert problem 1E6 times is overloading the job scheduler - other jobs are going slow because there's no space to schedule them. Something to be aware of when scheduling very heavy work in the future!
+		- Job system has no concept of scheduling priority to solve this
 	- Splitting work up into a quadtree, subdividing nodes that need it
 ## Saturday 20th
 - Bilinear interpolation of quadtree data to texture
