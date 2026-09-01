@@ -66,7 +66,7 @@ Wide bandwidth amplifiers are less efficient. This can be simulated by reducing 
 
 Very wide bandwidth can interfere with other equipment due to leakage. This could be simulated in game.
 
-Processing of higher bandwidth requires more samples (e.g. 1GH\ bandwidth needs 2GSamples/sec). More computing load from that maybe means other trade-offs, e.g. less channels.
+Processing of higher bandwidth requires more samples (e.g. 1GHz bandwidth needs 2GSamples/sec). More computing load from that maybe means other trade-offs, e.g. less channels.
 
 ### SNR
 Signal to noise ratio determines what can be seen at all. A RADAR requires a certain SNR threshold to detect anything.

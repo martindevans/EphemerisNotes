@@ -193,8 +193,8 @@ sidebar_position: 7
 	- [x] Campaign title
 	- [x] Scenario title
 	- [x] Figuring out layout rules to list scenarios inside campaigns
-	- [ ] Click scenarios
-	- [ ] Scenario search
+	- [x] Click scenarios
+	- [x] Scenario search
 - Big refactor, splitting campaigns and scenarios into separate assets
 	- [x] Fixing breakage
 	- [x] Creating `scenario.json` files

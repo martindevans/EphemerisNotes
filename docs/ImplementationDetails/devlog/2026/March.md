@@ -64,7 +64,7 @@ sidebar_position: 3
 	- [x] Tracking beam size
 	- [x] Tracking duration
 	- [ ] Line-of-Sight Obstacles
-	- [ ] Remove unused fields of PhasedArrayRadar
+	- [ ] Remove unused fields of `PhasedArrayRadar`
 ## Tuesday 10th
 - Updating RADAR track system to decide which tracks it should track
 	- Overall tracking is slower, the more targets there are

@@ -1,0 +1,244 @@
+---
+tags:
+  - devlog
+sidebar_position: 8
+---
+## Monday 3rd
+- Cleaning up July notes
+- Investigating issues from playtest
+	- [x] Multiple uploads issue
+		- Can't reproduce locally
+		- Switched to "Dynamic" buffers
+	- [ ] NaN tidal force
+		- 
+	- [x] No default ship file
+		- Already fixed with new `ShipStorage`
+		- Use this same technique:
+			- [ ] `CampaignStorage`
+			- [ ] `ScenarioStorage`
+			- [x] Building base class that all the other resource storage services can use
+				- [x] Base storage class
+				- [x] Resource/loader interfaces
+				- [x] Base source classes
+					- [x] Base
+					- [x] Folder
+					- [x] Steamworks
+			- [ ] Port `ShipStorage` to new base class
+	- [x] Old lobby hangs around
+		- Added a game exit handler which leaves the current lobby if there is one
+		- Probably not a huge problem, Steam will clean them up
+	- [ ] Client loads all planets
+## Tuesday 4th
+- Switching to new base class for resource loading
+	- [x] `ShipStorage`
+	- [x] `CampaignStorage`
+	- [x] `ScenarioStorage`
+		- Scenarios are used in places where async is inconvenient, likely to be an issue for others too as they're used more
+		- Preload all content, and provide sync access?
+	- Preloading content in an async Task, blocking on task on first access. We can ensure no blocking ever occurs if we wait on that task ahead of time (e.g. loading screen)
+		- Debugging deadlock
+		- Fixing scenario file names (`*.json` to `*.scenario`)
+## Wednesday 5th
+- ~~Switching `IResourceLoader` to read async from `StreamReader`~
+	- Cancelled, no real gain and it adds unnecessary complexity in some paths
+- Changing scenario format from folder with json in it, to just a plain json file
+- Make lobby provider loading async
+- Investigating why bullets are slowing down sim so much
+	- Implementing AABB query for Sweep & Prune
+	- Switching bullet rendering to use SAP for rendering
+	- Removed octree - collisions and rendering both use SAP
+## Thursday 6th
+- Refactoring bullet rendering to fill GPU buffers more efficiently
+	- Writing out redundant data to buffers, saving on the CPU overhead of discovering that it's redundant
+	- It's slower :|
+	- Some data fetches are redundant because that data is already cached. Use the cache.
+	- It's about the same speed now, but simpler and should scale better
+- Investigating slow culling of bullet entities
+	- Removing some unnecessary work inside the `CommandBuffer`
+	- Eager deleting the entire entity instead of modifying and then deleting
+	- Writing out bullet metadata less frequently
+		- This causes flickering?
+			- Due to triple buffer of compute buffers. Reverting.
+## Friday 7th
+- Investigating laser damage to armour
+	- Building `Attack` function for a single fast laser pulse
+	- [ ] Need to handle pulses arriving very fast (megahertz)
+## Monday 10th
+- [ ] General jobbified assignment system (using auction algorithm)
+	- [ ] `HandyJobs` package
+- Creating `HandyJobs` package
+	- Implemented Auction algorithm for assignment
+	- Demo scene CIWS using assignment
+## Tuesday 11th
+- Guns (with bullets) for PDC/CIWS demo scene
+	- Tracking bullets aimed at each incoming projectile
+	- Stats for bullet hits/misses
+	- Adjusting score of threat down based on number of bullets already fired
+		- Rough proxy for likelihood that this target will survive to hit
+		- Massively improves bullet hit rate! (roughly 10x)
+- Improving allocation algorithm (early exit in best job search)
+## Wednesday 12th
+- [ ] Add flak guns
+	- [x] Add `FlakManager` to handle bullet spawning
+- [x] Modify spawning to spawn bursts of projectiles
+	- These will justify flak
+- Refactoring guns
+## Thursday 13th
+- Flak projectile
+	- RPF trigger
+	- Arming time
+	- Fuze time
+	- [x] VFX
+	- [x] AOE damage
+- [ ] Flak assignment
+	- Storing assigned flak shells in projectile
+	- Options
+		- Assign flak walls to cells of space?
+		- Assign flak to projectiles with many neighbours?
+- Prefix sum job
+	- [x] Tests
+## Friday 14th
+- [x] Investigating NaN tidal force issue
+	- Reproduction: Schedule a burn with a vehicle that has zero thrust
+	- Tank has zero capacity and zero fuel in it - fuel factor is NaN (0/0)
+	- Added IsNaN helper to HotStuff.Units
+	- Added extra sanity checking when creating burn (converting NaN to zero)
+	- Tank mass calculator was generating NaN mass values (due to invalid burns)
+- Fixing resource loader not working when Steam is disabled
+	- Technically not fixed, just made sure steam is actually enabled
+- Going back to pulsed laser, fixing some issues
+	- Previous code simulated one laser pulse - not useful at gigahertz levels!
+	- Adding in on/off time (duty cycle)
+	- Adding in attack duration
+	- [ ] Simulation code for sustained pulsed laser attack
+## Monday 17th
+- Pulsed laser simulation
+	- Shorter pulse delivers same energy thus more power to a smaller volume
+	- Longer off-time gives ejecta more time to clear
+	- Ideal gas law to approximate gas/ejecta clearance
+	- Unit tests
+	- Visualising results
+		- Shorter pulse with higher frequency does more damage
+		- Lower frequency is more efficient (mass removed per joule)
+## Tuesday 18th
+- Better visualisation for pulsed lasers
+- Unit test coverage on HotStuff
+	- Units
+	- Unit helpers
+	- Kinetic armour
+- Issue with lasers
+	- An extremely large attack (high energy or long duration) can deposit enough energy to melt a plate layer. The rest of the energy does not penetrate, it is simply lost. This would cause lasers to be ineffective at high sim speeds.
+	- Approach:
+		- Calculate max energy pulse will dump into plate, If it's more than 10% of melting energy shorten the duration and do that. Then continue with the rest of the pulses. This allows the plate to melt partially and become perforated, letting energy through to later plates.
+		- Simplified approach:
+			- Calculate how many pulses totally evaporate remaining plate, apply that. Move the rest of the pulses to the next layer. Also, if excess energy is deposited into a plate apply that excess to the next plate as bulk heating to lose less energy.
+## Wednesday 19th
+- Experimenting with iterative version of auction algorithm
+- Fixing laser issue with excess energy being lost if a plate is totally melted within one timestep
+## Thursday 20th
+- Creating `HandyJobs` repo (not yet public)
+	- Extracting some basic jobs from main project
+		- Fill random
+		- Reverse
+		- Set capacity
+		- Find minimum
+		- Read item
+		- Copy keys
+		- Copy values
+		- Clear
+	- Test coverage
+- Updating packages in main project
+	- Sonity
+	- HotStuff
+		- Adding new properties to armour plate materials
+	- HandyJobs
+		- Deleting code from main project that is now in HandyJobs
+- Investigating impact analysis display in IMPACT minigame
+	- Some links in VFX graph are broken
+	- Looks like anything involving sampling the data buffer broken, probably lost the type registration when upgrading the engine?
+## Friday 21st
+- Porting more jobs to `HandyJobs`
+	- ExtractPairs
+	- ExtractIndices
+- Porting extension methods
+	- Sum
+		- Rewriting to SIMD
+	- KahanSum
+		- Rewriting to SIMD
+		- Replaced with Neumaier sum instead
+- Updated main project
+	- Removing things that have been ported
+	- Using replacements
+## Monday 24th
+- Updating IMPACT minigame to add thermal analysis
+	- Not a priority right now!
+- Fixing `GunLeadingOrbital` test scene
+	- Resource loading (Steam not initialised)
+	- No ships (no longer part of the scenario)
+	- Fixed accidentally spawning projectiles at 0.19%c
+		- Setup intercepts at a fixed velocity (3.5km/s)
+- Adding `GroundMarkers` to scenario file definition
+- Looking back at sensor/RADAR code
+	- Came up with a better piecewise approximation for RCS
+		- Less config
+		- Cheaper to evaluate
+		- More accurate in Rayleigh region
+	- Investigating Scan/Track switching to Job system
+- Started prototyping a "join" query, which joins 2 entity archetypes
+## Tuesday 25th
+- More investigation on joins
+	- Join types:
+		- Cross join: every row in A with every row in B
+		- Left/Right join all rows from named table with rows from other table. Null where there is no match
+		- All rows from both tables, with null where there is no match
+	- Cross is the only one that makes sense, we can't really have a null entity reference. Could handle it by having a specific `NoMatch` method as well as the normal query method
+	- Feasible to implement, but a lot of work
+- Investigating bypassing safety system to use existing system
+	- Doesn't seem feasible
+- Created `InPlaceList16`, fixed 16 element list stored in place
+	- Usable as a component in jobs
+- Experimenting further with job joins
+	- Added chunk cross join to `Myriad.ECS`
+## Wednesday 26th
+- Sensor system plan/options:
+	- Fixed List:
+		- Keep list of sensors on tracks
+		- Copy across the most relevant sensors to fixed size list (serial)
+		- Do tracking/scanning with fixed size list (parallel)
+	- Parallel join
+		- Implement a full parallel join and use that
+- Working on parallel join with Unity jobs
+	- Aliasing is tricky
+		- Chunk joined on self
+		- Two aliases of same chunk in different jobs
+		- Added special self-join case that has to be handled by user code
+	- Joins produce chunks twice when queries overlap: AxB and BxA
+		- This is how databases handle it, it's fine
+## Thursday 27th
+- Updating packages in main project
+	- Fixing breakage
+- Working on new tracking system using job join query
+- Adding relation ID components to `Myriad.ECS`
+	- Just stores the `EntityId` instead of the Entity - compatible with jobs
+- Going back to the fixed size list idea
+	- This isn't as problematic as I though, since the list is **per track** not **per object**
+	- todo: Fixed size list
+		- [ ] Fixed size list of sensors
+		- [ ] Overflow list of extra sensors
+		- [ ] Select sensors to go into fixed or overflow somehow
+		- [ ] Go parallel over tracks
+## Friday 28th
+- Updating scan system for new fixed size lists+jobs
+	- Sketch out job based query system
+	- Remove `RadarTrackable` component
+	- Add new fixed+overflow components
+	- Update `InitRadarTracks` to populate new components
+	- Switched old track/scan system over to new components
+	- [ ] Todo: create job scan system
+	- [ ] Todo: create job track system
+## Monday 31st
+- Creating job scan system
+- Creating job track system
+	- Assign temporary dense IDs to all sensors
+	- Accumulate counts into array (indexed by dense ID)
+	- Do tracking in job
