@@ -189,7 +189,7 @@ sidebar_position: 9
 		- Attached: Updated every frame, stored as an offset from true position
 			- Convert from attached to loose as soon as an engine burn happens
 ## Tuesday 22nd
-- More track design: [Sensor Tracks v3](ImplementationDetails/Sensors/Sensor%20Tracks%20v3)
+- More track design: [Sensor Tracks v3](ImplementationDetails/Sensors/Sensor Tracks v3)
 - Designing "oracle" update for Kalman state - reading true pos/vel deltas and updating state without leaking info
 - Optimised all `matmul` operations to use explicit SIMD `mad` instead of multiply and addition chains
 - Deep dive on Burst compilation of maths code
