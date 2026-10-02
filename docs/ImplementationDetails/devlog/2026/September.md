@@ -1,0 +1,272 @@
+---
+tags:
+  - devlog
+  - sensors
+sidebar_position: 9
+---
+## Tuesday 1st
+- Cleaning up August notes
+- Investigating "non blocking" queries in `Myriad.ECS`, to allow for more chaining of multithreaded work before waiting on it
+	- Adding non-blocking to some query types (blocking by default)
+	- Updating Myriad/Unity integration package
+		- [ ] todo: use non-blocking mode in job query scheduling
+## Wednesday 2nd
+- Implementing non-blocking queries in Myriad/Unity integration package
+- Using in main project
+	- Fixing breakage from moved namespaces
+	- Vastly reduced sensor system time! (Roughly 1/5th the time)
+- Rechecking RADAR system maths
+- Upgrading project to Unity 6.5
+	- Fixing breakage
+	- [x] https://github.com/Unity-UI-Extensions/com.unity.uiextensions/issues/532
+		- `UILineRenderer`
+			- This is the only use of `uiextensions` package with the issue above
+		- Imported code directly into project and removed package
+			- Removed lots of features to simplify maintenance
+			- Removed all allocations in hot path
+	- [ ] `BaseSweepAndPrune` job safety error
+## Thursday 3rd
+- Continuing upgrade process
+	- Job safety issue
+		- Carefully reviewed, can't spot any issues
+		- Works in Unity 6.4, broken in Unity 6.5 and 6.6
+		- Creating minimal repro in 6.6
+		- It's a Unity regression, building test project to report bug
+			- https://unity3d.atlassian.net/servicedesk/customer/portal/2/IN-152936
+	- Fixing IMPACT scatter graph VFX
+		- [ ] Colours are broken
+		- [ ] `Cut corners` is missing
+			- This also came from UI extensions!
+- Reimported `uiextensions` package, it was used extensively in IMPACT
+	- Patched the bug locally
+## Friday 4th
+- Removing soe usages of legacy input system (due to be deprecated soon)
+	- IMPACT
+- Upgrading packages
+	- Lots of warnings from Sonity
+- Refactoring IMPACT
+	- Removing use of `VFXType` attribute for graphics buffer. This has broken twice on engine upgrades, removing it makes the next update easier.
+- Expanding scale on RADAR test scene to astronomical ranges
+	- Job safety error with > 1024 trackables
+		- Already handled this (using `Interlocked`) but the safety system needs convincing
+## Monday 7th
+- Testing sensor system with huge number of objects (20,000)
+	- It gets slow! Slow systems:
+		- `CopyScenePositionToUnityTransform`
+			- Can't be moved to job (interacts with scene `Transform`)
+		- `SensorTrack.UpdateWorldPositionCache`
+			- Can't be moved to job (fetches data from other entities in ECS)
+		- Cross reference systems
+		- `PhasedArrayRadarTrackSystem3`
+	- Jobbifying cross reference jobs
+		- ~450us (each) -> ~70us
+		- [x] `CrossReferenceToRange`
+		- [x] `CrossReferenceToAngle`
+		- [x] `CrossReferenceToPosition`
+		- [x] `CopyDeviationBufferedValues`
+	- `CalculateRangeFromTrackingToTracked`
+		- Chunk based: ~1100us @ 24,000 entities
+		- Jobbified: ~130us @ 24,000 entities
+## Tuesday 8th
+- Adding complete sensor system test coverage
+	- [x] Track creation
+	- [x] `SensorTrackLifecycleSystem`
+		- [x] Tracks never get cleaned up properly
+		- [x] Creating a sensor platform and destroying another platform in the same frame could leak resources (stale cache)
+	- [x] `InitRadarTracks2`
+	- [x] `ClearTrackCollectionNewTracks`
+	- [x] `UpdateWorldPositionCache`
+	- [x] `CalculateRangeFromTrackingToTracked`
+	- [x] `CalculateLineOfSight`
+	- [x] `DecayTrackPositionDeviation`
+	- [x] `DecayTrackAngleDeviation`
+	- [x] `DecayTrackRangeDeviation`
+		- [x] Range decays twice in one frame when there are less than 1024 track entities
+		- Removed split between single and multithreaded paths. No point optimising the low-entity count case, that's already fast!
+	- [x] `CrossReferenceToRange`
+	- [x] `CrossReferenceToAngle`
+	- [x] `CrossReferenceToPosition`
+		- Unit confusion, using `179` degrees instead of `PI-epsilon` radians!
+	- [x] `CopyDeviationBufferedValues`
+## Wednesday 9th
+- Finishing off sensor testing
+	- [x] `PhasedArrayRadarScanSystem3`
+		- Properly handling edge case at zero range
+	- [x] `PhasedArrayRadarTrackSystem3`
+- Exposing scheduled job count in query job handle
+	- Fixed a major bug with job queries not always respecting the `QueryDescription` filter!
+## Thursday 10th
+- Cleaning up tests
+	- Simplifying setup of some of the more complex ones
+- Creating a "phased chunk query" which skips some chunks in a query
+	- Can be used for slower processing of large number of items (e.g. tracks)
+	- This can be turned into a more general chunk filtering system
+- Adding chunk filtering to `Myriad.ECS`
+	- [x] Add filtering to query job scheduler
+	- [ ] Use filtering to process tracks over several frames
+## Friday 11th
+- Creating adaptive filtering system which automatically reduces work as entity count increases
+- Using a static (non-adaptive) filter in scanning
+- Using a static filter in tracking
+	- Can't do filtering for most of the work, so it barely helps here
+- Removing scan system interlocked counting (probably slow)
+	- Replacing with a per-sensor-per-thread counter, with an accumulation afterwards. This avoids interlocked entirely (less false sharing)
+- Building a system to assign persistent IDs to sensors
+	- This work can be shared between all sensor types
+	- It can also be moved ahead of the parallel work, reducing the risk of stalling the job pipeline
+	- Fixed tests to use new IDs
+- Reverted to Interlocked increment, it doesn't seem to be any slower and is significantly simpler.
+## Monday 14th
+- Designing inter-platform comms (sharing tracks)
+	- There's a major issue with sharing: if we cross reference tracks (assuming they're independent) then even an inert platform with a good track (because it was shared to the platform) can improve track quality!
+	- Might have to move to proper state tracking?
+		- Kalman state update
+		- Orbital propagation for tracks
+			- This is very _very_ costly if we do n-body!
+			- use Kepler instead?
+				- If so, track can store `(pos, vel, time)` and we can propagate it forward to any future time instantly
+- Building a Kalman test project to learn how they work
+## Tuesday 15th
+- Finishing off support infrastructure (various size 6 matrices)
+	- 100% test coverage
+- Building a test scene with a single moving object and some sensors
+	- Moving object
+	- Platform
+	- Sensors
+		- Optical (Direction and weak range)
+		- Doppler (Radial velocity)
+- Investigating comms
+	- Cannot just merge Kalman states - would cause double counting of information.
+		- [Covariance Intersection](https://en.wikipedia.org/wiki/Covariance_intersection) for combining when correlation is unknown
+		- Split Covariance Intersection, enhancement of plain CI. keeps track of what part of covariance is definitely unique (from local sensors)
+## Wednesday 16th
+- Adding some sensor visualisations
+	- Optical
+	- Doppler
+- Implementing comms links
+	- Basic covariance intersection
+## Thursday 17th
+- Implementing Split Covariance
+	- Maintains a separate independent and dependent covariance matrix pair. Storing covariance from local sensor updates and remote data with unknown provenance.
+	- This turns out to still be a pain to use - need to know the provenance of data to know what is potentially correlated or not. Doesn't really help in a disorganised/gossip network.
+	- Reverting back to simple covariance intersection
+- Built a simple `KalmanState6D` which neatly wraps all operations
+	- Predict
+	- Observe
+	- Intersect
+## Friday 18th
+- Cleaning up covariance intersection code
+	- Improving omega (merge weight) selection
+- General clean up
+	- Pushing for 100% test coverage
+	- Remove unused Kalman helpers
+- Moving prototype code into a package
+## Saturday 19th
+- Creating Unity package, porting some of the mathematics code
+## Sunday 20th
+- Completed porting into package
+- Converting package to double precision
+- Optimising some matrix ops
+## Monday 21st
+- Optimising some more matrix ops
+	- Burst compile
+	- SIMD
+- Researching UKF (unscented Kalman filter), possibly handles orbital dynamics better
+- Implementing cholesky (needed for UKF)
+- Implementing UKF core functions
+	- `make_sigma_points`
+	- `GetWeightedMean`
+	- `GetWeightedCovariance`
+	- Generating tests against reference python impl
+- Thinking about tracks
+	- Don't want to integrate all tracks every tick
+	- Tracks can be converted to kepler when "cold"
+	- Cold (kepler) to hot (Verlet) conversion is tricky
+		- UKF?
+	- Possible 3 stage model:
+		- Cold: No updates, just store last known state
+		- Loose: Updated and integrated every frame
+		- Attached: Updated every frame, stored as an offset from true position
+			- Convert from attached to loose as soon as an engine burn happens
+## Tuesday 22nd
+- More track design: [Sensor Tracks v3](ImplementationDetails/Sensors/Sensor%20Tracks%20v3)
+- Designing "oracle" update for Kalman state - reading true pos/vel deltas and updating state without leaking info
+- Optimised all `matmul` operations to use explicit SIMD `mad` instead of multiply and addition chains
+- Deep dive on Burst compilation of maths code
+## Wednesday 23rd
+- Further investigation into Burst optimisations
+	- Removing union struct for `double6`, seems to confuse burst
+	- Adding `[MethodImpl(MethodImplOptions.AggressiveInlining)]` where appropriate
+	- Adding `[SkipLocalsInit]`
+- Working on `OracleStateController` which decides when to use the "oracle" for updating. i.e. move from `Loose` to `Attached` mode
+- Implementing some statistical monitoring (against ground truth) to check filter quality
+	- NEES
+		- filter is very overconfident? Even with enormous process noise.
+		- If we know ground truth (we do) we can use NEES to adapt the process noise
+- [ ] Use Euclidean distance in `OracleStateController`
+## Thursday 24th
+- Investigating potential bias in measurements
+- Adding better modelling of acceleration (optional, we can just use linear velocity model if necessary)
+	- Feeding it in as a control input
+- Testing Euclidean distance metric in oracle state controller
+- Experimenting with player-facing lock state
+## Friday 25th
+- Replacing `schur_inverse` with `cholesky_inverse`, faster and more stable
+	- Inconsistent with baseline full inverse
+	- Fixed a bug in normal `inverse`
+- Adding some safety checks properly handling a failure to invert
+	- Should never happen unless a sensor is buggy
+- Switching `KalmanState6D` to lazily invert matrix when needed instead of eagerly on update
+- Optimising storage by only storing half of the covariance matrix (it's symmetric)
+	- Lots of new maths ops (mostly `matmul` of various shapes)
+	- Fixing endless call sites
+- Applying the same optimisation to information matrix
+## Monday 28th
+- Adding more special matrix types, to elide work in matmul where it's not required
+	- `doubleSymmetric6x6`
+	- `doubleSymmetric3x3`
+	- `SpecialMatrixFConstantVelocity`
+	- `SpecialMatrixQConstantVelocity`
+	- `SpecialMatrixHPosition`
+- Pushed up to 100% test coverage
+- Imported Kalman package into main project
+	- Creating Kalman2 test scene
+	- Systems todo:
+		- [x] Lifecycle
+			- Most of the system does not need changing, just init logic needs to change
+			- Parameterised Init behaviour
+		- [ ] Decay/process noise etc
+		- [ ] Propagate
+		- [ ] Cross referencing (probably nothing)
+		- [ ] Actual sensing/observing
+## Tuesday 29th
+- Adding an invert specialisation for symmetric matrices
+- Creating sensor track lifecycle init system for kalman tracks
+- Experimenting with process noise in test scene
+	- Need to pick process noise for game
+	- Picked an arbitrary value
+	- [ ] todo: experiment with adaptive Q based on NEES measurement
+- Creating debug renderer to show kalman states
+- Creating general purpose system initialise tracks with sensor data (generalising the special purpose AESA RADAR one that already exists)
+	- Implemented optical sensor system
+- [ ] todo: optical observe
+	- [x] Add optical sensor to sensor platform
+	- [x] Init track with optical data
+	- [x] Do observation step with optical system
+		- Todo:
+			- [ ] Work out how to make Kalman frame rate independent
+			- [ ] Use optical cross section component to change detectability
+			- [ ] Proper optics modelling
+- [ ] todo: AESA radar observe
+	- [ ] Track
+	- [ ] Scan
+## Wednesday 30th
+- Investigating frame-rate independent sensor updates
+	- Just dividing observation matrix (R) by delta time does a good enough job
+	- Implementing it in Kalman6D library
+	- Using it in main project
+- Port AESA Radar from old sensor system
+	- [x] Scan
+	- [ ] Track
+- Adding a flag to track lifecycle creator, indicating if any flag were created. Using this to skip all track init systems.
+- Extracting helper functions for building R matrix (common pattern from optical and RADAR code)

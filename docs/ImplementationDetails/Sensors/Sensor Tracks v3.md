@@ -1,0 +1,14 @@
+Three types:
+- Cold
+	- Unobserved for a long time, stored as last known state/time
+	- Converted through kepler approximation to a `Loose` track
+- Loose
+	- Actual true Kalman tracking
+	- Position is integrated every frame
+	- Converted to `Attached` if estimated state gets close to real state
+	- Converted to `Cold` if unobserved for a long time and covariance gets large enough
+- Attached
+	- Position is **not** integrated every frame, instead an offset from the real position is stored
+	- Offset drifts over time, increasing/decreasing based on covariance
+	- Converted to `Loose` if the entity does an engine burn
+	- Converted to `Cold` if unobserved for a long time

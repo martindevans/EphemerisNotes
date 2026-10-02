@@ -10,7 +10,6 @@ sidebar_position: 8
 		- Can't reproduce locally
 		- Switched to "Dynamic" buffers
 	- [ ] NaN tidal force
-		- 
 	- [x] No default ship file
 		- Already fixed with new `ShipStorage`
 		- Use this same technique:

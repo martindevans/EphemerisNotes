@@ -1,3 +1,7 @@
+---
+tags:
+  - sensors
+---
 ## Trackable Entities
 - Actual entities are (e.g. a missile) are entities with `SensorTrackable` component.
 - Other components include sensor specific data (e.g. `Sensors.Radar.RadarCrossSection`)
